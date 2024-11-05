@@ -32,6 +32,6 @@ export async function loadLanguageAsync(lang) {
   return setI18nLanguage(lang)
 }
 
-loadLanguageAsync('zhCN')
+loadLanguageAsync(localStorage.getItem('keepBit_lang') || 'zhCN')
 
 export default i18n

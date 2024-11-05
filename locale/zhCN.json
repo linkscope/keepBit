@@ -1,3 +1,16 @@
 {
-  "message": "你好，世界"
+  "header": {
+    "menuList": {
+      "home": "首页",
+      "market": "行情",
+      "trading": "合约交易",
+      "quantitative": "量化交易",
+      "strategy": "策略广场",
+      "deal": "策略订单",
+      "dealContracts": "模拟订单",
+      "about": "关于我们"
+    }
+  },
+  "login": "登陆",
+  "register": "注册"
 }

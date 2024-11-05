@@ -8,7 +8,8 @@ export default defineConfig({
   plugins: [
     vue(),
     AutoImport({
-      imports: ['vue', 'vue-router'],
+      imports: ['vue', 'vue-router', 'vue-i18n'],
+      dts: './auto-imports.d.ts',
     }),
   ],
   resolve: {

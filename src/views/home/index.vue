@@ -1,5 +1,408 @@
-<script setup></script>
+<script setup>
+import { NButton, NTabs, NTabPane } from 'naive-ui'
+import { images } from './model.js'
+import Coin from './components/Coin.vue'
+
+const { t } = useI18n()
+const tickerTapRef = useTemplateRef('tickerTapRef')
+const coinList = ref([])
+const sortedCoinList = computed(() => {
+  const sortedList = coinList.value.sort((a, b) => b.priceChangePercent - a.priceChangePercent)
+  return {
+    top: sortedList.slice(0, 3),
+    bottom: sortedList.slice(-3),
+  }
+})
+
+let socket = null
+let heartBeatInterval = 0
+const startHeartbeat = () => {
+  clearInterval(heartBeatInterval)
+  heartBeatInterval = setInterval(function () {
+    if (socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({ op: 'ping' }))
+      console.log('发送心跳包')
+    }
+  }, 20000)
+}
+const visibilityListener = () => {
+  if (document.visibilityState === 'visible') {
+    if (socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({ op: 'ping' }))
+    }
+    startHeartbeat()
+  }
+}
+
+const carouselRef = useTemplateRef('carouselRef')
+let scrollInterval = 0
+
+onMounted(() => {
+  // 创建Ticker Tape组件
+  const script = document.createElement('script')
+  script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js'
+  script.async = true
+  script.textContent = `
+    {
+      "symbols": [
+        {
+          "proName": "BITSTAMP:BTCUSD",
+          "title": "Bitcoin"
+        },
+        {
+          "proName": "BITSTAMP:ETHUSD",
+          "title": "Ethereum"
+        },
+        {
+          "proName": "BINANCE:BNBUSDT",
+          "title": "Binance Coin"
+        },
+        {
+          "proName": "COINBASE:SOLUSD",
+          "title": "Solana"
+        },
+        {
+          "proName": "BINANCE:ADAUSDT",
+          "title": "Cardano"
+        }
+      ],
+      "showSymbolLogo": true,
+      "colorTheme": "light",
+      "isTransparent": false,
+      "displayMode": "adaptive",
+      "locale": "en"
+    }
+  `
+  tickerTapRef.value.appendChild(script)
+
+  socket = new WebSocket('wss://ws.keepbit.top/v2/ws/public')
+  socket.onopen = () => {
+    socket.send(
+      JSON.stringify({
+        op: 'subscribe',
+        args: [
+          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'BTCUSDT' },
+          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'ETHUSDT' },
+          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'LTCUSDT' },
+          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'DOGEUSDT' },
+          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'SOLUSDT' },
+          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'TRXUSDT' },
+          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'PEPEUSDT' },
+          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'XRPUSDT' },
+          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'ADAUSDT' },
+          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'BCHUSDT' },
+          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'USDCUSDT' },
+        ],
+      }),
+    )
+    startHeartbeat()
+  }
+  socket.onmessage = (event) => {
+    const data = JSON.parse(event.data)
+    if (data && data.arg && data.data) {
+      const ticker = data.data[0]
+      const instId = data.arg.instId
+      const change24h = parseFloat(ticker.change24h)
+      const priceChangePercent = (change24h * 100).toFixed(2)
+      const coin = {
+        instId,
+        lastPrice: parseFloat(ticker.lastPr),
+        priceChangePercent: parseFloat(priceChangePercent),
+        volume: parseFloat(ticker.baseVolume),
+        change24h,
+        image: images[instId] || 'img/default.png',
+      }
+
+      const findIndex = coinList.value.findIndex((i) => i.instId === instId)
+      if (~findIndex) {
+        coinList.value[findIndex] = coin
+      } else {
+        coinList.value.push(coin)
+      }
+    }
+  }
+
+  document.addEventListener('visibilitychange', visibilityListener)
+
+  scrollInterval = setInterval(() => {
+    // 判断是否滚动到底部
+    if (carouselRef.value.scrollLeft + carouselRef.value.clientWidth >= carouselRef.value.scrollWidth) {
+      carouselRef.value.scrollLeft = 0 // 重置到开头
+    } else {
+      carouselRef.value.scrollLeft += 1 // 每次向右滚动1px，可根据需求调整
+    }
+  }, 20)
+})
+onUnmounted(() => {
+  clearInterval(heartBeatInterval)
+  clearInterval(scrollInterval)
+  document.removeEventListener('visibilitychange', visibilityListener)
+})
+</script>
 
 <template>
-  <div class="bg-sky-500">Hello World</div>
+  <div class="py-16 bg-black">
+    <div class="md:w-[1480px] mx-auto">
+      <div class="flex flex-col-reverse gap-y-4 md:gap-0 md:flex-row items-center">
+        <div class="md:w-0 md:flex-1 md:z-10">
+          <div class="text-white font-bold text-[36px] md:text-[75px]">
+            <div>{{ t('home.welcome[0]') }}</div>
+            <div>{{ t('home.welcome[1]') }}</div>
+            <div>{{ t('home.welcome[2]') }}</div>
+          </div>
+          <div class="text-slate-400 text-xl md:text-4xl">
+            <div>{{ t('home.subWelcome[0]') }}</div>
+            <div>{{ t('home.subWelcome[1]') }}</div>
+          </div>
+          <div class="flex flex-col md:flex-row items-center gap-8 my-16">
+            <NButton class="w-60 h-14 rounded-2xl bg-[#76e43b] text-black">{{ t('register') }}</NButton>
+            <NButton class="w-60 h-14 rounded-2xl bg-white text-black">{{ t('login') }}</NButton>
+          </div>
+        </div>
+        <div class="md:w-0 md:flex-1 relative">
+          <div class="hidden md:block absolute -left-1/2 -top-1/2 translate-x-[30%] translate-y-[30%] w-[900px]">
+            <img class="w-full" src="/home_hero_bg.png" />
+          </div>
+          <img
+            class="block md:hidden absolute -left-1/2 -top-1/2 translate-x-1/2 translate-y-1/2 w-full"
+            src="/home_hero_bg.png"
+          />
+          <img class="w-full" src="/home_hero.png" />
+        </div>
+      </div>
+      <div class="flex flex-col md:flex-row gap-4">
+        <img class="h-[260px]" src="/home_card_1.png" />
+        <img class="h-[260px]" src="/home_card_2.png" />
+        <img class="h-[260px]" src="/home_card_3.png" />
+      </div>
+    </div>
+  </div>
+  <div class="md:w-[1480px] mx-auto my-8 space-y-16">
+    <div ref="tickerTapRef" class="tradingview-widget-container">
+      <div class="tradingview-widget-container__widget" />
+    </div>
+    <div class="space-y-8">
+      <div class="text-center md:text-left text-[40px] font-bold">{{ t('home.hotCoinPrice') }}</div>
+      <div class="flex flex-col md:flex-row gap-8">
+        <div class="p-4 md:p-0 md:w-0 md:flex-[2]">
+          <NTabs
+            default-value="stock"
+            size="large"
+            animated
+            pane-wrapper-style="margin: 0 -4px"
+            pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+          >
+            <NTabPane name="stock" :tab="t('home.hotStock')">
+              <div class="space-y-4">
+                <Coin v-for="item of coinList.slice(0, -4)" :key="item.instId" :coin="item" showStock />
+              </div>
+            </NTabPane>
+            <NTabPane name="treat" :tab="t('home.hotTreat')">
+              <div class="space-y-4">
+                <Coin v-for="item of coinList.slice(0, -4)" :key="item.instId" :coin="item" showStock />
+              </div>
+            </NTabPane>
+          </NTabs>
+        </div>
+        <div class="p-4 space-y-4 md:space-y-0 md:p-0 md:w-0 md:flex-1">
+          <div class="text-xl font-bold md:h-[60px] md:leading-[60px]">{{ t('home.riseRanking') }}</div>
+          <div class="space-y-4">
+            <Coin v-for="item of sortedCoinList.top" :key="item.instId" :coin="item" />
+          </div>
+          <div class="text-xl font-bold md:h-[162px] md:leading-[162px]">{{ t('home.fallRanking') }}</div>
+          <div class="space-y-4">
+            <Coin v-for="item of sortedCoinList.bottom" :key="item.instId" :coin="item" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="space-y-8">
+      <div class="text-center md:text-left text-[40px] font-bold">{{ t('home.tradingStrategy') }}</div>
+      <div class="flex flex-col md:flex-row gap-8">
+        <div class="p-4 md:p-0 md:w-0 md:flex-[3]">
+          <img class="w-full" src="/trading_strategy.png" />
+        </div>
+        <div class="p-4 md:p-0 md:w-0 md:flex-[2] flex flex-col gap-y-4 justify-evenly">
+          <div class="border-2 border-[#62e56d] rounded-2xl p-4 space-y-2 relative">
+            <img class="absolute top-0 left-0 right-0 bottom-0" src="/trading_strategy_bg.png" />
+            <div class="text-lg font-bold">{{ t('home.tradingStrategyDesc[0].title') }}</div>
+            <div class="text-slate-400/80 text-sm">
+              {{ t('home.tradingStrategyDesc[0].subtitle') }}
+            </div>
+          </div>
+          <div class="border-2 border-[#62e56d] rounded-2xl p-4 space-y-2 relative">
+            <img class="absolute top-0 left-0 right-0 bottom-0" src="/trading_strategy_bg.png" />
+            <div class="text-lg font-bold">{{ t('home.tradingStrategyDesc[1].title') }}</div>
+            <div class="text-slate-400/80 text-sm">
+              {{ t('home.tradingStrategyDesc[1].subtitle') }}
+            </div>
+          </div>
+          <div class="border-2 border-[#62e56d] rounded-2xl p-4 space-y-2 relative">
+            <img class="absolute top-0 left-0 right-0 bottom-0" src="/trading_strategy_bg.png" />
+            <div class="text-lg font-bold">{{ t('home.tradingStrategyDesc[2].title') }}</div>
+            <div class="text-slate-400/80 text-sm">
+              {{ t('home.tradingStrategyDesc[2].subtitle') }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bg-gray-100 py-16">
+    <div class="md:w-[1480px] mx-auto flex flex-col md:flex-row gap-32">
+      <img class="size-[550px] object-cover" src="/guide.png" />
+      <div class="md:w-0 md:flex-1 p-4 md:p-0 space-y-6">
+        <div class="text-[40px] font-bold">{{ t('home.guide.title') }}</div>
+        <div class="text-xl text-slate-400">{{ t('home.guide.subtitle') }}</div>
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-4">
+          <div class="bg-white rounded-md relative w-full flex flex-col items-center justify-center gap-y-4 py-8">
+            <div class="absolute top-0 left-0 bg-[#76e43c] py-2 px-4 rounded-tl-md rounded-br-md text-2xl font-bold">
+              1
+            </div>
+            <div class="text-2xl font-bold">{{ t('home.guide.list[0].title') }}</div>
+            <div class="text-slate-400">{{ t('home.guide.list[0].subtitle') }}</div>
+          </div>
+          <div class="bg-white rounded-md relative w-full flex flex-col items-center justify-center gap-y-4 py-8">
+            <div class="absolute top-0 left-0 bg-[#76e43c] py-2 px-4 rounded-tl-md rounded-br-md text-2xl font-bold">
+              2
+            </div>
+            <div class="text-2xl font-bold">{{ t('home.guide.list[1].title') }}</div>
+            <div class="text-slate-400">{{ t('home.guide.list[1].subtitle') }}</div>
+          </div>
+          <div class="bg-white rounded-md relative w-full flex flex-col items-center justify-center gap-y-4 py-8">
+            <div class="absolute top-0 left-0 bg-[#76e43c] py-2 px-4 rounded-tl-md rounded-br-md text-2xl font-bold">
+              3
+            </div>
+            <div class="text-2xl font-bold">{{ t('home.guide.list[2].title') }}</div>
+            <div class="text-slate-400">{{ t('home.guide.list[2].subtitle') }}</div>
+          </div>
+          <div class="bg-white rounded-md relative w-full flex flex-col items-center justify-center gap-y-4 py-8">
+            <div class="absolute top-0 left-0 bg-[#76e43c] py-2 px-4 rounded-tl-md rounded-br-md text-2xl font-bold">
+              4
+            </div>
+            <div class="text-2xl font-bold">{{ t('home.guide.list[3].title') }}</div>
+            <div class="text-slate-400">{{ t('home.guide.list[3].subtitle') }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="md:w-[1480px] mx-auto px-4 md:px-0 py-16 flex flex-col-reverse md:flex-row gap-32">
+    <div class="space-y-8 md:w-[700px]">
+      <div class="text-[40px] font-bold">{{ t('home.download.title') }}</div>
+      <div class="relative bg-[#78e43f] p-8 rounded-3xl flex items-center gap-x-8 w-full">
+        <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
+        <div class="size-[110px] md:size-[220px] rounded-3xl bg-white flex items-center justify-center z-10">
+          <img class="size-[90px] md:size-[200px]" src="/download_qrcode.png" />
+        </div>
+        <div class="space-y-8">
+          <div class="text-3xl font-bold">{{ t('home.download.scan') }}</div>
+          <div class="text-[40px] font-bold">iOS & Android</div>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
+          <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
+          <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
+            <img class="size-[30px]" src="/apple_store.svg" />
+          </div>
+          <div class="text-2xl">App Store</div>
+        </div>
+        <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
+          <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
+          <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
+            <img class="size-[30px]" src="/apple.svg" />
+          </div>
+          <div class="text-2xl">iOS</div>
+        </div>
+        <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
+          <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
+          <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
+            <img class="size-[30px]" src="/google.svg" />
+          </div>
+          <div class="text-2xl">Google Play</div>
+        </div>
+        <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
+          <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
+          <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
+            <img class="size-[30px]" src="/android.svg" />
+          </div>
+          <div class="text-2xl">Android</div>
+        </div>
+      </div>
+    </div>
+    <img class="w-full md:w-auto md:h-[700px]" src="/download.gif" />
+  </div>
+  <div ref="carouselRef" class="carousel my-32 flex px-8 gap-x-4 overflow-x-auto">
+    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_1.png" />
+    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_2.png" />
+    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_3.png" />
+    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_4.png" />
+    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_5.png" />
+    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_5.png" />
+    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_6.png" />
+    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_7.png" />
+    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_8.png" />
+    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_9.png" />
+    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_10.png" />
+    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_11.png" />
+    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_12.png" />
+    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_13.png" />
+    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_14.png" />
+    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_15.png" />
+    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_16.png" />
+  </div>
+  <footer class="p-12 bg-[#78e43f] flex flex-col md:flex-row gap-32">
+    <div class="space-y-6">
+      <div to="/" class="flex items-center gap-x-4">
+        <img class="size-10" src="/logo.png" />
+        <span class="font-bold text-lg">KeepBit</span>
+      </div>
+      <div class="flex items-center flex-wrap gap-4">
+        <img class="size-6" src="/facebook.svg" />
+        <img class="size-6" src="/x.svg" />
+        <img class="size-6" src="/telegram.svg" />
+        <img class="size-6" src="/new.svg" />
+        <img class="size-6" src="/youtube.svg" />
+        <img class="size-6" src="/medium.svg" />
+        <img class="size-6" src="/linkedin.svg" />
+      </div>
+      <div class="text-white">©2017 - 2024 KEEPBIT.COM</div>
+    </div>
+    <div class="flex flex-col md:flex-row gap-y-8 md:gap-x-52">
+      <div class="space-y-4 text-white">
+        <div class="text-black text-xl">平台服务</div>
+        <div>App下载</div>
+        <div>费率标准</div>
+        <div>行情</div>
+        <div>服务协议</div>
+      </div>
+      <div class="space-y-4 text-white">
+        <div class="text-black text-xl">用户支援</div>
+        <div>帮助中心</div>
+        <div>提交工单</div>
+        <div>如何买币</div>
+      </div>
+      <div class="space-y-4 text-white">
+        <div class="text-black text-xl">公司</div>
+        <div>关于我们</div>
+        <div>代理计划</div>
+        <div>公告中心</div>
+      </div>
+      <div class="space-y-4 text-white">
+        <div class="text-black text-xl">条款说明</div>
+        <div>用户协议</div>
+        <div>隐私保护</div>
+        <div>法律宣告</div>
+        <div>风险提示</div>
+        <div>安全合规</div>
+      </div>
+    </div>
+  </footer>
 </template>
+
+<style scoped>
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+</style>

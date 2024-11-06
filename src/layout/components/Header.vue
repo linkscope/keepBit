@@ -54,7 +54,7 @@ const menuList = computed(() => [
 </script>
 
 <template>
-  <header class="hidden md:flex p-4 bg-[#76e43b] items-center">
+  <header class="sticky z-[99] top-0 hidden md:flex p-4 bg-[#76e43b] items-center">
     <router-link to="/" class="flex items-center gap-x-4">
       <img class="size-10" src="/logo.png" />
       <span class="font-bold text-lg">KeepBit</span>
@@ -85,7 +85,7 @@ const menuList = computed(() => [
     </div>
   </header>
 
-  <header class="flex items-center justify-between p-4 bg-[#76e43b] md:hidden">
+  <header class="sticky top-0 z-[99] flex items-center justify-between p-4 bg-[#76e43b] md:hidden">
     <div class="flex items-center gap-x-4">
       <img class="size-10" src="/logo.png" />
       <span class="font-bold text-lg">KeepBit</span>

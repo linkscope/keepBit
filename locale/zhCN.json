@@ -12,5 +12,43 @@
     }
   },
   "login": "登陆",
-  "register": "注册"
+  "register": "注册",
+  "home": {
+    "welcome": ["欢迎来到KeepBit", "你的Web3世界从这里", "开始"],
+    "subWelcome": ["The easy to manage and trade", "your cryptocurency asset"],
+    "hotCoinPrice": "热门货币价格",
+    "hotStock": "热门现货",
+    "hotTreat": "热门合约",
+    "riseRanking": "涨幅榜",
+    "fallRanking": "跌幅榜",
+    "tradingStrategy": "高收益量化交易策略",
+    "tradingStrategyDesc": [
+      {
+        "title": "量化交易，让您的投资更智能、更精准。",
+        "subtitle": "手动交易太耗时？让KeepBit的量化交易为您提供全天候的市场监控与自动交易服务，精准把握每一个机会！"
+      },
+      {
+        "title": "轻松实现量化策略，掌控市场波动。",
+        "subtitle": "让AI算法为您打工！KeepBit量化交易，融合大数据与智能策略，帮您在波动市场中赢得先机。"
+      },
+      {
+        "title": "KeepBit，您的量化交易专家，成就更高效的投资。",
+        "subtitle": "错过机会？再也不用担心！KeepBit的量化系统7x24小时自动执行，让每个市场波动都成为盈利机会。"
+      }
+    ],
+    "guide": {
+      "title": "新手指导",
+      "subtitle": "从KeepBit开启您的Web3之旅",
+      "list": [
+        { "title": "成为KeepBit合伙人", "subtitle": "享合约交易最高80%永久返佣" },
+        { "title": "立即充值", "subtitle": "流程简单，极速开启Web3之旅" },
+        { "title": "开启交易", "subtitle": "快速上手交易，享受Web3丰厚收益" },
+        { "title": "体验跟单", "subtitle": "享捕捉市场信号，复制高手收益" }
+      ]
+    },
+    "download": {
+      "title": "随时随地，便捷交易",
+      "scan": "扫码下载"
+    }
+  }
 }

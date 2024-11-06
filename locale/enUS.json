@@ -1,3 +1,54 @@
 {
-  "message": "Hello, World"
+  "header": {
+    "menuList": {
+      "home": "Home page",
+      "market": "Market",
+      "trading": "Contract transaction",
+      "quantitative": "Quantitative trading",
+      "strategy": "Strategy square",
+      "deal": "Strategic order",
+      "dealContracts": "Mock order",
+      "about": "About us"
+    }
+  },
+  "login": "Login",
+  "register": "Register",
+  "home": {
+    "welcome": ["Welcome to KeepBit", "Your Web3 world from here", "Start"],
+    "subWelcome": ["The easy to manage and trade", "your cryptocurency asset"],
+    "hotCoinPrice": "Hot currency price",
+    "hotStock": "Hot spot",
+    "hotTreat": "Hot contract",
+    "riseRanking": "Price Increase Leaderboard",
+    "fallRanking": "Falling Price Leaderboard",
+    "tradingStrategy": "High yield quantitative trading strategy",
+    "tradingStrategyDesc": [
+      {
+        "title": "Quantitative trading makes your investment smarter and more accurate.",
+        "subtitle": "Is manual trading too time-consuming? Let KeepBit quantitative trading provide you with 24/7 market monitoring and automatic trading services to accurately grasp every opportunity!"
+      },
+      {
+        "title": "Easily implement quantitative strategies to control market fluctuations.",
+        "subtitle": "Let AI algorithms work for you! KeepBit quantitative trading combines big data with intelligent strategies to help you get ahead in volatile markets."
+      },
+      {
+        "title": "KeepBit, your quantitative trading expert, enables more efficient investing.",
+        "subtitle": "Missed the boat? No more worries! KeepBit's quantitative system automatically executes 7x24 hours a day, turning every market move into a profit opportunity."
+      }
+    ],
+    "guide": {
+      "title": "Novice guide",
+      "subtitle": "Start your Web3 journey from KeepBit",
+      "list": [
+        { "title": "Become a KeepBit partner", "subtitle": "Enjoy up to 80% permanent rebate on contract transactions" },
+        { "title": "Top up immediately", "subtitle": "The process is simple, fast start Web3 journey" },
+        { "title": "Open a transaction", "subtitle": "Get started trading quickly and enjoy Web3 benefits" },
+        { "title": "Experience merchandiser", "subtitle": "Enjoy capture market signals, copy master income" }
+      ]
+    },
+    "download": {
+      "title": "Easy trading anytime, anywhere",
+      "scan": "Scan code download"
+    }
+  }
 }

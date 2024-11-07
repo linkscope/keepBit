@@ -12,61 +12,61 @@ const { t } = useI18n()
     </div>
     <img class="relative left-0 right-0" src="/about_earth.png" />
   </div>
-  <div class="py-16 lg:w-[1280px] mx-auto p-4 lg:p-0 space-y-8">
-    <div class="font-bold text-[40px]">我们的优势</div>
+  <div class="py-16 lg:w-[1280px] mx-auto px-4 lg:px-0 space-y-8">
+    <div class="font-bold text-[40px]">{{ t('about.advantage.title') }}</div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
       <div class="border border-slate-200/80 rounded-2xl py-4 px-8">
         <div class="flex items-center justify-between">
-          <div class="text-lg lg:text-2xl font-bold">安全可靠的交易平台</div>
-          <img class="size-[100px] lg:size-[200px]" src="/about_adventage1.png" />
+          <div class="text-lg lg:text-2xl font-bold">{{ t('about.advantage.list[0].title') }}</div>
+          <img class="size-[100px] lg:size-[200px]" src="/about_advantage1.png" />
         </div>
         <div class="text-slate-400 text-base lg:text-2xl">
-          行业领先安全技术与合规化专业运营，保障用户实时体验可靠、顺畅、安全的交易环境！
+          {{ t('about.advantage.list[0].desc') }}
         </div>
       </div>
       <div class="border border-slate-200/80 rounded-2xl py-4 px-8">
         <div class="flex items-center justify-between">
-          <div class="text-lg lg:text-2xl font-bold">丰富的交易选择</div>
-          <img class="size-[100px] lg:size-[200px]" src="/about_adventage2.png" />
+          <div class="text-lg lg:text-2xl font-bold">{{ t('about.advantage.list[1].title') }}</div>
+          <img class="size-[100px] lg:size-[200px]" src="/about_advantage2.png" />
         </div>
         <div class="text-slate-400 text-base lg:text-2xl">
-          多样的交易方式与众多的合作伙伴，为用户提供丰富的交易手段和交易标的选择，同时也保障了充分的交易流动性。
+          {{ t('about.advantage.list[1].desc') }}
         </div>
       </div>
       <div class="border border-slate-200/80 rounded-2xl py-4 px-8">
         <div class="flex items-center justify-between">
-          <div class="text-lg lg:text-2xl font-bold">生态合作伙伴</div>
-          <img class="size-[100px] lg:size-[200px]" src="/about_adventage3.png" />
+          <div class="text-lg lg:text-2xl font-bold">{{ t('about.advantage.list[2].title') }}</div>
+          <img class="size-[100px] lg:size-[200px]" src="/about_advantage3.png" />
         </div>
         <div class="text-slate-400 text-base lg:text-2xl">
-          KeepBit生态合作伙伴即刻获得多类型战略支持，共享KeepBit平台的生态价值与数字货币时代红利
+          {{ t('about.advantage.list[2].desc') }}
         </div>
       </div>
       <div class="border border-slate-200/80 rounded-2xl py-4 px-8">
         <div class="flex items-center justify-between">
-          <div class="text-lg lg:text-2xl font-bold">一站式交易服务</div>
-          <img class="size-[100px] lg:size-[200px]" src="/about_adventage4.png" />
+          <div class="text-lg lg:text-2xl font-bold">{{ t('about.advantage.list[3].title') }}</div>
+          <img class="size-[100px] lg:size-[200px]" src="/about_advantage4.png" />
         </div>
         <div class="text-slate-400 text-base lg:text-2xl">
-          KeepBit为全球数十个国家、100+万用户7x24小时提供多语言、高品质服务！
+          {{ t('about.advantage.list[3].desc') }}
         </div>
       </div>
     </div>
-    <div class="font-bold text-[40px]">联系我们</div>
+    <div class="font-bold text-[40px]">{{ t('about.contact.title') }}</div>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div class="border border-slate-200/80 rounded-2xl py-8 flex flex-col items-center">
+      <div class="border border-slate-200/80 rounded-2xl py-8 flex flex-col items-center gap-y-4">
         <img class="size-[80px]" src="/about_contact1.png" />
-        <div class="text-2xl font-bold">商务合作</div>
+        <div class="text-2xl font-bold">{{ t('about.contact.list[0]') }}</div>
         <div class="text-lg font-bold">1234564@163.com</div>
       </div>
-      <div class="border border-slate-200/80 rounded-2xl py-8 flex flex-col items-center">
+      <div class="border border-slate-200/80 rounded-2xl py-8 flex flex-col items-center gap-y-4">
         <img class="size-[80px]" src="/about_contact2.png" />
-        <div class="text-2xl font-bold">媒体合作</div>
+        <div class="text-2xl font-bold">{{ t('about.contact.list[1]') }}</div>
         <div class="text-lg font-bold">1234564@163.com</div>
       </div>
-      <div class="border border-slate-200/80 rounded-2xl py-8 flex flex-col items-center">
+      <div class="border border-slate-200/80 rounded-2xl py-8 flex flex-col items-center gap-y-4">
         <img class="size-[80px]" src="/about_contact3.png" />
-        <div class="text-2xl font-bold">运营支持</div>
+        <div class="text-2xl font-bold">{{ t('about.contact.list[2]') }}</div>
         <div class="text-lg font-bold">1234564@163.com</div>
       </div>
     </div>

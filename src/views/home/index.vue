@@ -1,6 +1,6 @@
 <script setup>
 import { NButton, NTabs, NTabPane, NIcon } from 'naive-ui'
-import { ArrowDownload16Regular, Headphones20Regular } from '@vicons/fluent'
+import { ArrowDownload16Regular, Headphones20Regular, ArrowLeft16Regular } from '@vicons/fluent'
 import { images } from './model.js'
 import Coin from './components/Coin.vue'
 
@@ -251,12 +251,12 @@ onUnmounted(() => {
     </div>
   </div>
   <div class="bg-gray-100 py-16">
-    <div class="lg:w-[1280px] mx-auto flex flex-col lg:flex-row gap-32">
+    <div class="lg:w-[1280px] mx-auto flex flex-col lg:flex-row items-center gap-32 px-4 lg:px-0">
       <img class="w-full md:size-[550px] object-cover" src="/guide.png" />
-      <div class="lg:w-0 lg:flex-1 p-4 lg:p-0 space-y-6">
+      <div class="w-full lg:w-0 lg:flex-1 space-y-6">
         <div class="text-[40px] font-bold">{{ t('home.guide.title') }}</div>
         <div class="text-xl text-slate-400">{{ t('home.guide.subtitle') }}</div>
-        <div class="grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div class="bg-white rounded-md relative w-full flex flex-col items-center justify-center gap-y-4 py-8">
             <div class="absolute top-0 left-0 bg-[#76e43c] py-2 px-4 rounded-tl-md rounded-br-md text-2xl font-bold">
               1
@@ -332,7 +332,7 @@ onUnmounted(() => {
           <div class="text-2xl">Android</div>
         </div>
       </div>
-      <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
+      <div class="lg:hidden relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
         <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
         <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
           <NIcon class="text-[30px]">
@@ -363,28 +363,33 @@ onUnmounted(() => {
     <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_15.png" />
     <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_16.png" />
   </div>
-  <div v-if="showToolTip" class="fixed z-99 right-0 lg:right-4 bottom-0 lg:bottom-4">
+  <div class="fixed z-99 right-0 lg:right-4 bottom-0 lg:bottom-4">
     <div class="flex flex-col gap-y-4 items-end">
       <div class="bg-[#78e43f] p-3 flex items-center justify-center rounded-md">
         <NIcon class="text-[32px]">
           <Headphones20Regular />
         </NIcon>
       </div>
-      <div class="bg-[#78e43f] p-4 flex items-center gap-x-2 rounded-md">
+      <div v-if="showToolTip" class="bg-[#78e43f] p-4 flex items-center gap-x-2 rounded-md">
         <img class="size-[40px]" src="/logo.png" />
         <div>
           <div class="font-bold text-xs">KeepBit</div>
           <div class="text-xs text-slate-600">{{ t('home.download.title') }}</div>
         </div>
         <div class="px-2 py-1 flex items-center gap-x-1 bg-black rounded-md">
-          <img class="size-4 lg:size-7" src="/android_inset.png" />
+          <img class="hidden lg:block size-7" src="/android_inset.png" />
           <span class="text-white">Android</span>
         </div>
         <div class="px-2 py-1 flex items-center gap-x-1 bg-black rounded-md">
-          <img class="size-4 lg:size-7" src="/apple_store_inset.png" />
-          <span class="text-white">Apple Store</span>
+          <img class="hidden lg:block size-7" src="/apple_store_inset.png" />
+          <span class="text-white truncate">Apple Store</span>
         </div>
         <img class="size-4" src="/close.png" @click="showToolTip = false" />
+      </div>
+      <div v-else class="bg-white p-3 flex items-center justify-center rounded-md" @click="showToolTip = true">
+        <NIcon class="text-[32px]">
+          <ArrowLeft16Regular />
+        </NIcon>
       </div>
     </div>
   </div>

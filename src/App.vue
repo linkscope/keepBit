@@ -73,7 +73,7 @@ const localeValue = computed(() => {
 </script>
 
 <template>
-  <NConfigProvider :locale="localeValue.locale" :date-locale="localeValue.date" class="overflow-x-hidden">
+  <NConfigProvider :locale="localeValue.locale" :date-locale="localeValue.date">
     <router-view />
   </NConfigProvider>
 </template>

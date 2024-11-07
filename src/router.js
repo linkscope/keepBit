@@ -13,6 +13,16 @@ export default createRouter({
           name: 'Home',
           component: () => import('@/views/home/index.vue'),
         },
+        {
+          path: 'market',
+          name: 'Market',
+          component: () => import('@/views/market/index.vue'),
+        },
+        {
+          path: 'about',
+          name: 'About',
+          component: () => import('@/views/about/index.vue'),
+        },
       ],
     },
   ],

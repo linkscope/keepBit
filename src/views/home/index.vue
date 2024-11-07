@@ -1,11 +1,13 @@
 <script setup>
-import { NButton, NTabs, NTabPane } from 'naive-ui'
+import { NButton, NTabs, NTabPane, NIcon } from 'naive-ui'
+import { ArrowDownload16Regular, Headphones20Regular } from '@vicons/fluent'
 import { images } from './model.js'
 import Coin from './components/Coin.vue'
 
 const { t } = useI18n()
 const tickerTapRef = useTemplateRef('tickerTapRef')
 const coinList = ref([])
+const showToolTip = ref(true)
 const sortedCoinList = computed(() => {
   const sortedList = coinList.value.sort((a, b) => b.priceChangePercent - a.priceChangePercent)
   return {
@@ -142,49 +144,49 @@ onUnmounted(() => {
 
 <template>
   <div class="py-16 bg-black">
-    <div class="md:w-[1480px] mx-auto">
-      <div class="flex flex-col-reverse gap-y-4 md:gap-0 md:flex-row items-center">
-        <div class="md:w-0 md:flex-1 md:z-10">
-          <div class="text-white font-bold text-[36px] md:text-[75px]">
+    <div class="lg:w-[1280px] mx-auto">
+      <div class="flex flex-col-reverse gap-y-4 lg:gap-0 lg:flex-row items-center">
+        <div class="lg:w-0 lg:flex-1 lg:z-10">
+          <div class="text-white font-bold text-[36px] lg:text-[64px]">
             <div>{{ t('home.welcome[0]') }}</div>
             <div>{{ t('home.welcome[1]') }}</div>
             <div>{{ t('home.welcome[2]') }}</div>
           </div>
-          <div class="text-slate-400 text-xl md:text-4xl">
+          <div class="text-slate-400 text-xl lg:text-4xl">
             <div>{{ t('home.subWelcome[0]') }}</div>
             <div>{{ t('home.subWelcome[1]') }}</div>
           </div>
-          <div class="flex flex-col md:flex-row items-center gap-8 my-16">
+          <div class="flex flex-col lg:flex-row items-center gap-8 my-16">
             <NButton class="w-60 h-14 rounded-2xl bg-[#76e43b] text-black">{{ t('register') }}</NButton>
             <NButton class="w-60 h-14 rounded-2xl bg-white text-black">{{ t('login') }}</NButton>
           </div>
         </div>
-        <div class="md:w-0 md:flex-1 relative">
-          <div class="hidden md:block absolute -left-1/2 -top-1/2 translate-x-[30%] translate-y-[30%] w-[900px]">
+        <div class="lg:w-0 lg:flex-1 relative">
+          <div class="hidden lg:block absolute -left-1/2 -top-1/2 translate-x-[30%] translate-y-[30%] w-[900px]">
             <img class="w-full" src="/home_hero_bg.png" />
           </div>
           <img
-            class="block md:hidden absolute -left-1/2 -top-1/2 translate-x-1/2 translate-y-1/2 w-full"
+            class="block lg:hidden absolute -left-1/2 -top-1/2 translate-x-1/2 translate-y-1/2 w-full"
             src="/home_hero_bg.png"
           />
           <img class="w-full" src="/home_hero.png" />
         </div>
       </div>
-      <div class="flex flex-col md:flex-row gap-4">
+      <div class="flex flex-col lg:flex-row gap-4">
         <img class="h-[260px]" src="/home_card_1.png" />
         <img class="h-[260px]" src="/home_card_2.png" />
         <img class="h-[260px]" src="/home_card_3.png" />
       </div>
     </div>
   </div>
-  <div class="md:w-[1480px] mx-auto my-8 space-y-16">
+  <div class="lg:w-[1280px] mx-auto my-8 space-y-16">
     <div ref="tickerTapRef" class="tradingview-widget-container">
       <div class="tradingview-widget-container__widget" />
     </div>
     <div class="space-y-8">
-      <div class="text-center md:text-left text-[40px] font-bold">{{ t('home.hotCoinPrice') }}</div>
-      <div class="flex flex-col md:flex-row gap-8">
-        <div class="p-4 md:p-0 md:w-0 md:flex-[2]">
+      <div class="text-center lg:text-left text-[40px] font-bold">{{ t('home.hotCoinPrice') }}</div>
+      <div class="flex flex-col lg:flex-row gap-8">
+        <div class="p-4 lg:p-0 lg:w-0 lg:flex-[2]">
           <NTabs
             default-value="stock"
             size="large"
@@ -204,12 +206,12 @@ onUnmounted(() => {
             </NTabPane>
           </NTabs>
         </div>
-        <div class="p-4 space-y-4 md:space-y-0 md:p-0 md:w-0 md:flex-1">
-          <div class="text-xl font-bold md:h-[60px] md:leading-[60px]">{{ t('home.riseRanking') }}</div>
+        <div class="p-4 space-y-4 lg:space-y-0 lg:p-0 lg:w-0 lg:flex-1">
+          <div class="text-xl font-bold lg:h-[60px] lg:leading-[60px]">{{ t('home.riseRanking') }}</div>
           <div class="space-y-4">
             <Coin v-for="item of sortedCoinList.top" :key="item.instId" :coin="item" />
           </div>
-          <div class="text-xl font-bold md:h-[162px] md:leading-[162px]">{{ t('home.fallRanking') }}</div>
+          <div class="text-xl font-bold lg:h-[162px] lg:leading-[162px]">{{ t('home.fallRanking') }}</div>
           <div class="space-y-4">
             <Coin v-for="item of sortedCoinList.bottom" :key="item.instId" :coin="item" />
           </div>
@@ -217,12 +219,12 @@ onUnmounted(() => {
       </div>
     </div>
     <div class="space-y-8">
-      <div class="text-center md:text-left text-[40px] font-bold">{{ t('home.tradingStrategy') }}</div>
-      <div class="flex flex-col md:flex-row gap-8">
-        <div class="p-4 md:p-0 md:w-0 md:flex-[3]">
+      <div class="text-center lg:text-left text-[40px] font-bold">{{ t('home.tradingStrategy') }}</div>
+      <div class="flex flex-col lg:flex-row gap-8">
+        <div class="p-4 lg:p-0 lg:w-0 lg:flex-[3]">
           <img class="w-full" src="/trading_strategy.png" />
         </div>
-        <div class="p-4 md:p-0 md:w-0 md:flex-[2] flex flex-col gap-y-4 justify-evenly">
+        <div class="p-4 lg:p-0 lg:w-0 lg:flex-[2] flex flex-col gap-y-4 justify-evenly">
           <div class="border-2 border-[#62e56d] rounded-2xl p-4 space-y-2 relative">
             <img class="absolute top-0 left-0 right-0 bottom-0" src="/trading_strategy_bg.png" />
             <div class="text-lg font-bold">{{ t('home.tradingStrategyDesc[0].title') }}</div>
@@ -249,9 +251,9 @@ onUnmounted(() => {
     </div>
   </div>
   <div class="bg-gray-100 py-16">
-    <div class="md:w-[1480px] mx-auto flex flex-col md:flex-row gap-32">
-      <img class="size-[550px] object-cover" src="/guide.png" />
-      <div class="md:w-0 md:flex-1 p-4 md:p-0 space-y-6">
+    <div class="lg:w-[1280px] mx-auto flex flex-col lg:flex-row gap-32">
+      <img class="w-full md:size-[550px] object-cover" src="/guide.png" />
+      <div class="lg:w-0 lg:flex-1 p-4 lg:p-0 space-y-6">
         <div class="text-[40px] font-bold">{{ t('home.guide.title') }}</div>
         <div class="text-xl text-slate-400">{{ t('home.guide.subtitle') }}</div>
         <div class="grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-4">
@@ -287,20 +289,20 @@ onUnmounted(() => {
       </div>
     </div>
   </div>
-  <div class="md:w-[1480px] mx-auto px-4 md:px-0 py-16 flex flex-col-reverse md:flex-row gap-32">
-    <div class="space-y-8 md:w-[700px]">
+  <div class="lg:w-[1280px] mx-auto px-4 lg:px-0 py-16 flex flex-col-reverse lg:flex-row justify-between gap-32">
+    <div class="space-y-8 lg:w-[700px]">
       <div class="text-[40px] font-bold">{{ t('home.download.title') }}</div>
       <div class="relative bg-[#78e43f] p-8 rounded-3xl flex items-center gap-x-8 w-full">
         <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
-        <div class="size-[110px] md:size-[220px] rounded-3xl bg-white flex items-center justify-center z-10">
-          <img class="size-[90px] md:size-[200px]" src="/download_qrcode.png" />
+        <div class="size-[100px] lg:size-[220px] rounded-3xl bg-white flex items-center justify-center z-10">
+          <img class="size-[80px] lg:size-[200px]" src="/download_qrcode.png" />
         </div>
-        <div class="space-y-8">
+        <div class="flex-1 space-y-8">
           <div class="text-3xl font-bold">{{ t('home.download.scan') }}</div>
           <div class="text-[40px] font-bold">iOS & Android</div>
         </div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="hidden md:grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
           <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
           <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
@@ -330,10 +332,19 @@ onUnmounted(() => {
           <div class="text-2xl">Android</div>
         </div>
       </div>
+      <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
+        <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
+        <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
+          <NIcon class="text-[30px]">
+            <ArrowDownload16Regular />
+          </NIcon>
+        </div>
+        <div class="text-2xl">{{ t('home.download.tap') }}</div>
+      </div>
     </div>
-    <img class="w-full md:w-auto md:h-[700px]" src="/download.gif" />
+    <img class="w-full lg:w-auto lg:h-[700px]" src="/download.gif" />
   </div>
-  <div ref="carouselRef" class="carousel my-32 flex px-8 gap-x-4 overflow-x-auto">
+  <div ref="carouselRef" class="carousel my-32 flex px-8 gap-x-4 overflow-x-hidden">
     <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_1.png" />
     <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_2.png" />
     <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_3.png" />
@@ -352,53 +363,80 @@ onUnmounted(() => {
     <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_15.png" />
     <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_16.png" />
   </div>
-  <footer class="p-12 bg-[#78e43f] flex flex-col md:flex-row gap-32">
-    <div class="space-y-6">
-      <div to="/" class="flex items-center gap-x-4">
-        <img class="size-10" src="/logo.png" />
-        <span class="font-bold text-lg">KeepBit</span>
+  <footer class="p-12 bg-[#78e43f]">
+    <div class="w-[1280px] mx-auto flex flex-col lg:flex-row gap-32">
+      <div class="space-y-6">
+        <div to="/" class="flex items-center gap-x-4">
+          <img class="size-10" src="/logo.png" />
+          <span class="font-bold text-lg">KeepBit</span>
+        </div>
+        <div class="flex items-center flex-wrap gap-4">
+          <img class="size-6" src="/facebook.svg" />
+          <img class="size-6" src="/x.svg" />
+          <img class="size-6" src="/telegram.svg" />
+          <img class="size-6" src="/new.svg" />
+          <img class="size-6" src="/youtube.svg" />
+          <img class="size-6" src="/medium.svg" />
+          <img class="size-6" src="/linkedin.svg" />
+        </div>
+        <div class="text-white">©2017 - 2024 KEEPBIT.COM</div>
       </div>
-      <div class="flex items-center flex-wrap gap-4">
-        <img class="size-6" src="/facebook.svg" />
-        <img class="size-6" src="/x.svg" />
-        <img class="size-6" src="/telegram.svg" />
-        <img class="size-6" src="/new.svg" />
-        <img class="size-6" src="/youtube.svg" />
-        <img class="size-6" src="/medium.svg" />
-        <img class="size-6" src="/linkedin.svg" />
-      </div>
-      <div class="text-white">©2017 - 2024 KEEPBIT.COM</div>
-    </div>
-    <div class="flex flex-col md:flex-row gap-y-8 md:gap-x-52">
-      <div class="space-y-4 text-white">
-        <div class="text-black text-xl">平台服务</div>
-        <div>App下载</div>
-        <div>费率标准</div>
-        <div>行情</div>
-        <div>服务协议</div>
-      </div>
-      <div class="space-y-4 text-white">
-        <div class="text-black text-xl">用户支援</div>
-        <div>帮助中心</div>
-        <div>提交工单</div>
-        <div>如何买币</div>
-      </div>
-      <div class="space-y-4 text-white">
-        <div class="text-black text-xl">公司</div>
-        <div>关于我们</div>
-        <div>代理计划</div>
-        <div>公告中心</div>
-      </div>
-      <div class="space-y-4 text-white">
-        <div class="text-black text-xl">条款说明</div>
-        <div>用户协议</div>
-        <div>隐私保护</div>
-        <div>法律宣告</div>
-        <div>风险提示</div>
-        <div>安全合规</div>
+      <div class="flex lg:flex-1 flex-col lg:flex-row gap-8 justify-between">
+        <div class="space-y-4 text-white">
+          <div class="text-black text-xl">平台服务</div>
+          <div>App下载</div>
+          <div>费率标准</div>
+          <div>行情</div>
+          <div>服务协议</div>
+        </div>
+        <div class="space-y-4 text-white">
+          <div class="text-black text-xl">用户支援</div>
+          <div>帮助中心</div>
+          <div>提交工单</div>
+          <div>如何买币</div>
+        </div>
+        <div class="space-y-4 text-white">
+          <div class="text-black text-xl">公司</div>
+          <div>关于我们</div>
+          <div>代理计划</div>
+          <div>公告中心</div>
+        </div>
+        <div class="space-y-4 text-white">
+          <div class="text-black text-xl">条款说明</div>
+          <div>用户协议</div>
+          <div>隐私保护</div>
+          <div>法律宣告</div>
+          <div>风险提示</div>
+          <div>安全合规</div>
+        </div>
       </div>
     </div>
   </footer>
+  <div v-if="showToolTip" class="fixed z-99 right-0 lg:right-4 bottom-0 lg:bottom-4">
+    <div class="flex flex-col gap-y-4 items-end">
+      <div class="bg-[#78e43f] p-3 flex items-center justify-center rounded-md">
+        <NIcon class="text-[32px]">
+          <Headphones20Regular />
+        </NIcon>
+      </div>
+      <div class="bg-[#78e43f] p-4 flex items-center gap-x-2 rounded-md">
+        <img class="size-[40px]" src="/logo.png" />
+        <div>
+          <div class="font-bold text-xs">KeepBit</div>
+          <div class="text-xs text-slate-600">{{ t('home.download.title') }}</div>
+        </div>
+        <div class="px-2 py-1 flex items-center gap-x-1 bg-black rounded-md">
+          <img class="size-4 lg:size-7" src="/android_inset.png" />
+          <span class="text-white">Android</span>
+        </div>
+        <div class="px-2 py-1 flex items-center gap-x-1 bg-black rounded-md">
+          <img class="size-4 lg:size-7" src="/apple_store_inset.png" />
+          <span class="text-white">Apple Store</span>
+        </div>
+        <img class="size-4" src="/close.png" @click="showToolTip = false" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>

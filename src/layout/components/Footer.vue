@@ -9,13 +9,27 @@
           <span class="font-bold text-lg">KeepBit</span>
         </div>
         <div class="flex items-center flex-wrap gap-4">
-          <img class="size-6" src="/facebook.svg" />
-          <img class="size-6" src="/x.svg" />
-          <img class="size-6" src="/telegram.svg" />
-          <img class="size-6" src="/new.svg" />
-          <img class="size-6" src="/youtube.svg" />
-          <img class="size-6" src="/medium.svg" />
-          <img class="size-6" src="/linkedin.svg" />
+          <a href="https://www.facebook.com/groups/keepbit.official/" target="_blank">
+            <img class="size-6" src="/facebook.svg" alt="Facebook" />
+          </a>
+          <a href="https://x.com/i/communities/1782021388393730502" target="_blank">
+            <img class="size-6" src="/x.svg" alt="Twitter" />
+          </a>
+          <a href="https://t.me/Keepbit2024" target="_blank">
+            <img class="size-6" src="/telegram.svg" alt="Telegram" />
+          </a>
+          <a href="https://www.tiktok.com/@keepbit_official?_t=8mYSfzCAVMm&_r=1" target="_blank">
+            <img class="size-6" src="/TikTok.png" alt="TikTok" />
+          </a>
+          <a href="https://www.youtube.com/@Keepbit_official" target="_blank">
+            <img class="size-6" src="/youtube.svg" alt="YouTube" />
+          </a>
+          <a href="https://whatsapp.com/channel/0029VaVXV3V0QeauC0a5RX02" target="_blank">
+            <img class="size-6" src="/whatsapp.svg" alt="WhatsApp" />
+          </a>
+          <a href="https://www.linkedin.com/company/103665382/" target="_blank">
+            <img class="size-6" src="/linkedin.svg" alt="LinkedIn" />
+          </a>
         </div>
         <div class="text-white">©2017 - 2024 KEEPBIT.COM</div>
       </div>

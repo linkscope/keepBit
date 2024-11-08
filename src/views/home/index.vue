@@ -7,7 +7,7 @@ import initTickerTape from '@/utils/initTickerTape.js'
 
 const { t } = useI18n()
 const tickerTapRef = useTemplateRef('tickerTapRef')
-const { coinList, sortedCoinList } = useCryptoWS()
+const { coinList, sortedCoinList, coinSpotList, sortedCoinSpotList } = useCryptoWS()
 const showToolTip = ref(true)
 
 const carouselRef = useTemplateRef('carouselRef')
@@ -86,7 +86,7 @@ onUnmounted(() => {
           >
             <NTabPane name="stock" :tab="t('home.hotStock')">
               <div class="space-y-4">
-                <Coin v-for="item of coinList.slice(0, -4)" :key="item.instId" :coin="item" showStock />
+                <Coin v-for="item of coinSpotList.slice(0, -4)" :key="item.instId" :coin="item" showStock />
               </div>
             </NTabPane>
             <NTabPane name="treat" :tab="t('home.hotTreat')">
@@ -193,34 +193,43 @@ onUnmounted(() => {
         </div>
       </div>
       <div class="hidden md:grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
-          <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
-          <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
-            <img class="size-[30px]" src="/apple_store.svg" />
+        <a href="https://apps.apple.com/us/app/keepbit/id6499257545" target="_blank">
+          <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
+            <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" alt="Background" />
+            <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
+              <img class="size-[30px]" src="/apple_store.svg" alt="App Store Icon" />
+            </div>
+            <div class="text-2xl">App Store</div>
           </div>
-          <div class="text-2xl">App Store</div>
-        </div>
-        <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
-          <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
-          <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
-            <img class="size-[30px]" src="/apple.svg" />
+        </a>
+        <a href="https://www.apple.com/app-store/" target="_blank">
+          <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
+            <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" alt="Background" />
+            <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
+              <img class="size-[30px]" src="/apple.svg" alt="Apple Icon" />
+            </div>
+            <div class="text-2xl">iOS</div>
           </div>
-          <div class="text-2xl">iOS</div>
-        </div>
-        <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
-          <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
-          <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
-            <img class="size-[30px]" src="/google.svg" />
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=com.keepbitpro.android&referrer=google_play" target="_blank">
+          <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
+            <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" alt="Background" />
+            <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
+              <img class="size-[30px]" src="/google.svg" alt="Google Play Icon" />
+            </div>
+            <div class="text-2xl">Google Play</div>
           </div>
-          <div class="text-2xl">Google Play</div>
-        </div>
-        <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
-          <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
-          <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
-            <img class="size-[30px]" src="/android.svg" />
+        </a>
+        <a href="./Keepbit_cn3.14.apk" target="_blank">
+          <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
+            <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" alt="Background" />
+            <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
+              <img class="size-[30px]" src="/android.svg" alt="Android Icon" />
+            </div>
+            <div class="text-2xl">Android</div>
           </div>
-          <div class="text-2xl">Android</div>
-        </div>
+        </a>
+
       </div>
       <div class="lg:hidden relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
         <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
@@ -255,25 +264,31 @@ onUnmounted(() => {
   </div>
   <div class="fixed z-99 right-0 lg:right-4 bottom-0 lg:bottom-4">
     <div class="flex flex-col gap-y-4 items-end">
-      <div class="bg-[#78e43f] p-3 flex items-center justify-center rounded-md">
-        <NIcon class="text-[32px]">
-          <Headphones20Regular />
-        </NIcon>
-      </div>
+      <a href="https://wa.me/+60176012341?text=Hello%20there!" target="_blank">
+        <div class="bg-[#78e43f] p-3 flex items-center justify-center rounded-md">
+          <NIcon class="text-[32px]">
+            <Headphones20Regular />
+          </NIcon>
+        </div>
+      </a>
       <div v-if="showToolTip" class="bg-[#78e43f] p-4 flex items-center gap-x-2 rounded-md">
         <img class="size-[40px]" src="/logo.png" />
         <div>
           <div class="font-bold text-xs">KeepBit</div>
           <div class="text-xs text-slate-600">{{ t('home.download.title') }}</div>
         </div>
-        <div class="px-2 py-1 flex items-center gap-x-1 bg-black rounded-md">
-          <img class="hidden lg:block size-7" src="/android_inset.png" />
-          <span class="text-white">Android</span>
-        </div>
-        <div class="px-2 py-1 flex items-center gap-x-1 bg-black rounded-md">
-          <img class="hidden lg:block size-7" src="/apple_store_inset.png" />
-          <span class="text-white truncate">Apple Store</span>
-        </div>
+        <a href="./Keepbit_cn3.3.0.apk" target="_blank">
+          <div class="px-2 py-1 flex items-center gap-x-1 bg-black rounded-md">
+            <img class="hidden lg:block size-7" src="/android_inset.png" alt="Android Store" />
+            <span class="text-white">Android</span>
+          </div>
+        </a>
+        <a href="https://apps.apple.com/us/app/keepbit/id6499257545" target="_blank">
+          <div class="px-2 py-1 flex items-center gap-x-1 bg-black rounded-md">
+            <img class="hidden lg:block size-7" src="/apple_store_inset.png" alt="Apple Store" />
+            <span class="text-white truncate">Apple Store</span>
+          </div>
+        </a>
         <img class="size-4" src="/close.png" @click="showToolTip = false" />
       </div>
       <div v-else class="bg-white p-3 flex items-center justify-center rounded-md" @click="showToolTip = true">

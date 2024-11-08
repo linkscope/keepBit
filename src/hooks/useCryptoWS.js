@@ -2,6 +2,7 @@ import { images } from '@/views/home/model.js'
 
 export default function useCryptoWS() {
   const coinList = ref([])
+  const coinSpotList = ref([])
   const sortedCoinList = computed(() => {
     const sortedList = coinList.value.sort((a, b) => b.priceChangePercent - a.priceChangePercent)
     return {
@@ -10,7 +11,14 @@ export default function useCryptoWS() {
       list: sortedList,
     }
   })
-
+  const sortedCoinSpotList = computed(() => {
+    const sortedSpotList = coinSpotList.value.sort((a, b) => b.priceChangePercent - a.priceChangePercent)
+    return {
+      top: sortedSpotList.slice(0, 3),
+      bottom: sortedSpotList.slice(-3),
+      list: sortedSpotList,
+    }
+  })
   let socket = null
   let heartBeatInterval = 0
   const startHeartbeat = () => {
@@ -49,6 +57,17 @@ export default function useCryptoWS() {
             { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'ADAUSDT' },
             { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'BCHUSDT' },
             { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'USDCUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'BTCUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'ETHUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'LTCUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'DOGEUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'SOLUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'TRXUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'PEPEUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'XRPUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'ADAUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'BCHUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'USDCUSDT' }
           ],
         }),
       )
@@ -59,22 +78,40 @@ export default function useCryptoWS() {
       if (data && data.arg && data.data) {
         const ticker = data.data[0]
         const instId = data.arg.instId
+        const instType = data.arg.instType
         const change24h = parseFloat(ticker.change24h)
         const priceChangePercent = (change24h * 100).toFixed(2)
-        const coin = {
-          instId,
-          lastPrice: parseFloat(ticker.lastPr),
-          priceChangePercent: parseFloat(priceChangePercent),
-          volume: parseFloat(ticker.baseVolume),
-          change24h,
-          image: images[instId] || 'img/default.png',
-        }
+        if (instType === "SPOT") {
+          const coin = {
+            instId,
+            lastPrice: parseFloat(ticker.lastPr),
+            priceChangePercent: parseFloat(priceChangePercent),
+            volume: parseFloat(ticker.baseVolume),
+            change24h,
+            image: images[instId] || 'img/default.png',
+          }
+          const findIndex = coinSpotList.value.findIndex((i) => i.instId === instId)
+          if (~findIndex) {
+            coinSpotList.value[findIndex] = coin
+          } else {
+            coinSpotList.value.push(coin)
+          }
+        }else if(instType === "USDT-FUTURES") {
+          const coin = {
+            instId,
+            lastPrice: parseFloat(ticker.lastPr),
+            priceChangePercent: parseFloat(priceChangePercent),
+            volume: parseFloat(ticker.baseVolume),
+            change24h,
+            image: images[instId] || 'img/default.png',
+          }
 
-        const findIndex = coinList.value.findIndex((i) => i.instId === instId)
-        if (~findIndex) {
-          coinList.value[findIndex] = coin
-        } else {
-          coinList.value.push(coin)
+          const findIndex = coinList.value.findIndex((i) => i.instId === instId)
+          if (~findIndex) {
+            coinList.value[findIndex] = coin
+          } else {
+            coinList.value.push(coin)
+          }
         }
       }
     }
@@ -89,5 +126,7 @@ export default function useCryptoWS() {
   return {
     coinList,
     sortedCoinList,
+    coinSpotList,
+    sortedCoinSpotList
   }
 }

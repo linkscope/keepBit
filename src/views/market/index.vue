@@ -6,7 +6,7 @@ import useCryptoWS from '@/hooks/useCryptoWS'
 
 const { t } = useI18n()
 const currentTab = ref('stock')
-const { coinList, sortedCoinList } = useCryptoWS()
+const { coinList, sortedCoinList, coinSpotList, sortedCoinSpotList } = useCryptoWS()
 const checkedSelfList = ref([])
 </script>
 
@@ -123,7 +123,7 @@ const checkedSelfList = ref([])
     </div>
     <div v-show="currentTab === 'stock'" class="p-4 border border-slate-200 space-y-4 rounded-2xl">
       <div class="text-[40px] font-bold">{{ t('market.default.tab[0].title') }}</div>
-      <Coin v-for="item of coinList" :key="item.instId" :coin="item" show-stock />
+      <Coin v-for="item of coinSpotList" :key="item.instId" :coin="item" show-stock />
     </div>
     <div v-show="currentTab === 'trading'" class="p-4 border border-slate-200 space-y-4 rounded-2xl">
       <div class="text-[40px] font-bold">{{ t('market.default.tab[1].title') }}</div>

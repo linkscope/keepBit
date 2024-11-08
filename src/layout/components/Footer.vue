@@ -25,7 +25,7 @@
             <img class="size-6" src="/youtube.svg" alt="YouTube" />
           </a>
           <a href="https://whatsapp.com/channel/0029VaVXV3V0QeauC0a5RX02" target="_blank">
-            <img class="size-6" src="/whatsapp.svg" alt="WhatsApp" />
+            <img class="size-6" src="/WhatsApp.png" alt="WhatsApp" />
           </a>
           <a href="https://www.linkedin.com/company/103665382/" target="_blank">
             <img class="size-6" src="/linkedin.svg" alt="LinkedIn" />

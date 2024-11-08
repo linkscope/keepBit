@@ -1,40 +1,13 @@
 <script setup>
 import { NButton, NTabs, NTabPane, NIcon } from 'naive-ui'
 import { ArrowDownload16Regular, Headphones20Regular, ArrowLeft16Regular } from '@vicons/fluent'
-import { images } from './model.js'
 import Coin from './components/Coin.vue'
+import useCryptoWS from '@/hooks/useCryptoWS'
 
 const { t } = useI18n()
 const tickerTapRef = useTemplateRef('tickerTapRef')
-const coinList = ref([])
+const { coinList, sortedCoinList } = useCryptoWS()
 const showToolTip = ref(true)
-const sortedCoinList = computed(() => {
-  const sortedList = coinList.value.sort((a, b) => b.priceChangePercent - a.priceChangePercent)
-  return {
-    top: sortedList.slice(0, 3),
-    bottom: sortedList.slice(-3),
-  }
-})
-
-let socket = null
-let heartBeatInterval = 0
-const startHeartbeat = () => {
-  clearInterval(heartBeatInterval)
-  heartBeatInterval = setInterval(function () {
-    if (socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({ op: 'ping' }))
-      console.log('发送心跳包')
-    }
-  }, 20000)
-}
-const visibilityListener = () => {
-  if (document.visibilityState === 'visible') {
-    if (socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({ op: 'ping' }))
-    }
-    startHeartbeat()
-  }
-}
 
 const carouselRef = useTemplateRef('carouselRef')
 let scrollInterval = 0
@@ -77,55 +50,6 @@ onMounted(() => {
   `
   tickerTapRef.value.appendChild(script)
 
-  socket = new WebSocket('wss://ws.keepbit.top/v2/ws/public')
-  socket.onopen = () => {
-    socket.send(
-      JSON.stringify({
-        op: 'subscribe',
-        args: [
-          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'BTCUSDT' },
-          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'ETHUSDT' },
-          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'LTCUSDT' },
-          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'DOGEUSDT' },
-          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'SOLUSDT' },
-          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'TRXUSDT' },
-          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'PEPEUSDT' },
-          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'XRPUSDT' },
-          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'ADAUSDT' },
-          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'BCHUSDT' },
-          { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'USDCUSDT' },
-        ],
-      }),
-    )
-    startHeartbeat()
-  }
-  socket.onmessage = (event) => {
-    const data = JSON.parse(event.data)
-    if (data && data.arg && data.data) {
-      const ticker = data.data[0]
-      const instId = data.arg.instId
-      const change24h = parseFloat(ticker.change24h)
-      const priceChangePercent = (change24h * 100).toFixed(2)
-      const coin = {
-        instId,
-        lastPrice: parseFloat(ticker.lastPr),
-        priceChangePercent: parseFloat(priceChangePercent),
-        volume: parseFloat(ticker.baseVolume),
-        change24h,
-        image: images[instId] || 'img/default.png',
-      }
-
-      const findIndex = coinList.value.findIndex((i) => i.instId === instId)
-      if (~findIndex) {
-        coinList.value[findIndex] = coin
-      } else {
-        coinList.value.push(coin)
-      }
-    }
-  }
-
-  document.addEventListener('visibilitychange', visibilityListener)
-
   scrollInterval = setInterval(() => {
     // 判断是否滚动到底部
     if (carouselRef.value.scrollLeft + carouselRef.value.clientWidth >= carouselRef.value.scrollWidth) {
@@ -136,9 +60,7 @@ onMounted(() => {
   }, 20)
 })
 onUnmounted(() => {
-  clearInterval(heartBeatInterval)
   clearInterval(scrollInterval)
-  document.removeEventListener('visibilitychange', visibilityListener)
 })
 </script>
 

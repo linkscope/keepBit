@@ -29,6 +29,11 @@ export default createRouter({
           component: () => import('@/views/strategy/index.vue'),
         },
         {
+          path: 'deal',
+          name: 'Deal',
+          component: () => import('@/views/deal/index.vue'),
+        },
+        {
           path: 'about',
           name: 'About',
           component: () => import('@/views/about/index.vue'),

@@ -14,6 +14,11 @@ export default createRouter({
           component: () => import('@/views/home/index.vue'),
         },
         {
+          path: 'trading',
+          name: 'Trading',
+          component: () => import('@/views/trading/index.vue'),
+        },
+        {
           path: 'market',
           name: 'Market',
           component: () => import('@/views/market/index.vue'),

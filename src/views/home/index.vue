@@ -3,6 +3,7 @@ import { NButton, NTabs, NTabPane, NIcon } from 'naive-ui'
 import { ArrowDownload16Regular, Headphones20Regular, ArrowLeft16Regular } from '@vicons/fluent'
 import Coin from './components/Coin.vue'
 import useCryptoWS from '@/hooks/useCryptoWS'
+import initTickerTape from '@/utils/initTickerTape.js'
 
 const { t } = useI18n()
 const tickerTapRef = useTemplateRef('tickerTapRef')
@@ -14,40 +15,7 @@ let scrollInterval = 0
 
 onMounted(() => {
   // 创建Ticker Tape组件
-  const script = document.createElement('script')
-  script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js'
-  script.async = true
-  script.textContent = `
-    {
-      "symbols": [
-        {
-          "proName": "BITSTAMP:BTCUSD",
-          "title": "Bitcoin"
-        },
-        {
-          "proName": "BITSTAMP:ETHUSD",
-          "title": "Ethereum"
-        },
-        {
-          "proName": "BINANCE:BNBUSDT",
-          "title": "Binance Coin"
-        },
-        {
-          "proName": "COINBASE:SOLUSD",
-          "title": "Solana"
-        },
-        {
-          "proName": "BINANCE:ADAUSDT",
-          "title": "Cardano"
-        }
-      ],
-      "showSymbolLogo": true,
-      "colorTheme": "light",
-      "isTransparent": false,
-      "displayMode": "adaptive",
-      "locale": "en"
-    }
-  `
+  const script = initTickerTape()
   tickerTapRef.value.appendChild(script)
 
   scrollInterval = setInterval(() => {

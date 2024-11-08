@@ -79,6 +79,53 @@
       "addSelf": "一键添加自选"
     }
   },
+  "strategy": {
+    "title": "策略广场",
+    "subtitle": ["捕捉市场信号", "复制高手收益"],
+    "trading": {
+      "title": "交易策略",
+      "search": "搜索交易策略"
+    },
+    "enable": "启用",
+    "signal": "信号",
+    "profit": "收益率",
+    "runtime": "运行时长",
+    "maxDrawDown": "7日最大回撤率",
+    "manageScale": "管理规模",
+    "strategyBy": "策略来源于",
+    "shareProfit": "分润",
+    "useCount": "使用人数",
+    "detail": {
+      "title": "详细参数",
+      "balance": "跟单保证金余额",
+      "scale": "资产管理规模",
+      "profit": "跟单者盈亏",
+      "minimum": "跟单最小金额",
+      "ratios": "盈利分成比例"
+    },
+    "project": {
+      "title": "项目表现",
+      "rewards": "报酬率",
+      "profit": "盈亏",
+      "profitRatio": "盈亏比例",
+      "winRate": "胜率",
+      "maxDrawDown": "最大回撤",
+      "totalCount": "总仓位数量",
+      "profitCount": "盈利仓位数量"
+    },
+    "investment": {
+      "title": "投资金额",
+      "usage": "可用",
+      "desc": [
+        "策略停止时，您盈利的20%将会在结算时分润给策略来源者。",
+        "策略运行时，您将跟随策略来源者的全部操作（跟开、跟停）。"
+      ]
+    },
+    "useStrategy": "使用策略",
+    "imitation": "模拟",
+    "createStrategy": "创建策略",
+    "cancel": "取消"
+  },
   "about": {
     "title": "关于我们",
     "subtitle": "KeepBit是一家安全透明的数字资产衍生品交易平台，我们秉承着“用户至上 简单 透明 信任”的价值观，专注于为投资者提供一站式数字资产金融服务。",

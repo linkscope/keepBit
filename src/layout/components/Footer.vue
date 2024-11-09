@@ -36,30 +36,29 @@
       <div class="flex lg:flex-1 flex-col lg:flex-row gap-8 justify-between">
         <div class="space-y-4 text-white">
           <div class="text-black text-xl">平台服务</div>
-          <div>App下载</div>
-          <div>费率标准</div>
-          <div>行情</div>
-          <div>服务协议</div>
+          <a href="/#/article/app-download" class="block">App下载</a>
+          <a href="/#/market" class="block">行情</a>
+          <a href="/#/article/serviceAgreement" class="block">服务协议</a>
         </div>
         <div class="space-y-4 text-white">
           <div class="text-black text-xl">用户支援</div>
-          <div>帮助中心</div>
-          <div>提交工单</div>
-          <div>如何买币</div>
+          <a href="https://wa.me/60176012341?text=Tips%20layanan%20pelanggan%20resmi%20Whatsapp%3A%20Klik%20untuk%20melanjutkan%20percakapan.%20Ikuti%20saran%20instruktur%20Anda.%20Anda%20bisa%20mendapatkan%20Rp%20500.000-2.000.000%20per%20hari.%20Layanan%20pelanggan%20resmi%20dapat%20dipercaya." class="block">人工客服</a>
+<!--          <a href="/#/article/submit-ticket" class="block">提交工单</a>-->
+<!--          <a href="/#/article/how-to-buy-crypto" class="block">如何买币</a>-->
         </div>
         <div class="space-y-4 text-white">
           <div class="text-black text-xl">公司</div>
-          <div>关于我们</div>
-          <div>代理计划</div>
-          <div>公告中心</div>
+          <a href="/#/about" class="block">关于我们</a>
+          <a href="/#/article/agencyPlan" class="block">代理计划</a>
+<!--          <a href="/#/article/announcement-center" class="block">公告中心</a>-->
         </div>
         <div class="space-y-4 text-white">
           <div class="text-black text-xl">条款说明</div>
-          <div>用户协议</div>
-          <div>隐私保护</div>
-          <div>法律宣告</div>
-          <div>风险提示</div>
-          <div>安全合规</div>
+          <a href="/#/article/agreement" class="block">用户协议</a>
+          <a href="/#/article/privacyPolicy" class="block">隐私协议</a>
+          <a href="/#/article/disclaimer" class="block">免责说明</a>
+          <a href="/#/article/userBehaviorCode" class="block">用户行为规范</a>
+          <a href="/#/article/easyMoneyClause" class="block">轻松赚取条款</a>
         </div>
       </div>
     </div>

@@ -13,6 +13,11 @@ const showToolTip = ref(true)
 const carouselRef = useTemplateRef('carouselRef')
 let scrollInterval = 0
 
+// 添加跳转链接的方法
+const navigateToLink = () => {
+  window.open('https://t.me/+1hz-GvUuw0FmNDM1', '_blank')
+}
+
 onMounted(() => {
   // 创建Ticker Tape组件
   const script = initTickerTape()
@@ -63,7 +68,7 @@ onUnmounted(() => {
         </div>
       </div>
       <div class="flex flex-col lg:flex-row gap-4">
-        <img class="h-[260px]" src="/home_card_1.png" />
+        <img class="h-[260px]" src="/home_card_1.png" alt="Link to Telegram" @click="navigateToLink" />
         <img class="h-[260px]" src="/home_card_2.png" />
         <img class="h-[260px]" src="/home_card_3.png" />
       </div>
@@ -277,15 +282,15 @@ onUnmounted(() => {
           <div class="font-bold text-xs">KeepBit</div>
           <div class="text-xs text-slate-600">{{ t('home.download.title') }}</div>
         </div>
-        <a href="./Keepbit_cn3.3.0.apk" target="_blank">
+        <a href="https://play.google.com/store/apps/details?id=com.keepbitpro.android&referrer=google_play" target="_blank">
           <div class="px-2 py-1 flex items-center gap-x-1 bg-black rounded-md">
-            <img class="hidden lg:block size-7" src="/android_inset.png" alt="Android Store" />
-            <span class="text-white">Android</span>
+            <img class="hidden lg:block size-7" src="/google.png" alt="Google Play" />
+            <span class="text-white">Google Play</span>
           </div>
         </a>
         <a href="https://apps.apple.com/us/app/keepbit/id6499257545" target="_blank">
           <div class="px-2 py-1 flex items-center gap-x-1 bg-black rounded-md">
-            <img class="hidden lg:block size-7" src="/apple_store_inset.png" alt="Apple Store" />
+            <img class="hidden lg:block size-7" src="/apple.png" alt="Apple Store" />
             <span class="text-white truncate">Apple Store</span>
           </div>
         </a>

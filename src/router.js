@@ -43,6 +43,41 @@ export default createRouter({
           name: 'About',
           component: () => import('@/views/about/index.vue'),
         },
+        {
+          path: 'article/agreement',
+          name: 'Agreement',
+          component: () => import('@/views/article/agreement.vue'),
+        },
+        {
+          path: 'article/serviceAgreement',
+          name: 'ServiceAgreement',
+          component: () => import('@/views/article/serviceAgreement.vue'),
+        },
+        {
+          path: 'article/privacyPolicy',
+          name: 'PrivacyPolicy',
+          component: () => import('@/views/article/privacyPolicy.vue'),
+        },
+        {
+          path: 'article/disclaimer',
+          name: 'Disclaimer',
+          component: () => import('@/views/article/disclaimer.vue'),
+        },
+        {
+          path: 'article/userBehaviorCode',
+          name: 'UserBehaviorCode',
+          component: () => import('@/views/article/userBehaviorCode.vue'),
+        },
+        {
+          path: 'article/easyMoneyClause',
+          name: 'EasyMoneyClause',
+          component: () => import('@/views/article/easyMoneyClause.vue'),
+        },
+        {
+          path: 'article/agencyPlan',
+          name: 'AgencyPlan',
+          component: () => import('@/views/article/agencyPlan.vue'),
+        },
       ],
     },
   ],

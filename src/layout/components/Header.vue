@@ -47,8 +47,42 @@ const menuList = computed(() => [
     ],
   },
   {
-    label: t('header.menuList.about'),
-    key: '/about',
+    label: t('header.menuList.explorationAndLearning'),
+    key: '/explorationAndLearning',
+    children: [
+      {
+        label: t('header.menuList.announcementCenter'),
+        key: '/announcementCenter',
+      },
+      {
+        label: t('header.menuList.keepBitAcademy'),
+        key: '/keepBitAcademy',
+      },
+      {
+        label: t('header.menuList.kycCertificationArea'),
+        key: '/kycCertificationArea',
+      },
+      {
+        label: t('header.menuList.channelRecruitment'),
+        key: '/channelRecruitment',
+      },
+      {
+        label: t('header.menuList.brokerCooperation'),
+        key: '/brokerCooperation',
+      },
+      {
+        label: t('header.menuList.inviteFriends'),
+        key: '/inviteFriends',
+      },
+      {
+        label: t('header.menuList.vipService'),
+        key: '/vipService',
+      },
+      {
+        label: t('header.menuList.about'),
+        key: '/about',
+      },
+    ],
   },
 ])
 </script>

@@ -8,7 +8,15 @@
       "strategy": "策略广场",
       "deal": "策略订单",
       "dealContracts": "模拟订单",
-      "about": "关于我们"
+      "explorationAndLearning": "探索与学习",
+      "about": "关于我们",
+      "announcementCenter": "公告中心",
+      "keepBitAcademy": "KeepBit学院",
+      "kycCertificationArea": "KYC认证专区",
+      "channelRecruitment": "渠道招募",
+      "brokerCooperation": "经纪商合作",
+      "inviteFriends": "邀请好友",
+      "vipService": "VIP服务"
     }
   },
   "login": "登陆",

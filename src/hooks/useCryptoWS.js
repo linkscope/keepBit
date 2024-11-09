@@ -3,6 +3,7 @@ import { images } from '@/views/home/model.js'
 export default function useCryptoWS() {
   const coinList = ref([])
   const coinSpotList = ref([])
+
   const sortedCoinList = computed(() => {
     const sortedList = coinList.value.sort((a, b) => b.priceChangePercent - a.priceChangePercent)
     return {
@@ -11,6 +12,7 @@ export default function useCryptoWS() {
       list: sortedList,
     }
   })
+
   const sortedByLastPriceCoinList = computed(() => {
     const sortedByLastPriceList = coinList.value.sort((a, b) => b.lastPrice - a.lastPrice)
     return {
@@ -20,6 +22,7 @@ export default function useCryptoWS() {
       list: sortedByLastPriceList,
     }
   })
+
   const sortedCoinSpotList = computed(() => {
     const sortedSpotList = coinSpotList.value.sort((a, b) => b.priceChangePercent - a.priceChangePercent)
     return {
@@ -28,6 +31,7 @@ export default function useCryptoWS() {
       list: sortedSpotList,
     }
   })
+
   const sortedByLastPriceCoinSpotList = computed(() => {
     const sortedByLastPriceSpotList = coinSpotList.value.sort((a, b) => b.lastPrice - a.lastPrice)
     return {
@@ -36,17 +40,23 @@ export default function useCryptoWS() {
       list: sortedByLastPriceSpotList,
     }
   })
+
   let socket = null
   let heartBeatInterval = 0
+  const reconnectInterval = 5000 // 重连间隔
+
+  // 心跳机制
   const startHeartbeat = () => {
     clearInterval(heartBeatInterval)
-    heartBeatInterval = setInterval(function () {
+    heartBeatInterval = setInterval(() => {
       if (socket.readyState === WebSocket.OPEN) {
         socket.send(JSON.stringify({ op: 'ping' }))
         console.log('发送心跳包')
       }
     }, 20000)
   }
+
+  // 处理文档可见性变化
   const visibilityListener = () => {
     if (document.visibilityState === 'visible') {
       if (socket.readyState === WebSocket.OPEN) {
@@ -56,40 +66,44 @@ export default function useCryptoWS() {
     }
   }
 
-  onMounted(() => {
+  // WebSocket 连接断开后尝试重连
+  const connectWebSocket = () => {
     socket = new WebSocket('wss://ws.keepbit.top/v2/ws/public')
+
     socket.onopen = () => {
+      console.log('WebSocket 连接已建立')
       socket.send(
-        JSON.stringify({
-          op: 'subscribe',
-          args: [
-            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'BTCUSDT' },
-            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'ETHUSDT' },
-            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'LTCUSDT' },
-            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'DOGEUSDT' },
-            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'SOLUSDT' },
-            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'TRXUSDT' },
-            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'PEPEUSDT' },
-            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'XRPUSDT' },
-            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'ADAUSDT' },
-            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'BCHUSDT' },
-            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'USDCUSDT' },
-            { instType: 'SPOT', channel: 'ticker', instId: 'BTCUSDT' },
-            { instType: 'SPOT', channel: 'ticker', instId: 'ETHUSDT' },
-            { instType: 'SPOT', channel: 'ticker', instId: 'LTCUSDT' },
-            { instType: 'SPOT', channel: 'ticker', instId: 'DOGEUSDT' },
-            { instType: 'SPOT', channel: 'ticker', instId: 'SOLUSDT' },
-            { instType: 'SPOT', channel: 'ticker', instId: 'TRXUSDT' },
-            { instType: 'SPOT', channel: 'ticker', instId: 'PEPEUSDT' },
-            { instType: 'SPOT', channel: 'ticker', instId: 'XRPUSDT' },
-            { instType: 'SPOT', channel: 'ticker', instId: 'ADAUSDT' },
-            { instType: 'SPOT', channel: 'ticker', instId: 'BCHUSDT' },
-            { instType: 'SPOT', channel: 'ticker', instId: 'USDCUSDT' }
-          ],
-        }),
+          JSON.stringify({
+            op: 'subscribe',
+            args: [
+              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'BTCUSDT' },
+              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'ETHUSDT' },
+              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'LTCUSDT' },
+              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'DOGEUSDT' },
+              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'SOLUSDT' },
+              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'TRXUSDT' },
+              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'PEPEUSDT' },
+              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'XRPUSDT' },
+              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'ADAUSDT' },
+              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'BCHUSDT' },
+              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'USDCUSDT' },
+              { instType: 'SPOT', channel: 'ticker', instId: 'BTCUSDT' },
+              { instType: 'SPOT', channel: 'ticker', instId: 'ETHUSDT' },
+              { instType: 'SPOT', channel: 'ticker', instId: 'LTCUSDT' },
+              { instType: 'SPOT', channel: 'ticker', instId: 'DOGEUSDT' },
+              { instType: 'SPOT', channel: 'ticker', instId: 'SOLUSDT' },
+              { instType: 'SPOT', channel: 'ticker', instId: 'TRXUSDT' },
+              { instType: 'SPOT', channel: 'ticker', instId: 'PEPEUSDT' },
+              { instType: 'SPOT', channel: 'ticker', instId: 'XRPUSDT' },
+              { instType: 'SPOT', channel: 'ticker', instId: 'ADAUSDT' },
+              { instType: 'SPOT', channel: 'ticker', instId: 'BCHUSDT' },
+              { instType: 'SPOT', channel: 'ticker', instId: 'USDCUSDT' }
+            ]
+          }),
       )
       startHeartbeat()
     }
+
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data)
       if (data && data.arg && data.data) {
@@ -113,7 +127,7 @@ export default function useCryptoWS() {
           } else {
             coinSpotList.value.push(coin)
           }
-        }else if(instType === "USDT-FUTURES") {
+        } else if (instType === "USDT-FUTURES") {
           const coin = {
             instId,
             lastPrice: parseFloat(ticker.lastPr),
@@ -133,10 +147,24 @@ export default function useCryptoWS() {
       }
     }
 
+    socket.onclose = (event) => {
+      console.log('WebSocket 连接关闭', event)
+      setTimeout(connectWebSocket, reconnectInterval) // 尝试重连
+    }
+
+    socket.onerror = (error) => {
+      console.error('WebSocket 错误', error)
+    }
+  }
+
+  onMounted(() => {
+    connectWebSocket()
     document.addEventListener('visibilitychange', visibilityListener)
   })
+
   onUnmounted(() => {
     clearInterval(heartBeatInterval)
+    socket.close() // 关闭连接
     document.removeEventListener('visibilitychange', visibilityListener)
   })
 

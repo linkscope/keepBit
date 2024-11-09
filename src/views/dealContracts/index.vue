@@ -17,8 +17,8 @@ const stoppedMissions = ref([])   // 已停止任务列表
 async function endMission(appsId) {
   try {
     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTEyMTIzNywiZXhwIjoxNzMxMjA3NjM3LCJpYXQiOjE3MzExMjEyMzd9.nbfE5OBuHPV474ADOihT-HI-0lghuJ3wBjVRsZ6Ce3A' // 请替换为实际的token
-    const response = await axios.post('https://test.keepbit.top/app_api/v1/Trade/StopMission',
-        {appsid: appsId},
+    const response = await axios.post('https://test.keepbit.top/app_api/v1/DemoTrading/StopContract',
+        {ContractId: appsId},
         {headers: {Authorization: `Bearer ${token}`}}
     )
 
@@ -33,30 +33,11 @@ async function endMission(appsId) {
   }
 }
 
-// 平仓函数
-async function closePosition(contractId) {
-  try {
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTEyMTIzNywiZXhwIjoxNzMxMjA3NjM3LCJpYXQiOjE3MzExMjEyMzd9.nbfE5OBuHPV474ADOihT-HI-0lghuJ3wBjVRsZ6Ce3A' // 请替换为实际的token
-    const response = await axios.post('https://test.keepbit.top/app_api/v1/Trade/ClosePosition',
-        {ContractId: contractId},
-        {headers: {Authorization: `Bearer ${token}`}}
-    )
-
-    if (response.data.Success) {
-      console.log('仓位已成功关闭')
-    } else {
-      console.error('错误信息:', response.data.ErrMsg)
-    }
-  } catch (error) {
-    console.error('API 请求失败:', error)
-  }
-}
-
 // 获取订单详情函数
 async function getOrderDetails(missionId) {
   try {
     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTEyMTIzNywiZXhwIjoxNzMxMjA3NjM3LCJpYXQiOjE3MzExMjEyMzd9.nbfE5OBuHPV474ADOihT-HI-0lghuJ3wBjVRsZ6Ce3A' // 请替换为实际的token
-    const response = await axios.get(`https://test.keepbit.top/app_api/v1/Trade/GetOrders?missionId=${missionId}`, {
+    const response = await axios.get(`https://test.keepbit.top/app_api/v1/DemoTrading/GetOrders?contractId=${missionId}`, {
       headers: {Authorization: `Bearer ${token}`}
     })
 
@@ -75,7 +56,7 @@ async function getOrderDetails(missionId) {
 onMounted(async () => {
   try {
     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTEyMTIzNywiZXhwIjoxNzMxMjA3NjM3LCJpYXQiOjE3MzExMjEyMzd9.nbfE5OBuHPV474ADOihT-HI-0lghuJ3wBjVRsZ6Ce3A' // 请替换为实际的token
-    const response = await axios.get('https://test.keepbit.top/app_api/v1/Trade/GetMyMissions', {
+    const response = await axios.get('https://test.keepbit.top/app_api/v1/DemoTrading/GetMyContracts', {
       headers: {Authorization: `Bearer ${token}`}
     })
 
@@ -118,29 +99,29 @@ function formatDuration(ms) {
     <div class="space-y-4">
       <div class="flex items-center gap-x-8">
         <img class="size-16" src="/group.png"/>
-        <div class="text-4xl lg:text-[64px] font-bold">{{ t('deal.title') }}</div>
+        <div class="text-4xl lg:text-[64px] font-bold">{{ t('dealContracts.title') }}</div>
       </div>
       <div class="flex items-center text-sm lg:text-2xl gap-x-8">
-        <span>{{ t('deal.subtitle[0]') }}</span>
+        <span>{{ t('dealContracts.subtitle[0]') }}</span>
         <span>|</span>
-        <span>{{ t('deal.subtitle[1]') }}</span>
+        <span>{{ t('dealContracts.subtitle[1]') }}</span>
       </div>
     </div>
-    <div class="text-[40px] font-bold">{{ t('deal.order') }}</div>
+    <div class="text-[40px] font-bold">{{ t('dealContracts.order') }}</div>
 
     <!-- 标签栏：执行中和已停止 -->
     <NTabs default-value="run" animated>
       <!-- 执行中模块 -->
-      <NTabPane name="run" :tab="t('deal.tabs[0]')">
+      <NTabPane name="run" :tab="t('dealContracts.tabs[0]')">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-x-12 gap-y-4 p-4">
           <div v-for="mission in executingMissions" :key="mission.MissionId"
                class="py-4 px-8 border shadow-md rounded-xl">
             <div class="pb-4 border-b border-b-slate-200 space-y-2">
               <div class="flex items-center justify-between">
                 <div class="text-lg font-bold">{{ mission.TacticsName }}</div>
-                <div class="bg-[#76e43b] text-xs text-white py-1 px-2">{{ t('deal.tabs[0]') }}</div>
+                <div class="bg-[#76e43b] text-xs text-white py-1 px-2">{{ t('dealContracts.tabs[0]') }}</div>
               </div>
-              <div class="text-sm">{{ t('deal.runtime') }}：{{ formatDuration(mission.runDuration) }}</div>
+              <div class="text-sm">{{ t('dealContracts.runtime') }}：{{ formatDuration(mission.runDuration) }}</div>
             </div>
             <div class="py-4 space-y-4">
               <div class="flex items-center justify-between">
@@ -151,58 +132,54 @@ function formatDuration(ms) {
                         class="bg-green-100 border py-2 px-4 rounded-full"
                         :theme-overrides="{ border: '1px solid rgb(74,222,128)' }"
                     >
-                      {{ t('deal.endStrategy') }}
+                      {{ t('dealContracts.endStrategy') }}
                     </NButton>
                   </template>
-                  {{ t('deal.endStrategyQuestion') }}
+                  {{ t('dealContracts.endStrategyQuestion') }}
                 </NPopconfirm>
               </div>
               <div class="flex items-center justify-between">
-                <div class="text-slate-400">{{ t('deal.unrealizedGain') }}</div>
-                <div :class="{'text-red-500': mission.FloatingProfit < 0, 'text-green-500': mission.FloatingProfit >= 0}">{{ mission.FloatingProfit }}</div>
+                <div class="text-slate-400">{{ t('dealContracts.unrealizedGain') }}</div>
+                <div :class="{'text-red-500': mission.FloatingProfit < 0, 'text-green-500': mission.FloatingProfit >= 0}">{{ mission.FloatingProfit || 0}}</div>
               </div>
               <div class="flex items-center justify-between">
-                <div class="text-slate-400">{{ t('deal.totalInvest') }}</div>
+                <div class="text-slate-400">{{ t('dealContracts.totalInvest') }}</div>
                 <div>{{ mission.TotalInvest }}</div>
               </div>
               <div class="flex items-center justify-between">
-                <div class="text-slate-400">{{ t('deal.profit') }}</div>
+                <div class="text-slate-400">{{ t('dealContracts.profit') }}</div>
                 <div :class="{'text-red-500': mission.Profit < 0, 'text-green-500': mission.Profit >= 0}">{{ mission.Profit }}</div>
               </div>
               <div class="flex items-center justify-between">
-                <div class="text-slate-400">{{ t('deal.filledCount') }}</div>
+                <div class="text-slate-400">{{ t('dealContracts.filledCount') }}</div>
                 <div>{{ mission.FilledCount }}</div>
               </div>
               <div class="flex items-center justify-between">
-                <div class="text-slate-400">{{ t('deal.openPrice') }}</div>
-                <div>{{ mission.OpenPrice }}</div>
+                <div class="text-slate-400">{{ t('dealContracts.openPrice') }}</div>
+                <div>{{ mission.OpenPrice  || 0}}</div>
               </div>
               <div class="flex items-center justify-between">
-                <div class="text-slate-400">{{ t('deal.profitRate') }}</div>
-                <div :class="{'text-red-500': mission.Profit < 0, 'text-green-500': mission.Profit >= 0}">{{ mission.ProfitRate }}</div>
+                <div class="text-slate-400">{{ t('dealContracts.profitRate') }}</div>
+                <div :class="{'text-red-500': mission.Profit < 0, 'text-green-500': mission.Profit >= 0}">
+                  {{ mission.ProfitRate }}
+                </div>
               </div>
               <div class="flex items-center justify-between">
-                <div class="text-slate-400">{{ t('deal.filledTotalAmount') }}</div>
+                <div class="text-slate-400">{{ t('dealContracts.filledTotalAmount') }}</div>
                 <div>{{ mission.FilledTotalAmount }}</div>
               </div>
               <div class="flex items-center justify-between">
-                <div class="text-slate-400">{{ t('deal.qty') }}</div>
+                <div class="text-slate-400">{{ t('dealContracts.qty') }}</div>
                 <div>{{ mission.Qty }}</div>
               </div>
               <div class="flex items-center justify-between">
-                <div class="text-slate-400">{{ t('deal.direction') }}</div>
-                <div>{{ mission.Direction || "---"}}</div>
+                <div class="text-slate-400">{{ t('dealContracts.direction') }}</div>
+                <div>{{ mission.Direction  || "---"}}</div>
               </div>
             </div>
             <div class="pt-4 flex items-center justify-end gap-x-4">
-              <NPopconfirm @positive-click="closePosition(mission.ContractId)">
-                <template #trigger>
-                  <NButton class="bg-[#76e43b] text-white font-bold rounded-full w-24">{{ t('deal.closePosition') }}</NButton>
-                </template>
-                {{ t('deal.closePositionQuestion') }}
-              </NPopconfirm>
               <NButton class="bg-black text-white font-bold rounded-full w-24"
-                       @click="getOrderDetails(mission.MissionId)">{{ t('deal.showDetail') }}
+                       @click="getOrderDetails(mission.MissionId)">{{ t('dealContracts.showDetail') }}
               </NButton>
             </div>
           </div>
@@ -210,61 +187,63 @@ function formatDuration(ms) {
       </NTabPane>
 
       <!-- 已停止模块 -->
-      <NTabPane name="stop" :tab="t('deal.tabs[1]')">
+      <NTabPane name="stop" :tab="t('dealContracts.tabs[1]')">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-x-12 gap-y-4 p-4">
           <div v-for="mission in stoppedMissions" :key="mission.MissionId"
                class="py-4 px-8 border shadow-md rounded-xl">
             <div class="pb-4 border-b border-b-slate-200 space-y-2">
               <div class="flex items-center justify-between">
                 <div class="text-lg font-bold">{{ mission.TacticsName }}</div>
-                <div class="bg-rose-500 text-xs text-white py-1 px-2">{{ t('deal.tabs[1]') }}</div>
+                <div class="bg-rose-500 text-xs text-white py-1 px-2">{{ t('dealContracts.tabs[1]') }}</div>
               </div>
-              <div class="text-sm">{{ t('deal.runtime') }}：{{ formatDuration(mission.runDuration) }}</div>
+              <div class="text-sm">{{ t('dealContracts.runtime') }}：{{ formatDuration(mission.runDuration) }}</div>
             </div>
             <div class="py-4 space-y-4">
               <div class="flex items-center justify-between">
                 <div class="text-lg font-bold">{{ mission.Symbol_Name }}</div>
               </div>
               <div class="flex items-center justify-between">
-                <div class="text-slate-400">{{ t('deal.unrealizedGain') }}</div>
-                <div :class="{'text-red-500': mission.FloatingProfit < 0, 'text-green-500': mission.FloatingProfit >= 0}">{{ mission.FloatingProfit }}</div>
+                <div class="text-slate-400">{{ t('dealContracts.unrealizedGain') }}</div>
+                <div :class="{'text-red-500': mission.FloatingProfit < 0, 'text-green-500': mission.FloatingProfit >= 0}">{{ mission.FloatingProfit || 0}}</div>
               </div>
               <div class="flex items-center justify-between">
-                <div class="text-slate-400">{{ t('deal.totalInvest') }}</div>
+                <div class="text-slate-400">{{ t('dealContracts.totalInvest') }}</div>
                 <div>{{ mission.TotalInvest }}</div>
               </div>
               <div class="flex items-center justify-between">
-                <div class="text-slate-400">{{ t('deal.profit') }}</div>
-                <div :class="{'text-red-500': mission.Profit < 0, 'text-green-500': mission.Profit >= 0}">{{ mission.Profit }}</div>
+                <div class="text-slate-400">{{ t('dealContracts.profit') }}</div>
+                <div :class="{'text-red-500': mission.Profit < 0, 'text-green-500': mission.Profit >= 0}">
+                  {{ mission.Profit }}
+                </div>
               </div>
               <div class="flex items-center justify-between">
-                <div class="text-slate-400">{{ t('deal.filledCount') }}</div>
+                <div class="text-slate-400">{{ t('dealContracts.filledCount') }}</div>
                 <div>{{ mission.FilledCount }}</div>
               </div>
               <div class="flex items-center justify-between">
-                <div class="text-slate-400">{{ t('deal.openPrice') }}</div>
-                <div>{{ mission.OpenPrice }}</div>
+                <div class="text-slate-400">{{ t('dealContracts.openPrice') }}</div>
+                <div>{{ mission.OpenPrice  || 0}}</div>
               </div>
               <div class="flex items-center justify-between">
-                <div class="text-slate-400">{{ t('deal.profitRate') }}</div>
+                <div class="text-slate-400">{{ t('dealContracts.profitRate') }}</div>
                 <div :class="{'text-red-500': mission.Profit < 0, 'text-green-500': mission.Profit >= 0}">{{ mission.ProfitRate }}</div>
               </div>
               <div class="flex items-center justify-between">
-                <div class="text-slate-400">{{ t('deal.filledTotalAmount') }}</div>
+                <div class="text-slate-400">{{ t('dealContracts.filledTotalAmount') }}</div>
                 <div>{{ mission.FilledTotalAmount }}</div>
               </div>
               <div class="flex items-center justify-between">
-                <div class="text-slate-400">{{ t('deal.qty') }}</div>
+                <div class="text-slate-400">{{ t('dealContracts.qty') }}</div>
                 <div>{{ mission.Qty }}</div>
               </div>
               <div class="flex items-center justify-between">
-                <div class="text-slate-400">{{ t('deal.direction') }}</div>
+                <div class="text-slate-400">{{ t('dealContracts.direction') }}</div>
                 <div>{{ mission.Direction || "---"}}</div>
               </div>
             </div>
             <div class="pt-4 flex items-center justify-end gap-x-4">
               <NButton class="bg-black text-white font-bold rounded-full w-24"
-                       @click="getOrderDetails(mission.MissionId)">{{ t('deal.showDetail') }}
+                       @click="getOrderDetails(mission.MissionId)">{{ t('dealContracts.showDetail') }}
               </NButton>
             </div>
           </div>

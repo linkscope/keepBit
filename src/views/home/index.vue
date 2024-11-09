@@ -7,7 +7,7 @@ import initTickerTape from '@/utils/initTickerTape.js'
 
 const { t } = useI18n()
 const tickerTapRef = useTemplateRef('tickerTapRef')
-const { coinList, sortedCoinList, coinSpotList, sortedCoinSpotList } = useCryptoWS()
+const { coinList, sortedCoinList, coinSpotList, sortedCoinSpotList, sortedByLastPriceCoinList, sortedByLastPriceCoinSpotList } = useCryptoWS()
 const showToolTip = ref(true)
 
 const carouselRef = useTemplateRef('carouselRef')
@@ -86,12 +86,12 @@ onUnmounted(() => {
           >
             <NTabPane name="stock" :tab="t('home.hotStock')">
               <div class="space-y-4">
-                <Coin v-for="item of coinSpotList.slice(0, -4)" :key="item.instId" :coin="item" showStock />
+                <Coin v-for="item of sortedByLastPriceCoinSpotList.top" :key="item.instId" :coin="item" showStock />
               </div>
             </NTabPane>
             <NTabPane name="treat" :tab="t('home.hotTreat')">
               <div class="space-y-4">
-                <Coin v-for="item of coinList.slice(0, -4)" :key="item.instId" :coin="item" showStock />
+                <Coin v-for="item of sortedByLastPriceCoinList.top" :key="item.instId" :coin="item" showStock />
               </div>
             </NTabPane>
           </NTabs>

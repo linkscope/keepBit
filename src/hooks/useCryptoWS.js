@@ -11,12 +11,29 @@ export default function useCryptoWS() {
       list: sortedList,
     }
   })
+  const sortedByLastPriceCoinList = computed(() => {
+    const sortedByLastPriceList = coinList.value.sort((a, b) => b.lastPrice - a.lastPrice)
+    return {
+      topThree: sortedByLastPriceList.slice(0, 3),
+      top: sortedByLastPriceList.slice(0, 7),
+      bottom: sortedByLastPriceList.slice(-3),
+      list: sortedByLastPriceList,
+    }
+  })
   const sortedCoinSpotList = computed(() => {
     const sortedSpotList = coinSpotList.value.sort((a, b) => b.priceChangePercent - a.priceChangePercent)
     return {
       top: sortedSpotList.slice(0, 3),
       bottom: sortedSpotList.slice(-3),
       list: sortedSpotList,
+    }
+  })
+  const sortedByLastPriceCoinSpotList = computed(() => {
+    const sortedByLastPriceSpotList = coinSpotList.value.sort((a, b) => b.lastPrice - a.lastPrice)
+    return {
+      top: sortedByLastPriceSpotList.slice(0, 7),
+      bottom: sortedByLastPriceSpotList.slice(-3),
+      list: sortedByLastPriceSpotList,
     }
   })
   let socket = null
@@ -127,6 +144,8 @@ export default function useCryptoWS() {
     coinList,
     sortedCoinList,
     coinSpotList,
-    sortedCoinSpotList
+    sortedCoinSpotList,
+    sortedByLastPriceCoinList,
+    sortedByLastPriceCoinSpotList
   }
 }

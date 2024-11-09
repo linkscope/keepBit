@@ -6,7 +6,7 @@ import useCryptoWS from '@/hooks/useCryptoWS'
 
 const { t } = useI18n()
 const currentTab = ref('stock')
-const { coinList, sortedCoinList, coinSpotList, sortedCoinSpotList } = useCryptoWS()
+const { coinList, sortedCoinList, coinSpotList, sortedCoinSpotList,  sortedByLastPriceCoinList, sortedByLastPriceCoinSpotList } = useCryptoWS()
 const checkedSelfList = ref([])
 </script>
 
@@ -123,17 +123,17 @@ const checkedSelfList = ref([])
     </div>
     <div v-show="currentTab === 'stock'" class="p-4 border border-slate-200 space-y-4 rounded-2xl">
       <div class="text-[40px] font-bold">{{ t('market.default.tab[0].title') }}</div>
-      <Coin v-for="item of coinSpotList" :key="item.instId" :coin="item" show-stock />
+      <Coin v-for="item of sortedByLastPriceCoinSpotList.list" :key="item.instId" :coin="item" show-stock />
     </div>
     <div v-show="currentTab === 'trading'" class="p-4 border border-slate-200 space-y-4 rounded-2xl">
       <div class="text-[40px] font-bold">{{ t('market.default.tab[1].title') }}</div>
-      <Coin v-for="item of coinList" :key="item.instId" :coin="item" show-stock />
+      <Coin v-for="item of sortedByLastPriceCoinList.list" :key="item.instId" :coin="item" show-stock />
     </div>
     <div v-show="currentTab === 'self'" class="p-4 border border-slate-200 space-y-4 rounded-2xl">
       <div class="text-[40px] font-bold">{{ t('market.default.tab[2].title') }}</div>
       <NCheckboxGroup v-model:value="checkedSelfList" class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8">
         <NCheckbox
-          v-for="item of sortedCoinList.top"
+          v-for="item of sortedByLastPriceCoinList.topThree"
           :key="item.instId"
           class="border border-slate-200 bg-slate-100 rounded-md flex p-4 items-center gap-y-2"
           :value="item.instId"

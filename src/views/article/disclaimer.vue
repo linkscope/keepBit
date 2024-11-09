@@ -4,7 +4,7 @@
     <!-- 页头 -->
     <header class="bg-white-600 text-black py-6">
       <div class="container mx-auto text-center">
-        <h1 class="text-4xl font-bold">免责声明</h1>
+        <h1 class="text-4xl font-bold">{{ t('disclaimer.title') }}</h1>
       </div>
     </header>
 
@@ -14,141 +14,125 @@
 
         <!-- 1. 概述 -->
         <section class="mb-12">
-          <h2 class="text-3xl font-semibold text-black-600">有关使用 Keepbit 平台的重要信息和风险免责声明</h2>
+          <h2 class="text-3xl font-semibold text-black-600">{{ t('disclaimer.overview') }}</h2>
           <p class="mt-4 text-lg text-gray-700">
-            通过访问网站 https://www.Keepbit.com 及其任何网页以及 Keepbit 移动应用程序（可在适用于 iOS 和 Android 移动设备操作系统的应用商店免费下载）（统称为“平台”），您承认您已阅读以下信息并接受下面列出的条款和条件，并同意受本文件的约束。本文件中的术语“您”或“您的”是指您个人以及根据上下文需要您代表其访问平台的任何其他人。我们可能会不时更改本文件以及您与平台之间的其他文件或协议，并在平台上发布此类更改，恕不另行通知。通过访问或使用平台，您将被视为已同意本文档的条款以及平台上发布的其他文件和协议。
+            {{ t('disclaimer.overviewText') }}
           </p>
         </section>
 
         <!-- 2. 一般的 -->
         <section class="mb-12">
-          <h2 class="text-3xl font-semibold text-black-600">一般的</h2>
+          <h2 class="text-3xl font-semibold text-black-600">{{ t('disclaimer.general') }}</h2>
           <p class="mt-4 text-lg text-gray-700">
-            该平台以商品名“Keepbit”（“ Keepbit ”、“我们”或“我们”）在全球运营。
+            {{ t('disclaimer.generalText') }}
           </p>
           <p class="mt-4 text-lg text-gray-700">
-            平台内容未经任何监管机构审查。如果您对平台的内容有任何疑问，您应该寻求独立的专业建议。
-          </p>
-          <p class="mt-4 text-lg text-gray-700">
-            本平台不针对任何司法管辖区（包括但不限于阿富汗、古巴、伊朗、朝鲜、叙利亚和加拿大安大略省），也无意分发给任何人或由其访问或使用。平台上的信息将违反该司法管辖区的法律或法规，或者会使 Keepbit 受到该司法管辖区的任何注册或制裁合规要求。适用此类禁令的人员不得访问平台。在某些司法管辖区，包括但不限于阿富汗、古巴、伊朗、朝鲜、叙利亚和加拿大安大略省，访问或下载平台上的信息可能是非法的，并且在法律允许的最大范围内，我们否认所有如果您从平台访问或下载任何信息违反了您居住或当时所在司法管辖区的任何法律或法规，则应承担责任。通过继续操作，您声明并保证您所在司法管辖区的适用法律和法规允许您访问平台上的信息。
+            {{ t('disclaimer.generalText2') }}
           </p>
         </section>
 
         <!-- 3. 针对美国人的具体信息 -->
         <section class="mb-12">
-          <h2 class="text-3xl font-semibold text-black-600">针对美国人的具体信息</h2>
+          <h2 class="text-3xl font-semibold text-black-600">{{ t('disclaimer.usSpecific') }}</h2>
           <p class="mt-4 text-lg text-gray-700">
-            平台上的信息不针对或旨在分发给美国任何州、领土或属地的居民或法规第 902(k) 条含义内的任何其他“美国人”，或由其使用S 根据经修订的 1933 年证券法（“证券法”）。
+            {{ t('disclaimer.usSpecificText') }}
           </p>
           <p class="mt-4 text-lg text-gray-700">
-            平台上描述的任何数字资产均未根据《证券法》进行注册，并且不得在美国或向美国人提供或出售，除非根据《证券法》注册要求的适用豁免或根据任何决定美国证券交易委员会对此类数字资产进行监管。
-          </p>
-          <p class="mt-4 text-lg text-gray-700">
-            平台上显示的信息包含可能被美国有关当局解释为购买或出售数字资产的要约或要约邀请的材料。因此，平台上的信息仅供不属于旨在监管数字资产的要约、销售或其他交易的美国任何法律范围的人员查看。如果您不确定自己在美国法律下的地位，您应该在访问平台之前寻求律师的建议。
+            {{ t('disclaimer.usSpecificText2') }}
           </p>
         </section>
 
         <!-- 4. 加拿大居民的具体信息 -->
         <section class="mb-12">
-          <h2 class="text-3xl font-semibold text-black-600">加拿大居民的具体信息</h2>
+          <h2 class="text-3xl font-semibold text-black-600">{{ t('disclaimer.canadaSpecific') }}</h2>
           <p class="mt-4 text-lg text-gray-700">
-            加拿大的任何证券委员会或类似机构均未以任何方式审查或传递平台上信息的优点，任何相反的陈述均属犯罪。
+            {{ t('disclaimer.canadaSpecificText') }}
           </p>
         </section>
 
         <!-- 5. 无报价 -->
         <section class="mb-12">
-          <h2 class="text-3xl font-semibold text-black-600">无报价</h2>
+          <h2 class="text-3xl font-semibold text-black-600">{{ t('disclaimer.noOffer') }}</h2>
           <p class="mt-4 text-lg text-gray-700">
-            平台内容仅供参考和公平交易之用，并不构成任何购买、要约出售的招揽，或购买、出售或以其他方式获取或处置任何权益的建议或建议。任何投资，或追求任何投资策略的任何建议或建议。
+            {{ t('disclaimer.noOfferText') }}
           </p>
         </section>
 
         <!-- 6. 没有建议 -->
         <section class="mb-12">
-          <h2 class="text-3xl font-semibold text-black-600">没有建议</h2>
+          <h2 class="text-3xl font-semibold text-black-600">{{ t('disclaimer.noAdvice') }}</h2>
           <p class="mt-4 text-lg text-gray-700">
-            该平台允许已注册在 Keepbit 开立账户的客户以主体身份与 Keepbit 交易数字资产。AI量化交易系统在客户开启策略后，可以根据汇总的未平仓头寸向 Keepbit 的战略合作平台（例如Bitget或币安）下订单，以便 Keepbit 在平台上完成客户的订单。在与客户的交易以及与交易对手的交易中，Keepbit 均以主要身份行事。客户可以利用 Keepbit 提供的各种策略，使用AI量化交易系统来执行交易。AI量化交易系统的操作都是由客户所选策略的参数决定的。在没有客户确认的情况下，AI智能系统无法对任何交易头寸行使任何酌情权。客户可以随时停止任何策略交易运行，并随时提取所有涉及的数字资产，包括本金和已实现的损益。Keepbit 未在任何司法管辖区获得经纪人、财务顾问、投资顾问、投资组合经理或税务顾问的许可。平台中包含的任何内容均不构成投资、法律、税务或其他建议。您不应依赖平台的内容作为建议或做出任何决定。在做出任何交易或投资决定之前，您应针对您的具体情况获取专业建议，并获取并阅读与任何交易或投资相关的条款和条件以及其他信息，包括与此类交易或投资相关的风险披露。 Keepbit 不会对平台上进行的任何交易或投资的适用性做出任何决定，也不表示或保证任何此类交易或投资适合您。平台上引用的任何交易或投资的任何风险声明不应被视为对所有风险的全面披露。
+            {{ t('disclaimer.noAdviceText') }}
           </p>
         </section>
 
         <!-- 7. 数字资产交易和投资的风险 -->
         <section class="mb-12">
-          <h2 class="text-3xl font-semibold text-black-600">数字资产交易和投资的风险</h2>
+          <h2 class="text-3xl font-semibold text-black-600">{{ t('disclaimer.digitalAssetRisk') }}</h2>
           <p class="mt-4 text-lg text-gray-700">
-            作为平台的客户或潜在客户，在向 Keepbit 支付任何款项或数字资产之前，您应了解以下事项：
+            {{ t('disclaimer.digitalAssetRiskText') }}
           </p>
           <ul class="list-disc pl-6 mt-2 text-lg text-gray-700">
-            <li>Keepbit 可能不持有通过您所在司法管辖区的平台向您提供服务的许可。请注意，这可能意味着如果我们的业务失败，您将无法收回支付给我们的所有资金或数字资产。</li>
-            <li>如果您不熟悉该数字资产，则不应进行该数字资产交易。数字资产交易可能不适合您。您一旦在平台进行交易，您的行为将被视为您自愿，并被视为您完全熟悉数字资产和法币（若涉及交易）。</li>
-            <li>您应该意识到，数字资产的价值可能会大幅波动。仅当您愿意并准备好接受损失所有投入此类资产的资金的风险时，您才应该购买数字资产。</li>
-            <li>过去的表现并不代表未来可能的表现，平台上可用的任何数字资产的价值可能会下跌或上涨。 Keepbit 不保证任何交易或投资的表现、任何客户本金的返还或任何回报率的实现。</li>
-            <li>投资平台上提供的任何数字资产都存在重大风险，包括可能损失本金。任何数字资产的性能和回报都可能随着时间的推移而发生显着变化。</li>
-            <li>平台上提供的数字资产交易和投资并不适合所有人。您仅应在彻底审查数字资产的相关信息后才可交易或投资数字资产。在进行任何交易之前，您可能希望咨询独立财务顾问以获得个人和具体的交易和投资建议。</li>
-            <li>我们可以自行决定在第三方数字资产钱包解决方案提供商和/或外部数字资产交易对手交易所（均称为“外部提供商”）开设和/或维护外部钱包/账户，以保管和保管全部或部分您的数字资产，和/或促进您通过 Keepbit 进行数字资产交易和投资。虽然我们将采取措施仔细选择和聘用外部提供商，但 Keepbit 不保证外部提供商的软件或技术的安全性或功能性，也不对由于外部提供商的软件或技术故障而导致的任何数字资产损失负责。因此，您可能会面临丢失已存放在外部提供商处的数字资产的风险，Keepbit 不会对此类损失承担责任。此外，在此情况下，Keepbit 不予赔偿。</li>
-            <li>我们使用各种区块链和/或区块链技术来处理您的数字资产交易，例如以太坊区块链。所有区块链和/或区块链技术都可能经历意外事件或后果，包括但不限于积压、高于正常交易费用、网络更改、故障或协议分叉。 Keepbit 不拥有或控制任何区块链或区块链技术，不对区块链网络的运营负责，也不对区块链网络的安全性、功能性或可用性做出任何保证。您可能因任何此类事件或后果而遭受损失，Keepbit 不会就此类损失向您进行赔偿。您承认并接受，我们拥有自行决定对任何数字资产协议的任何操作变更的响应，并且我们没有责任为您提供不受支持的货币或协议的帮助。</li>
+            <li>{{ t('disclaimer.digitalAssetRiskItem1') }}</li>
+            <li>{{ t('disclaimer.digitalAssetRiskItem2') }}</li>
+            <li>{{ t('disclaimer.digitalAssetRiskItem3') }}</li>
+            <li>{{ t('disclaimer.digitalAssetRiskItem4') }}</li>
+            <li>{{ t('disclaimer.digitalAssetRiskItem5') }}</li>
+            <li>{{ t('disclaimer.digitalAssetRiskItem6') }}</li>
+            <li>{{ t('disclaimer.digitalAssetRiskItem7') }}</li>
           </ul>
         </section>
 
         <!-- 8. 无保证 -->
         <section class="mb-12">
-          <h2 class="text-3xl font-semibold text-black-600">无保证</h2>
+          <h2 class="text-3xl font-semibold text-black-600">{{ t('disclaimer.noGuarantee') }}</h2>
           <p class="mt-4 text-lg text-gray-700">
-            虽然 Keepbit 真诚地相信平台上提供的信息是准确且最新的，但它不对此类信息的准确性或完整性做出任何陈述或保证，并且不对任何直接、间接、后果性的后果承担责任。因使用平台（包括使用平台上指向外部网站或资源的任何链接）或使用此类信息而产生或与之相关的任何类型的特殊损失或损害。平台上的信息仅供参考和公平交易之用，并不构成交易或投资建议。除公平交易外，不得出于任何目的依赖平台上提供的信息或其准确性或完整性，并且 Keepbit 及其任何附属公司、董事、管理人员或员工均不承担与以下方面有关的任何责任或义务：平台上提供的任何信息如有更改，恕不另行通知。平台上的任何内容都不是针对任何人的特定需求而定制的。未经 Keepbit 事先明确书面同意，平台上的内容不得用作任何金融工具、商品或其他产品的基础。
+            {{ t('disclaimer.noGuaranteeText') }}
           </p>
         </section>
 
         <!-- 9. 责任限制 -->
         <section class="mb-12">
-          <h2 class="text-3xl font-semibold text-black-600">责任限制</h2>
+          <h2 class="text-3xl font-semibold text-black-600">{{ t('disclaimer.liabilityLimit') }}</h2>
           <p class="mt-4 text-lg text-gray-700">
-            除本使用条款中明确提及的声明或保证外，Keepbit 不做出任何声明或保证。该平台的开发并不是为了满足您的个人需求。
-          </p>
-          <p class="mt-4 text-lg text-gray-700">
-            在适用法律允许的最大范围内，您承认并同意 Keepbit 及其附属公司、董事、管理人员、雇员或代理人不对您可能遭受的任何直接、间接、附带、特殊、后果性或惩戒性损害承担责任与您使用本平台相关的任何责任理论，包括但不限于利润损失、机会损失、数据丢失和其他无形损失。通过访问平台，您承认您充分了解交易、投资和使用数字资产的风险，并对这些风险承担全部责任。
+            {{ t('disclaimer.liabilityLimitText') }}
           </p>
         </section>
 
         <!-- 10. 反洗钱和反恐融资 (AML/CTF) 和监管合规 -->
         <section class="mb-12">
-          <h2 class="text-3xl font-semibold text-black-600">反洗钱和反恐融资 (AML/CTF) 和监管合规</h2>
+          <h2 class="text-3xl font-semibold text-black-600">{{ t('disclaimer.amlCtfCompliance') }}</h2>
           <p class="mt-4 text-lg text-gray-700">
-            Keepbit 致力于遵守与 AML/CTF 相关的所有适用法律、法规以及监管标准和指南，包括但不限于金融行动特别工作组发布的《打击洗钱和恐怖主义融资及扩散国际标准》；美国《银行保密法》和《美国爱国者法》；欧盟第六号反洗钱指令（2021 年 6 月 3 日生效）；英国金融行为监管局实施的《反洗钱条例》；加拿大《犯罪收益（洗钱）和恐怖主义融资法》；《反洗钱及恐怖分子资金筹集条例》（马来西亚法令第532章）和《马来西亚反洗钱及反恐融资指引》。
-          </p>
-          <p class="mt-4 text-lg text-gray-700">
-            Keepbit 实施了强大的 AML/CTF 合规计划，符合其所遵守的所有适用的 AML/CTF 要求。
+            {{ t('disclaimer.amlCtfComplianceText') }}
           </p>
         </section>
 
         <!-- 11. 网站和软件的可用性 -->
         <section class="mb-12">
-          <h2 class="text-3xl font-semibold text-black-600">网站和软件的可用性</h2>
+          <h2 class="text-3xl font-semibold text-black-600">{{ t('disclaimer.websiteAvailability') }}</h2>
           <p class="mt-4 text-lg text-gray-700">
-            该平台可在运行 Keepbit 应用程序的计算机和手持移动设备上使用。 Keepbit 将尽最大努力使平台始终可用。然而，您理解并承认该平台是通过互联网和移动网络提供的，因此平台的质量和可用性可能会受到 Keepbit 合理控制之外的因素的影响。
-          </p>
-          <p class="mt-4 text-lg text-gray-700">
-            Keepbit 不对平台不可用、下载或访问平台上内容的任何困难或无法、或可能导致平台无法完全可用或运行的任何其他系统故障承担任何责任。
+            {{ t('disclaimer.websiteAvailabilityText') }}
           </p>
         </section>
 
         <!-- 12. 服务台 -->
         <section class="mb-12">
-          <h2 class="text-3xl font-semibold text-black-600">服务台</h2>
+          <h2 class="text-3xl font-semibold text-black-600">{{ t('disclaimer.supportDesk') }}</h2>
           <p class="mt-4 text-lg text-gray-700">
-            Keepbit 在平台上维护着一个在线服务台，可以回答您有关平台的问题。 Keepbit 将仅解决有关平台功能的问题，不会向您提供任何个性化建议或推荐您个人计算机或移动设备上的任何系统设置。 Keepbit可能会在平台上上传一般教程和说明视频来介绍平台的功能。 Keepbit上传的所有教程、视频和其他说明材料仅供一般使用，不包含任何个性化解决方案。您使用所有此类服务和材料的风险由您自行承担。
+            {{ t('disclaimer.supportDeskText') }}
           </p>
         </section>
 
         <!-- 13. 隐私 -->
         <section class="mb-12">
-          <h2 class="text-3xl font-semibold text-black-600">隐私</h2>
+          <h2 class="text-3xl font-semibold text-black-600">{{ t('disclaimer.privacy') }}</h2>
           <p class="mt-4 text-lg text-gray-700">
-            Keepbit 致力于保护根据所有适用的数据保护法收集的客户个人信息或个人数据的隐私、机密性和安全性。 Keepbit 同样致力于确保我们所有员工遵守我们有关数据安全和保密的所有内部政策和标准，并保护您的个人数据免遭未经授权的访问、非法处理或意外丢失、毁坏或损坏。
+            {{ t('disclaimer.privacyText') }}
           </p>
         </section>
 
         <div class="text-center mt-16">
-          <p class="text-lg text-gray-700">版权所有 ©2024 Keepbit 美国</p>
+          <p class="text-lg text-gray-700">{{ t('disclaimer.footer') }}</p>
         </div>
 
       </div>

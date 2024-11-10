@@ -77,92 +77,90 @@ onUnmounted(() => {
         </div>
       </div>
       <div class="carousel px-4 lg:p-0 flex gap-4 overflow-x-auto">
-        <img class="h-[260px]" src="/home_card_1.png" alt="Link to Telegram" @click="navigateToLink" />
-        <img class="h-[260px]" src="/home_card_2.png" />
-        <img class="h-[260px]" src="/home_card_3.png" />
+        <img class="lg:w-0 lg:flex-1 h-[260px]" src="/home_card_1.png" alt="Link to Telegram" @click="navigateToLink" />
+        <img class="lg:w-0 lg:flex-1 h-[260px]" src="/home_card_2.png" />
+        <img class="lg:w-0 lg:flex-1 h-[260px]" src="/home_card_3.png" />
       </div>
     </div>
   </div>
   <div ref="tickerTapRef" class="tradingview-widget-container">
     <div class="tradingview-widget-container__widget" />
   </div>
-  <div class="lg:w-[1280px] mx-auto my-8 space-y-16">
-    <div class="space-y-8">
-      <div class="text-center lg:text-left text-[40px] font-bold">{{ t('home.hotCoinPrice') }}</div>
-      <div class="flex flex-col lg:flex-row gap-8">
-        <div class="p-4 lg:p-0 lg:w-0 lg:flex-[2]">
-          <NTabs
-            :value="currentTab"
-            size="large"
-            animated
-            pane-wrapper-style="margin: 0 -4px"
-            pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
-            :on-update:value="(val) => (currentTab = val)"
-          >
-            <NTabPane name="stock" :tab="t('home.hotStock')">
-              <div class="space-y-4">
-                <Coin v-for="item of sortedByLastPriceCoinSpotList.top" :key="item.instId" :coin="item" showStock />
-              </div>
-            </NTabPane>
-            <NTabPane name="treat" :tab="t('home.hotTreat')">
-              <div class="space-y-4">
-                <Coin v-for="item of sortedByLastPriceCoinList.top" :key="item.instId" :coin="item" showStock />
-              </div>
-            </NTabPane>
-          </NTabs>
-        </div>
-        <div class="p-4 space-y-4 lg:space-y-0 lg:p-0 lg:w-0 lg:flex-1">
-          <div class="text-xl font-bold lg:h-[60px] lg:leading-[60px]">{{ t('home.riseRanking') }}</div>
-          <div class="space-y-4">
-            <Coin
-              v-for="item of currentTab === 'stock'
-                ? sortedByLastPriceCoinSpotList.list.slice(0, 3)
-                : sortedByLastPriceCoinList.list.slice(0, 3)"
-              :key="item.instId"
-              :coin="item"
-            />
+  <div class="lg:w-[1280px] mx-auto my-8 space-y-8">
+    <div class="text-center lg:text-left text-[40px] font-bold">{{ t('home.tradingStrategy') }}</div>
+    <div class="flex flex-col lg:flex-row gap-8">
+      <div class="p-4 lg:p-0 lg:w-0 lg:flex-[3]">
+        <img class="w-full" src="/trading_strategy.png" />
+      </div>
+      <div class="p-4 lg:p-0 lg:w-0 lg:flex-[2] flex flex-col gap-y-4 justify-evenly">
+        <div class="border-2 border-[#62e56d] rounded-2xl p-4 space-y-2 relative">
+          <img class="absolute top-0 left-0 right-0 bottom-0" src="/trading_strategy_bg.png" />
+          <div class="text-lg font-bold">{{ t('home.tradingStrategyDesc[0].title') }}</div>
+          <div class="text-slate-400/80 text-sm">
+            {{ t('home.tradingStrategyDesc[0].subtitle') }}
           </div>
-          <div class="text-xl font-bold lg:h-[162px] lg:leading-[162px]">{{ t('home.fallRanking') }}</div>
-          <div class="space-y-4">
-            <Coin
-              v-for="item of currentTab === 'stock'
-                ? sortedByLastPriceCoinSpotList.list.slice(-3)
-                : sortedByLastPriceCoinList.list.slice(-3)"
-              :key="item.instId"
-              :coin="item"
-            />
+        </div>
+        <div class="border-2 border-[#62e56d] rounded-2xl p-4 space-y-2 relative">
+          <img class="absolute top-0 left-0 right-0 bottom-0" src="/trading_strategy_bg.png" />
+          <div class="text-lg font-bold">{{ t('home.tradingStrategyDesc[1].title') }}</div>
+          <div class="text-slate-400/80 text-sm">
+            {{ t('home.tradingStrategyDesc[1].subtitle') }}
+          </div>
+        </div>
+        <div class="border-2 border-[#62e56d] rounded-2xl p-4 space-y-2 relative">
+          <img class="absolute top-0 left-0 right-0 bottom-0" src="/trading_strategy_bg.png" />
+          <div class="text-lg font-bold">{{ t('home.tradingStrategyDesc[2].title') }}</div>
+          <div class="text-slate-400/80 text-sm">
+            {{ t('home.tradingStrategyDesc[2].subtitle') }}
           </div>
         </div>
       </div>
     </div>
-    <div class="space-y-8">
-      <div class="text-center lg:text-left text-[40px] font-bold">{{ t('home.tradingStrategy') }}</div>
-      <div class="flex flex-col lg:flex-row gap-8">
-        <div class="p-4 lg:p-0 lg:w-0 lg:flex-[3]">
-          <img class="w-full" src="/trading_strategy.png" />
+  </div>
+  <div class="lg:w-[1280px] mx-auto my-8 space-y-8">
+    <div class="text-center lg:text-left text-[40px] font-bold">{{ t('home.hotCoinPrice') }}</div>
+    <div class="flex flex-col lg:flex-row gap-8">
+      <div class="p-4 lg:p-0 lg:w-0 lg:flex-[3]">
+        <NTabs
+          :value="currentTab"
+          size="large"
+          animated
+          pane-wrapper-style="margin: 0 -4px"
+          pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+          :on-update:value="(val) => (currentTab = val)"
+        >
+          <NTabPane name="stock" :tab="t('home.hotStock')">
+            <div class="space-y-4">
+              <Coin v-for="item of sortedByLastPriceCoinSpotList.top" :key="item.instId" :coin="item" showStock />
+            </div>
+          </NTabPane>
+          <NTabPane name="treat" :tab="t('home.hotTreat')">
+            <div class="space-y-4">
+              <Coin v-for="item of sortedByLastPriceCoinList.top" :key="item.instId" :coin="item" showStock />
+            </div>
+          </NTabPane>
+        </NTabs>
+      </div>
+      <div class="p-4 space-y-4 lg:space-y-0 lg:p-0 lg:w-0 lg:flex-[2]">
+        <div class="text-xl font-bold lg:h-[60px] lg:leading-[60px]">{{ t('home.riseRanking') }}</div>
+        <div class="space-y-4">
+          <Coin
+            v-for="item of currentTab === 'stock'
+              ? sortedByLastPriceCoinSpotList.list.slice(0, 3)
+              : sortedByLastPriceCoinList.list.slice(0, 3)"
+            :key="item.instId"
+            :coin="item"
+          />
         </div>
-        <div class="p-4 lg:p-0 lg:w-0 lg:flex-[2] flex flex-col gap-y-4 justify-evenly">
-          <div class="border-2 border-[#62e56d] rounded-2xl p-4 space-y-2 relative">
-            <img class="absolute top-0 left-0 right-0 bottom-0" src="/trading_strategy_bg.png" />
-            <div class="text-lg font-bold">{{ t('home.tradingStrategyDesc[0].title') }}</div>
-            <div class="text-slate-400/80 text-sm">
-              {{ t('home.tradingStrategyDesc[0].subtitle') }}
-            </div>
-          </div>
-          <div class="border-2 border-[#62e56d] rounded-2xl p-4 space-y-2 relative">
-            <img class="absolute top-0 left-0 right-0 bottom-0" src="/trading_strategy_bg.png" />
-            <div class="text-lg font-bold">{{ t('home.tradingStrategyDesc[1].title') }}</div>
-            <div class="text-slate-400/80 text-sm">
-              {{ t('home.tradingStrategyDesc[1].subtitle') }}
-            </div>
-          </div>
-          <div class="border-2 border-[#62e56d] rounded-2xl p-4 space-y-2 relative">
-            <img class="absolute top-0 left-0 right-0 bottom-0" src="/trading_strategy_bg.png" />
-            <div class="text-lg font-bold">{{ t('home.tradingStrategyDesc[2].title') }}</div>
-            <div class="text-slate-400/80 text-sm">
-              {{ t('home.tradingStrategyDesc[2].subtitle') }}
-            </div>
-          </div>
+        <div class="text-xl font-bold lg:h-[162px] lg:leading-[162px]">{{ t('home.fallRanking') }}</div>
+        <div class="space-y-4">
+          <Coin
+            v-for="item of currentTab === 'stock'
+              ? sortedByLastPriceCoinSpotList.list.slice(-3)
+              : sortedByLastPriceCoinList.list.slice(-3)"
+            :key="item.instId"
+            :coin="item"
+          />
         </div>
       </div>
     </div>

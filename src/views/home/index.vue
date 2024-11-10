@@ -175,7 +175,7 @@ onUnmounted(() => {
   </div>
   <div class="bg-gray-100 py-16">
     <div class="lg:w-[1280px] mx-auto flex flex-col lg:flex-row items-center gap-32 px-4 lg:px-0">
-      <img class="w-full md:size-[550px] object-cover" src="/guide.png" />
+      <img class="w-full md:size-[550px] object-cover hidden md:block" src="/guide.png" />
       <div class="w-full lg:w-0 lg:flex-1 space-y-6">
         <div class="text-[40px] font-bold">{{ t('home.guide.title') }}</div>
         <div class="text-xl text-slate-400">{{ t('home.guide.subtitle') }}</div>
@@ -221,7 +221,8 @@ onUnmounted(() => {
     </div>
   </div>
   <div class="lg:w-[1280px] mx-auto px-4 lg:px-0 py-16 flex flex-col-reverse lg:flex-row justify-between gap-32">
-    <div class="space-y-8 lg:w-[700px]">
+    <!-- 将整个部分在手机端隐藏 -->
+    <div class="space-y-8 lg:w-[700px] hidden lg:block">
       <div class="text-[40px] font-bold">{{ t('home.download.title') }}</div>
       <div class="relative bg-[#78e43f] p-8 rounded-3xl flex items-center gap-x-8 w-full">
         <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
@@ -253,8 +254,8 @@ onUnmounted(() => {
           </div>
         </a>
         <a
-          href="https://play.google.com/store/apps/details?id=com.keepbitpro.android&referrer=google_play"
-          target="_blank"
+            href="https://play.google.com/store/apps/details?id=com.keepbitpro.android&referrer=google_play"
+            target="_blank"
         >
           <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
             <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" alt="Background" />
@@ -275,8 +276,8 @@ onUnmounted(() => {
         </a>
       </div>
       <div
-        class="lg:hidden relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4"
-        @click="router.push('/download')"
+          class="lg:hidden relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4"
+          @click="router.push('/download')"
       >
         <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
         <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
@@ -287,26 +288,26 @@ onUnmounted(() => {
         <div class="text-2xl">{{ t('home.download.tap') }}</div>
       </div>
     </div>
-    <img class="w-full lg:w-auto lg:h-[700px]" src="/market.png" />
+    <img class="w-full lg:w-auto lg:h-[700px] hidden lg:block" src="/market.png" />
   </div>
-  <div ref="carouselRef" class="carousel my-32 flex px-8 gap-x-4 overflow-x-hidden">
-    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_1.png" />
-    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_2.png" />
-    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_3.png" />
-    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_4.png" />
-    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_5.png" />
-    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_5.png" />
-    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_6.png" />
-    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_7.png" />
-    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_8.png" />
-    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_9.png" />
-    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_10.png" />
-    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_11.png" />
-    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_12.png" />
-    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_13.png" />
-    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_14.png" />
-    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_15.png" />
-    <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_16.png" />
+  <div ref="carouselRef" class="carousel sm:my-2 my-8 flex px-8 gap-x-4 overflow-x-hidden">
+    <img class="w-[300px] hover:scale-105 transition" src="/carousel_1.png" />
+    <img class="w-[300px] hover:scale-105 transition" src="/carousel_2.png" />
+    <img class="w-[300px] hover:scale-105 transition" src="/carousel_3.png" />
+    <img class="w-[300px] hover:scale-105 transition" src="/carousel_4.png" />
+    <img class="w-[300px] hover:scale-105 transition" src="/carousel_5.png" />
+    <img class="w-[300px] hover:scale-105 transition" src="/carousel_5.png" />
+    <img class="w-[300px] hover:scale-105 transition" src="/carousel_6.png" />
+    <img class="w-[300px] hover:scale-105 transition" src="/carousel_7.png" />
+    <img class="w-[300px] hover:scale-105 transition" src="/carousel_8.png" />
+    <img class="w-[300px] hover:scale-105 transition" src="/carousel_9.png" />
+    <img class="w-[300px] hover:scale-105 transition" src="/carousel_10.png" />
+    <img class="w-[300px] hover:scale-105 transition" src="/carousel_11.png" />
+    <img class="w-[300px] hover:scale-105 transition" src="/carousel_12.png" />
+    <img class="w-[300px] hover:scale-105 transition" src="/carousel_13.png" />
+    <img class="w-[300px] hover:scale-105 transition" src="/carousel_14.png" />
+    <img class="w-[300px] hover:scale-105 transition" src="/carousel_15.png" />
+    <img class="w-[300px] hover:scale-105 transition" src="/carousel_16.png" />
   </div>
   <div class="fixed z-99 right-0 lg:right-4 bottom-0 lg:bottom-4">
     <div class="flex flex-col gap-y-4 items-end">

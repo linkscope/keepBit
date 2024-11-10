@@ -6,6 +6,7 @@ import useCryptoWS from '@/hooks/useCryptoWS'
 import initTickerTape from '@/utils/initTickerTape.js'
 
 const { t } = useI18n()
+const currentTab = ref('stock')
 const tickerTapRef = useTemplateRef('tickerTapRef')
 const {
   coinList,
@@ -64,7 +65,7 @@ onUnmounted(() => {
           </div>
         </div>
         <div class="lg:w-0 lg:flex-1 relative">
-          <div class="hidden lg:block absolute -left-1/2 -top-1/2 translate-x-[30%] translate-y-[30%] w-[900px]">
+          <div class="hidden lg:block absolute -left-1/2 -top-1/2 translate-x-[30%] translate-y-[30%] w-[800px]">
             <img class="w-full" src="/home_hero_bg.png" />
           </div>
           <img
@@ -74,27 +75,28 @@ onUnmounted(() => {
           <img class="w-full" src="/home_hero.png" />
         </div>
       </div>
-      <div class="flex flex-col lg:flex-row gap-4">
+      <div class="carousel px-4 lg:p-0 flex gap-4 overflow-x-auto">
         <img class="h-[260px]" src="/home_card_1.png" alt="Link to Telegram" @click="navigateToLink" />
         <img class="h-[260px]" src="/home_card_2.png" />
         <img class="h-[260px]" src="/home_card_3.png" />
       </div>
     </div>
   </div>
+  <div ref="tickerTapRef" class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget" />
+  </div>
   <div class="lg:w-[1280px] mx-auto my-8 space-y-16">
-    <div ref="tickerTapRef" class="tradingview-widget-container">
-      <div class="tradingview-widget-container__widget" />
-    </div>
     <div class="space-y-8">
       <div class="text-center lg:text-left text-[40px] font-bold">{{ t('home.hotCoinPrice') }}</div>
       <div class="flex flex-col lg:flex-row gap-8">
         <div class="p-4 lg:p-0 lg:w-0 lg:flex-[2]">
           <NTabs
-            default-value="stock"
+            :value="currentTab"
             size="large"
             animated
             pane-wrapper-style="margin: 0 -4px"
             pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+            :on-update:value="(val) => (currentTab = val)"
           >
             <NTabPane name="stock" :tab="t('home.hotStock')">
               <div class="space-y-4">
@@ -111,11 +113,23 @@ onUnmounted(() => {
         <div class="p-4 space-y-4 lg:space-y-0 lg:p-0 lg:w-0 lg:flex-1">
           <div class="text-xl font-bold lg:h-[60px] lg:leading-[60px]">{{ t('home.riseRanking') }}</div>
           <div class="space-y-4">
-            <Coin v-for="item of sortedCoinList.top" :key="item.instId" :coin="item" />
+            <Coin
+              v-for="item of currentTab === 'stock'
+                ? sortedByLastPriceCoinSpotList.list.slice(0, 3)
+                : sortedByLastPriceCoinList.list.slice(0, 3)"
+              :key="item.instId"
+              :coin="item"
+            />
           </div>
           <div class="text-xl font-bold lg:h-[162px] lg:leading-[162px]">{{ t('home.fallRanking') }}</div>
           <div class="space-y-4">
-            <Coin v-for="item of sortedCoinList.bottom" :key="item.instId" :coin="item" />
+            <Coin
+              v-for="item of currentTab === 'stock'
+                ? sortedByLastPriceCoinSpotList.list.slice(-3)
+                : sortedByLastPriceCoinList.list.slice(-3)"
+              :key="item.instId"
+              :coin="item"
+            />
           </div>
         </div>
       </div>

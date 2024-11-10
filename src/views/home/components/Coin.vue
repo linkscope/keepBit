@@ -14,7 +14,7 @@ defineProps({
     </div>
     <div class="flex-1 flex items-center justify-evenly gap-x-8">
       <div class="text-sm lg:text-2xl">${{ coin.lastPrice.toFixed(5) }}</div>
-      <img v-if="showStock" class="hidden lg:block w-[60px] lg:w-[120px]" src="/stock.svg" />
+      <img v-if="showStock" class="hidden w-[60px] lg:w-[120px]" src="/stock.svg" />
     </div>
     <div
       class="text-xs lg:text-xl"

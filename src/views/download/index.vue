@@ -28,7 +28,7 @@ const { t } = useI18n()
         </div>
       </div>
     </div>
-    <img class="block w-full lg:w-auto lg:h-[700px]" src="/download.gif" />
+    <img class="block w-full lg:w-auto lg:h-[700px]" src="/market.png" />
   </div>
   <div class="p-4 space-y-8 lg:w-[1280px] mx-auto">
     <div class="text-[40px] font-bold">{{ t('home.download.title') }}</div>

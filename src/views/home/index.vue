@@ -276,7 +276,7 @@ onUnmounted(() => {
         <div class="text-2xl">{{ t('home.download.tap') }}</div>
       </div>
     </div>
-    <img class="w-full lg:w-auto lg:h-[700px]" src="/download.gif" />
+    <img class="w-full lg:w-auto lg:h-[700px]" src="/market.png" />
   </div>
   <div ref="carouselRef" class="carousel my-32 flex px-8 gap-x-4 overflow-x-hidden">
     <img class="w-[300px] hover:scale-105 trasistion" src="/carousel_1.png" />

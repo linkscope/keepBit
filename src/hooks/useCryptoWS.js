@@ -5,7 +5,7 @@ export default function useCryptoWS() {
   const coinSpotList = ref([])
 
   const sortedCoinList = computed(() => {
-    const sortedList = coinList.value.sort((a, b) => b.priceChangePercent - a.priceChangePercent)
+    const sortedList = coinList.value.slice().sort((a, b) => b.priceChangePercent - a.priceChangePercent)
     return {
       top: sortedList.slice(0, 3),
       bottom: sortedList.slice(-3),
@@ -14,7 +14,7 @@ export default function useCryptoWS() {
   })
 
   const sortedByLastPriceCoinList = computed(() => {
-    const sortedByLastPriceList = coinList.value.sort((a, b) => b.lastPrice - a.lastPrice)
+    const sortedByLastPriceList = coinList.value.slice().sort((a, b) => b.lastPrice - a.lastPrice)
     return {
       topThree: sortedByLastPriceList.slice(0, 3),
       top: sortedByLastPriceList.slice(0, 7),
@@ -24,7 +24,7 @@ export default function useCryptoWS() {
   })
 
   const sortedCoinSpotList = computed(() => {
-    const sortedSpotList = coinSpotList.value.sort((a, b) => b.priceChangePercent - a.priceChangePercent)
+    const sortedSpotList = coinSpotList.value.slice().sort((a, b) => b.priceChangePercent - a.priceChangePercent)
     return {
       top: sortedSpotList.slice(0, 3),
       bottom: sortedSpotList.slice(-3),
@@ -33,7 +33,7 @@ export default function useCryptoWS() {
   })
 
   const sortedByLastPriceCoinSpotList = computed(() => {
-    const sortedByLastPriceSpotList = coinSpotList.value.sort((a, b) => b.lastPrice - a.lastPrice)
+    const sortedByLastPriceSpotList = coinSpotList.value.slice().sort((a, b) => b.lastPrice - a.lastPrice)
     return {
       top: sortedByLastPriceSpotList.slice(0, 7),
       bottom: sortedByLastPriceSpotList.slice(-3),
@@ -73,33 +73,33 @@ export default function useCryptoWS() {
     socket.onopen = () => {
       console.log('WebSocket 连接已建立')
       socket.send(
-          JSON.stringify({
-            op: 'subscribe',
-            args: [
-              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'BTCUSDT' },
-              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'ETHUSDT' },
-              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'LTCUSDT' },
-              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'DOGEUSDT' },
-              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'SOLUSDT' },
-              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'TRXUSDT' },
-              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'PEPEUSDT' },
-              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'XRPUSDT' },
-              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'ADAUSDT' },
-              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'BCHUSDT' },
-              { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'USDCUSDT' },
-              { instType: 'SPOT', channel: 'ticker', instId: 'BTCUSDT' },
-              { instType: 'SPOT', channel: 'ticker', instId: 'ETHUSDT' },
-              { instType: 'SPOT', channel: 'ticker', instId: 'LTCUSDT' },
-              { instType: 'SPOT', channel: 'ticker', instId: 'DOGEUSDT' },
-              { instType: 'SPOT', channel: 'ticker', instId: 'SOLUSDT' },
-              { instType: 'SPOT', channel: 'ticker', instId: 'TRXUSDT' },
-              { instType: 'SPOT', channel: 'ticker', instId: 'PEPEUSDT' },
-              { instType: 'SPOT', channel: 'ticker', instId: 'XRPUSDT' },
-              { instType: 'SPOT', channel: 'ticker', instId: 'ADAUSDT' },
-              { instType: 'SPOT', channel: 'ticker', instId: 'BCHUSDT' },
-              { instType: 'SPOT', channel: 'ticker', instId: 'USDCUSDT' }
-            ]
-          }),
+        JSON.stringify({
+          op: 'subscribe',
+          args: [
+            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'BTCUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'ETHUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'LTCUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'DOGEUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'SOLUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'TRXUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'PEPEUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'XRPUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'ADAUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'BCHUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'USDCUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'BTCUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'ETHUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'LTCUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'DOGEUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'SOLUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'TRXUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'PEPEUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'XRPUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'ADAUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'BCHUSDT' },
+            { instType: 'SPOT', channel: 'ticker', instId: 'USDCUSDT' },
+          ],
+        }),
       )
       startHeartbeat()
     }
@@ -112,31 +112,22 @@ export default function useCryptoWS() {
         const instType = data.arg.instType
         const change24h = parseFloat(ticker.change24h)
         const priceChangePercent = (change24h * 100).toFixed(2)
-        if (instType === "SPOT") {
-          const coin = {
-            instId,
-            lastPrice: parseFloat(ticker.lastPr),
-            priceChangePercent: parseFloat(priceChangePercent),
-            volume: parseFloat(ticker.baseVolume),
-            change24h,
-            image: images[instId] || 'img/default.png',
-          }
+        const coin = {
+          instId,
+          lastPrice: parseFloat(ticker.lastPr),
+          priceChangePercent: parseFloat(priceChangePercent),
+          volume: parseFloat(ticker.baseVolume),
+          change24h,
+          image: images[instId] || 'img/default.png',
+        }
+        if (instType === 'SPOT') {
           const findIndex = coinSpotList.value.findIndex((i) => i.instId === instId)
           if (~findIndex) {
             coinSpotList.value[findIndex] = coin
           } else {
             coinSpotList.value.push(coin)
           }
-        } else if (instType === "USDT-FUTURES") {
-          const coin = {
-            instId,
-            lastPrice: parseFloat(ticker.lastPr),
-            priceChangePercent: parseFloat(priceChangePercent),
-            volume: parseFloat(ticker.baseVolume),
-            change24h,
-            image: images[instId] || 'img/default.png',
-          }
-
+        } else if (instType === 'USDT-FUTURES') {
           const findIndex = coinList.value.findIndex((i) => i.instId === instId)
           if (~findIndex) {
             coinList.value[findIndex] = coin
@@ -174,6 +165,6 @@ export default function useCryptoWS() {
     coinSpotList,
     sortedCoinSpotList,
     sortedByLastPriceCoinList,
-    sortedByLastPriceCoinSpotList
+    sortedByLastPriceCoinSpotList,
   }
 }

@@ -106,8 +106,12 @@ const menuList = computed(() => [
       @update:value="router.push($event)"
     />
     <div class="flex items-center gap-x-8">
-      <NButton size="large" class="bg-white rounded-md">{{ t('login') }}</NButton>
-      <NButton text>{{ t('register') }}</NButton>
+      <router-link to="/login">
+        <NButton size="large" class="bg-white rounded-md">{{ t('login') }}</NButton>
+      </router-link>
+      <router-link to="register">
+        <NButton text>{{ t('register') }}</NButton>
+      </router-link>
       <NButton text class="text-3xl" @click="router.push('/download')">
         <NIcon>
           <ArrowDownload16Regular />
@@ -149,8 +153,12 @@ const menuList = computed(() => [
     </div>
     <NDrawer v-model:show="drawerModal" placement="right" :width="300">
       <div class="h-full overflow-hidden flex flex-col gap-y-8 p-4">
-        <NButton size="large" type="primary" class="rounded-md">{{ t('login') }}</NButton>
-        <NButton text>{{ t('register') }}</NButton>
+        <router-link to="/login">
+          <NButton size="large" type="primary" class="rounded-md">{{ t('login') }}</NButton>
+        </router-link>
+        <router-link to="register">
+          <NButton text>{{ t('register') }}</NButton>
+        </router-link>
         <NMenu
           class="flex-1"
           :default-value="route.path"

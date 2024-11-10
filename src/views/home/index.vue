@@ -7,7 +7,14 @@ import initTickerTape from '@/utils/initTickerTape.js'
 
 const { t } = useI18n()
 const tickerTapRef = useTemplateRef('tickerTapRef')
-const { coinList, sortedCoinList, coinSpotList, sortedCoinSpotList, sortedByLastPriceCoinList, sortedByLastPriceCoinSpotList } = useCryptoWS()
+const {
+  coinList,
+  sortedCoinList,
+  coinSpotList,
+  sortedCoinSpotList,
+  sortedByLastPriceCoinList,
+  sortedByLastPriceCoinSpotList,
+} = useCryptoWS()
 const showToolTip = ref(true)
 
 const carouselRef = useTemplateRef('carouselRef')
@@ -216,7 +223,10 @@ onUnmounted(() => {
             <div class="text-2xl">iOS</div>
           </div>
         </a>
-        <a href="https://play.google.com/store/apps/details?id=com.keepbitpro.android&referrer=google_play" target="_blank">
+        <a
+          href="https://play.google.com/store/apps/details?id=com.keepbitpro.android&referrer=google_play"
+          target="_blank"
+        >
           <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
             <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" alt="Background" />
             <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
@@ -234,7 +244,6 @@ onUnmounted(() => {
             <div class="text-2xl">Android</div>
           </div>
         </a>
-
       </div>
       <div class="lg:hidden relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
         <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
@@ -276,30 +285,35 @@ onUnmounted(() => {
           </NIcon>
         </div>
       </a>
-      <div v-if="showToolTip" class="bg-[#78e43f] p-4 flex items-center gap-x-2 rounded-md">
-        <img class="size-[40px]" src="/logo.png" />
-        <div>
-          <div class="font-bold text-xs">KeepBit</div>
-          <div class="text-xs text-slate-600">{{ t('home.download.title') }}</div>
+      <div class="h-[72px]">
+        <div v-if="showToolTip" class="bg-[#78e43f] p-4 flex items-center gap-x-2 rounded-md">
+          <img class="size-[40px]" src="/logo.png" />
+          <div>
+            <div class="font-bold text-xs">KeepBit</div>
+            <div class="text-xs text-slate-600">{{ t('home.download.title') }}</div>
+          </div>
+          <a
+            href="https://play.google.com/store/apps/details?id=com.keepbitpro.android&referrer=google_play"
+            target="_blank"
+          >
+            <div class="px-2 py-1 flex items-center gap-x-1 bg-black rounded-md">
+              <img class="hidden lg:block size-7" src="/google.png" alt="Google Play" />
+              <span class="text-white">Google Play</span>
+            </div>
+          </a>
+          <a href="https://apps.apple.com/us/app/keepbit/id6499257545" target="_blank">
+            <div class="px-2 py-1 flex items-center gap-x-1 bg-black rounded-md">
+              <img class="hidden lg:block size-7" src="/apple.png" alt="Apple Store" />
+              <span class="text-white truncate">Apple Store</span>
+            </div>
+          </a>
+          <img class="size-4" src="/close.png" @click="showToolTip = false" />
         </div>
-        <a href="https://play.google.com/store/apps/details?id=com.keepbitpro.android&referrer=google_play" target="_blank">
-          <div class="px-2 py-1 flex items-center gap-x-1 bg-black rounded-md">
-            <img class="hidden lg:block size-7" src="/google.png" alt="Google Play" />
-            <span class="text-white">Google Play</span>
-          </div>
-        </a>
-        <a href="https://apps.apple.com/us/app/keepbit/id6499257545" target="_blank">
-          <div class="px-2 py-1 flex items-center gap-x-1 bg-black rounded-md">
-            <img class="hidden lg:block size-7" src="/apple.png" alt="Apple Store" />
-            <span class="text-white truncate">Apple Store</span>
-          </div>
-        </a>
-        <img class="size-4" src="/close.png" @click="showToolTip = false" />
-      </div>
-      <div v-else class="bg-white p-3 flex items-center justify-center rounded-md" @click="showToolTip = true">
-        <NIcon class="text-[32px]">
-          <ArrowLeft16Regular />
-        </NIcon>
+        <div v-else class="bg-white p-3 flex items-center justify-center rounded-md" @click="showToolTip = true">
+          <NIcon class="text-[32px]">
+            <ArrowLeft16Regular />
+          </NIcon>
+        </div>
       </div>
     </div>
   </div>

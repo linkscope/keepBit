@@ -83,7 +83,12 @@ onUnmounted(() => {
       </div>
       <div class="carousel px-4 lg:p-0 flex gap-4 overflow-x-auto">
         <img class="lg:w-0 lg:flex-1 h-[260px]" src="/home_card_1.png" alt="Link to Telegram" @click="navigateToLink" />
-        <img class="lg:w-0 lg:flex-1 h-[260px]" src="/home_card_2.png" alt="Home Card" @click="handleClickToAgencyPlan"/>
+        <img
+          class="lg:w-0 lg:flex-1 h-[260px]"
+          src="/home_card_2.png"
+          alt="Home Card"
+          @click="handleClickToAgencyPlan"
+        />
         <img class="lg:w-0 lg:flex-1 h-[260px]" src="/home_card_3.png" alt="Home Card" @click="easyMoneyClause" />
       </div>
     </div>
@@ -160,9 +165,7 @@ onUnmounted(() => {
         <div class="text-xl font-bold lg:h-[162px] lg:leading-[162px]">{{ t('home.fallRanking') }}</div>
         <div class="space-y-4">
           <Coin
-            v-for="item of currentTab === 'stock'
-              ? sortedCoinSpotList.list.slice(-3)
-              : sortedCoinList.list.slice(-3)"
+            v-for="item of currentTab === 'stock' ? sortedCoinSpotList.list.slice(-3) : sortedCoinList.list.slice(-3)"
             :key="item.instId"
             :coin="item"
           />
@@ -177,28 +180,36 @@ onUnmounted(() => {
         <div class="text-[40px] font-bold">{{ t('home.guide.title') }}</div>
         <div class="text-xl text-slate-400">{{ t('home.guide.subtitle') }}</div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div class="bg-white rounded-md relative w-full flex flex-col items-center justify-center gap-y-4 py-8">
+          <div
+            class="bg-white rounded-md relative w-full flex flex-col items-center justify-center gap-y-4 pt-[48px] px-4 pb-8"
+          >
             <div class="absolute top-0 left-0 bg-[#76e43c] py-2 px-4 rounded-tl-md rounded-br-md text-2xl font-bold">
               1
             </div>
             <div class="text-2xl font-bold">{{ t('home.guide.list[0].title') }}</div>
             <div class="text-slate-400">{{ t('home.guide.list[0].subtitle') }}</div>
           </div>
-          <div class="bg-white rounded-md relative w-full flex flex-col items-center justify-center gap-y-4 py-8">
+          <div
+            class="bg-white rounded-md relative w-full flex flex-col items-center justify-center gap-y-4 pt-[48px] px-4 pb-8"
+          >
             <div class="absolute top-0 left-0 bg-[#76e43c] py-2 px-4 rounded-tl-md rounded-br-md text-2xl font-bold">
               2
             </div>
             <div class="text-2xl font-bold">{{ t('home.guide.list[1].title') }}</div>
             <div class="text-slate-400">{{ t('home.guide.list[1].subtitle') }}</div>
           </div>
-          <div class="bg-white rounded-md relative w-full flex flex-col items-center justify-center gap-y-4 py-8">
+          <div
+            class="bg-white rounded-md relative w-full flex flex-col items-center justify-center gap-y-4 pt-[48px] px-4 pb-8"
+          >
             <div class="absolute top-0 left-0 bg-[#76e43c] py-2 px-4 rounded-tl-md rounded-br-md text-2xl font-bold">
               3
             </div>
             <div class="text-2xl font-bold">{{ t('home.guide.list[2].title') }}</div>
             <div class="text-slate-400">{{ t('home.guide.list[2].subtitle') }}</div>
           </div>
-          <div class="bg-white rounded-md relative w-full flex flex-col items-center justify-center gap-y-4 py-8">
+          <div
+            class="bg-white rounded-md relative w-full flex flex-col items-center justify-center gap-y-4 pt-[48px] px-4 pb-8"
+          >
             <div class="absolute top-0 left-0 bg-[#76e43c] py-2 px-4 rounded-tl-md rounded-br-md text-2xl font-bold">
               4
             </div>
@@ -214,8 +225,8 @@ onUnmounted(() => {
       <div class="text-[40px] font-bold">{{ t('home.download.title') }}</div>
       <div class="relative bg-[#78e43f] p-8 rounded-3xl flex items-center gap-x-8 w-full">
         <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
-        <div class="size-[100px] lg:size-[220px] rounded-3xl bg-white flex items-center justify-center z-10">
-          <img class="size-[80px] lg:size-[200px]" src="/download_qrcode.png" />
+        <div class="size-[100px] lg:size-[220px] p-4 rounded-3xl bg-white flex items-center justify-center z-10">
+          <img class="size-full" src="/download_qrcode.png" />
         </div>
         <div class="flex-1 space-y-8">
           <div class="text-3xl font-bold">{{ t('home.download.scan') }}</div>
@@ -319,7 +330,7 @@ onUnmounted(() => {
           >
             <div class="px-2 py-1 flex items-center gap-x-1 bg-black rounded-md">
               <img class="hidden lg:block size-7" src="/google.png" alt="Google Play" />
-              <span class="text-white">Google Play</span>
+              <span class="text-white truncate">Google Play</span>
             </div>
           </a>
           <a href="https://apps.apple.com/us/app/keepbit/id6499257545" target="_blank">

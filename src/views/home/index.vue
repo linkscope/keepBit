@@ -264,7 +264,7 @@ onUnmounted(() => {
             <div class="text-2xl">Google Play</div>
           </div>
         </a>
-        <a href="/#/KeepBit_cn3.3.0.apk" target="_blank">
+        <a href="/KeepBit_cn3.3.0.apk" target="_blank">
           <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
             <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" alt="Background" />
             <div class="size-[50px] rounded-full bg-white flex items-center justify-center">

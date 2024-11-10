@@ -52,7 +52,7 @@ const { t } = useI18n()
           <div class="text-lg">App Store</div>
         </div>
       </a>
-      <a href="https://www.apple.com/app-store/" target="_blank">
+      <a href="https://apps.apple.com/us/app/keepbit/id6499257545" target="_blank">
         <div class="relative bg-[#78e43f] py-4 px-2 rounded-lg flex items-center gap-x-2">
           <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" alt="Background" />
           <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
@@ -73,7 +73,7 @@ const { t } = useI18n()
           <div class="text-lg">Google Play</div>
         </div>
       </a>
-      <a href="./Keepbit_cn3.14.apk" target="_blank">
+      <a href="/#/KeepBit_cn3.3.0.apk" target="_blank">
         <div class="relative bg-[#78e43f] py-4 px-2 rounded-lg flex items-center gap-x-2">
           <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" alt="Background" />
           <div class="size-[50px] rounded-full bg-white flex items-center justify-center">

@@ -6,6 +6,7 @@ import useCryptoWS from '@/hooks/useCryptoWS'
 import initTickerTape from '@/utils/initTickerTape.js'
 
 const { t } = useI18n()
+const router = useRouter()
 const currentTab = ref('stock')
 const tickerTapRef = useTemplateRef('tickerTapRef')
 const {
@@ -259,7 +260,10 @@ onUnmounted(() => {
           </div>
         </a>
       </div>
-      <div class="lg:hidden relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
+      <div
+        class="lg:hidden relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4"
+        @click="router.push('/download')"
+      >
         <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
         <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
           <NIcon class="text-[30px]">

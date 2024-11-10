@@ -44,6 +44,11 @@ export default createRouter({
           component: () => import('@/views/about/index.vue'),
         },
         {
+          path: 'download',
+          name: 'Download',
+          component: () => import('@/views/download/index.vue'),
+        },
+        {
           path: 'article/agreement',
           name: 'Agreement',
           component: () => import('@/views/article/agreement.vue'),
@@ -81,4 +86,7 @@ export default createRouter({
       ],
     },
   ],
+  scrollBehavior() {
+    return { top: 0 }
+  },
 })

@@ -1,3 +1,708 @@
 {
-  "message": "Hello Dunia"
+  "header": {
+    "menuList": {
+      "home": "홈",
+      "market": "시장",
+      "trading": "계약 거래",
+      "quantitative": "양적 거래",
+      "strategy": "전략 광장",
+      "deal": "전략 주문",
+      "dealContracts": "모의 주문",
+      "explorationAndLearning": "탐색 및 학습",
+      "about": "우리에 대해",
+      "announcementCenter": "공지사항 센터",
+      "keepBitAcademy": "KeepBit 아카데미",
+      "kycCertificationArea": "KYC 인증 구역",
+      "channelRecruitment": "채널 모집",
+      "brokerCooperation": "브로커 협력",
+      "inviteFriends": "친구 초대",
+      "vipService": "VIP 서비스"
+    }
+  },
+  "login": "로그인",
+  "register": "가입",
+  "home": {
+    "welcome": ["KeepBit에 오신 것을 환영합니다", "여기서부터 시작하는 Web3 세계", "시작"],
+    "subWelcome": ["쉽게 관리하고 거래하는", "당신의 암호화폐 자산"],
+    "hotCoinPrice": "인기 암호화폐 가격",
+    "hotStock": "인기 현물",
+    "hotTreat": "인기 계약",
+    "riseRanking": "상승 순위",
+    "fallRanking": "하락 순위",
+    "tradingStrategy": "고수익 양적 거래 전략",
+    "tradingStrategyDesc": [
+      {
+        "title": "양적 거래로 더 스마트하고 정교한 투자하세요.",
+        "subtitle": "수동 거래가 너무 시간이 걸리나요? KeepBit의 양적 거래가 24시간 시장 감시와 자동 거래 서비스를 제공하여 기회를 놓치지 않도록 도와드립니다!"
+      },
+      {
+        "title": "간편하게 양적 전략을 구현하고 시장 변동을 제어하세요.",
+        "subtitle": "AI 알고리즘이 당신을 위해 일합니다! KeepBit 양적 거래는 빅 데이터와 스마트 전략을 결합하여 변동성 있는 시장에서 우위를 점할 수 있도록 도와드립니다."
+      },
+      {
+        "title": "KeepBit, 당신의 양적 거래 전문가, 더 효율적인 투자 성과를 만들어갑니다.",
+        "subtitle": "기회를 놓쳤다고요? 걱정하지 마세요! KeepBit의 양적 시스템은 24시간 자동 실행되어 모든 시장 변동을 이익 기회로 만듭니다."
+      }
+    ],
+    "guide": {
+      "title": "초보자 가이드",
+      "subtitle": "KeepBit에서 당신의 Web3 여행을 시작하세요",
+      "list": [
+        { "title": "KeepBit 파트너 되기", "subtitle": "계약 거래에서 최대 80% 영구 리베이트 제공" },
+        { "title": "즉시 충전", "subtitle": "간단한 과정으로 빠르게 Web3 여행을 시작하세요" },
+        { "title": "거래 시작하기", "subtitle": "빠르게 거래를 시작하고 Web3의 풍부한 수익을 즐기세요" },
+        { "title": "자동 매매 체험", "subtitle": "시장 신호를 포착하고 고수의 수익을 복사하세요" }
+      ]
+    },
+    "download": {
+      "title": "언제 어디서나 편리한 거래",
+      "scan": "QR 코드 스캔하여 다운로드",
+      "tap": "여기서 클릭하여 다운로드"
+    }
+  },
+  "market": {
+    "marking": {
+      "title": "시장 동향",
+      "ranking": ["상승 순위", "하락 순위", "인기 순위"],
+      "coinType": "코인 종류",
+      "price": "가격",
+      "change": "24시간 변동"
+    },
+    "default": {
+      "title": "기본 선택된 시장",
+      "tab": [
+        {
+          "label": "현물",
+          "title": "현물"
+        },
+        {
+          "label": "계약",
+          "title": "계약"
+        },
+        {
+          "label": "자기 선택",
+          "title": "추천 자산 선택"
+        }
+      ],
+      "addSelf": "자기 선택 추가"
+    }
+  },
+  "strategy": {
+    "title": "전략 광장",
+    "subtitle": ["시장 신호 포착", "고수의 수익 복사"],
+    "trading": {
+      "title": "거래 전략",
+      "search": "거래 전략 검색"
+    },
+    "enable": "활성화",
+    "signal": "신호",
+    "profit": "수익률",
+    "runtime": "운영 시간",
+    "maxDrawDown": "7일 최대 하락률",
+    "manageScale": "관리 규모",
+    "strategyBy": "전략 제공자",
+    "shareProfit": "수익 분배",
+    "useCount": "사용자 수",
+    "detail": {
+      "title": "상세 파라미터",
+      "balance": "복사 매매 보증금 잔액",
+      "scale": "자산 관리 규모",
+      "profit": "복사 매매 수익/손실",
+      "minimum": "복사 매매 최소 금액",
+      "ratios": "수익 분배 비율"
+    },
+    "project": {
+      "title": "프로젝트 성과",
+      "rewards": "보상률",
+      "profit": "수익/손실",
+      "profitRatio": "수익/손실 비율",
+      "winRate": "승률",
+      "maxDrawDown": "최대 하락",
+      "totalCount": "전체 포지션 수",
+      "profitCount": "수익 포지션 수"
+    },
+    "investment": {
+      "title": "투자 금액",
+      "usage": "사용 가능",
+      "desc": [
+        "전략 종료 시, 귀하가 얻은 20%의 수익은 전략 제공자에게 배분됩니다.",
+        "전략 실행 중, 귀하는 전략 제공자의 모든 조치를 따라야 합니다(시작/종료)."
+      ]
+    },
+    "useStrategy": "전략 사용",
+    "imitation": "모의",
+    "createStrategy": "전략 생성",
+    "cancel": "취소"
+  },
+  "deal": {
+    "title": "AI 양적 거래",
+    "subtitle": ["시장 신호 포착", "고수의 수익 복사"],
+    "order": "거래 주문",
+    "tabs": ["진행 중", "종료됨"],
+    "runtime": "운영 시간",
+    "endStrategy": "전략 종료",
+    "endStrategyQuestion": "이 전략을 종료하시겠습니까?",
+    "unrealizedGain": "미실현 수익",
+    "totalInvest": "총 투자 금액",
+    "profit": "실현된 수익",
+    "filledCount": "거래 횟수",
+    "openPrice": "진입 가격",
+    "profitRate": "수익률",
+    "filledTotalAmount": "거래 총액",
+    "qty": "현재 포지션",
+    "direction": "포지션 방향",
+    "closePosition": "청산",
+    "closePositionQuestion": "청산하시겠습니까? (수동 청산은 전략 수익률에 영향을 미칠 수 있습니다)",
+    "showDetail": "상세 보기"
+  },
+  "dealContracts": {
+    "title": "AI 양적 거래",
+    "subtitle": ["시장 신호 포착", "고수의 수익 복사"],
+    "order": "거래 주문",
+    "tabs": ["진행 중", "종료됨"],
+    "runtime": "운영 시간",
+    "endStrategy": "전략 종료",
+    "endStrategyQuestion": "이 전략을 종료하시겠습니까?",
+    "unrealizedGain": "미실현 수익",
+    "totalInvest": "총 투자 금액",
+    "profit": "실현된 수익",
+    "filledCount": "거래 횟수",
+    "openPrice": "진입 가격",
+    "profitRate": "수익률",
+    "filledTotalAmount": "거래 총액",
+    "qty": "현재 포지션",
+    "direction": "포지션 방향",
+    "closePosition": "청산",
+    "closePositionQuestion": "청산하시겠습니까? (수동 청산은 전략 수익률에 영향을 미칠 수 있습니다)",
+    "showDetail": "상세 보기"
+  },
+  "about": {
+    "title": "우리에 대해",
+    "subtitle": "KeepBit은 안전하고 투명한 디지털 자산 파생상품 거래 플랫폼으로, ‘사용자 우선, 단순성, 투명성, 신뢰’를 핵심 가치로 삼고 있으며, 투자자들에게 원스톱 디지털 자산 금융 서비스를 제공합니다.",
+    "advantage": {
+      "title": "우리의 장점",
+      "list": [
+        {
+          "title": "안전하고 신뢰할 수 있는 거래 플랫폼",
+          "desc": "산업 최고의 보안 기술과 규제 준수 운영으로 사용자가 안전하고 원활한 거래 환경을 실시간으로 경험할 수 있습니다!"
+        },
+        {
+          "title": "다양한 거래 옵션",
+          "desc": "다양한 거래 방식과 많은 파트너들이 사용자에게 풍부한 거래 수단과 자산 선택을 제공하며, 충분한 거래 유동성도 보장합니다."
+        },
+        {
+          "title": "생태계 파트너",
+          "desc": "KeepBit 생태계 파트너는 즉시 다양한 전략적 지원을 받고, KeepBit 플랫폼의 생태적 가치와 디지털 화폐 시대의 혜택을 누릴 수 있습니다."
+        },
+        { "title": "원스톱 거래 서비스", "desc": "KeepBit은 전 세계 여러 국가에서 100만 명 이상의 사용자에게 24시간 다국어 고품질 서비스를 제공합니다!" }
+      ]
+    },
+    "contact": {
+      "title": "연락처",
+      "list": ["비즈니스 협력", "미디어 협력", "운영 지원"]
+    }
+  },
+  "header": {
+    "menuList": {
+      "home": "Halaman Utama",
+      "market": "Pasaran",
+      "trading": "Perdagangan Kontrak",
+      "quantitative": "Perdagangan Kuantitatif",
+      "strategy": "Dataran Strategi",
+      "deal": "Pesanan Strategi",
+      "dealContracts": "Pesanan Simulasi",
+      "explorationAndLearning": "Penerokaan dan Pembelajaran",
+      "about": "Tentang Kami",
+      "announcementCenter": "Pusat Pengumuman",
+      "keepBitAcademy": "Akademi KeepBit",
+      "kycCertificationArea": "Kawasan Pensijilan KYC",
+      "channelRecruitment": "Peng招募 Saluran",
+      "brokerCooperation": "Kerjasama Broker",
+      "inviteFriends": "Jemput Rakan",
+      "vipService": "Perkhidmatan VIP"
+    }
+  },
+  "login": "Log Masuk",
+  "register": "Daftar",
+  "home": {
+    "welcome": ["Selamat datang ke KeepBit", "Dunia Web3 anda bermula di sini", "Mula"],
+    "subWelcome": ["Mudah untuk mengurus dan berdagang", "aset kripto anda"],
+    "hotCoinPrice": "Harga Mata Wang Popular",
+    "hotStock": "Stok Popular",
+    "hotTreat": "Kontrak Popular",
+    "riseRanking": "Peringkat Kenaikan",
+    "fallRanking": "Peringkat Penurunan",
+    "tradingStrategy": "Strategi Perdagangan Kuantitatif Berkeuntungan Tinggi",
+    "tradingStrategyDesc": [
+      {
+        "title": "Perdagangan kuantitatif, menjadikan pelaburan anda lebih pintar dan tepat.",
+        "subtitle": "Perdagangan manual terlalu memakan masa? Biarkan perdagangan kuantitatif KeepBit memberikan pemantauan pasaran sepanjang masa dan perkhidmatan perdagangan automatik untuk memanfaatkan setiap peluang!"
+      },
+      {
+        "title": "Mudah melaksanakan strategi kuantitatif dan mengawal turun naik pasaran.",
+        "subtitle": "Biarkan algoritma AI bekerja untuk anda! Perdagangan kuantitatif KeepBit menggabungkan data besar dan strategi pintar untuk membantu anda memanfaatkan peluang dalam pasaran yang bergerak."
+      },
+      {
+        "title": "KeepBit, pakar perdagangan kuantitatif anda, menjadikan pelaburan lebih cekap.",
+        "subtitle": "Terlepas peluang? Jangan risau! Sistem kuantitatif KeepBit berfungsi 7x24 jam secara automatik, menjadikan setiap turun naik pasaran peluang untuk keuntungan."
+      }
+    ],
+    "guide": {
+      "title": "Panduan Pemula",
+      "subtitle": "Mula perjalanan Web3 anda dengan KeepBit",
+      "list": [
+        { "title": "Menjadi Rakan Kongsi KeepBit", "subtitle": "Nikmati pulangan komisen tetap sehingga 80% dalam perdagangan kontrak" },
+        { "title": "Tambah Dana Sekarang", "subtitle": "Proses mudah untuk memulakan perjalanan Web3 dengan pantas" },
+        { "title": "Mulakan Perdagangan", "subtitle": "Mulakan perdagangan dengan pantas dan nikmati keuntungan Web3 yang besar" },
+        { "title": "Cuba Perdagangan Salinan", "subtitle": "Tangkap isyarat pasaran dan salin keuntungan pakar" }
+      ]
+    },
+    "download": {
+      "title": "Perdagangan Mudah Di Mana Saja",
+      "scan": "Pindai untuk Muat Turun",
+      "tap": "Klik untuk Muat Turun"
+    }
+  },
+  "market": {
+    "marking": {
+      "title": "Kedudukan Pasaran",
+      "ranking": ["Peringkat Kenaikan", "Peringkat Penurunan", "Peringkat Popular"],
+      "coinType": "Jenis Koin",
+      "price": "Harga",
+      "change": "Perubahan 24 Jam"
+    },
+    "default": {
+      "title": "Pasaran Pilihan Lalai",
+      "tab": [
+        {
+          "label": "Spot",
+          "title": "Spot"
+        },
+        {
+          "label": "Kontrak",
+          "title": "Kontrak"
+        },
+        {
+          "label": "Pilihan Sendiri",
+          "title": "Koin Pilihan Disyorkan"
+        }
+      ],
+      "addSelf": "Tambah Pilihan Sendiri"
+    }
+  },
+  "strategy": {
+    "title": "Dataran Strategi",
+    "subtitle": ["Tangkap Isyarat Pasaran", "Salin Keuntungan Pakar"],
+    "trading": {
+      "title": "Strategi Perdagangan",
+      "search": "Cari Strategi Perdagangan"
+    },
+    "enable": "Aktifkan",
+    "signal": "Isyarat",
+    "profit": "Keuntungan",
+    "runtime": "Tempoh Operasi",
+    "maxDrawDown": "Penurunan Maksimum 7 Hari",
+    "manageScale": "Skala Pengurusan",
+    "strategyBy": "Strategi oleh",
+    "shareProfit": "Pembahagian Keuntungan",
+    "useCount": "Bilangan Pengguna",
+    "detail": {
+      "title": "Parameter Terperinci",
+      "balance": "Baki Jaminan Perdagangan Salinan",
+      "scale": "Skala Pengurusan Aset",
+      "profit": "Keuntungan/Penyusutan Perdagangan Salinan",
+      "minimum": "Jumlah Minimum Perdagangan Salinan",
+      "ratios": "Peratusan Pembahagian Keuntungan"
+    },
+    "project": {
+      "title": "Prestasi Projek",
+      "rewards": "Kadar Ganjaran",
+      "profit": "Keuntungan/Penyusutan",
+      "profitRatio": "Peratus Keuntungan/Penyusutan",
+      "winRate": "Kadar Kemenangan",
+      "maxDrawDown": "Penurunan Maksimum",
+      "totalCount": "Jumlah Posisi",
+      "profitCount": "Jumlah Posisi Menguntungkan"
+    },
+    "investment": {
+      "title": "Jumlah Pelaburan",
+      "usage": "Boleh Digunakan",
+      "desc": [
+        "Apabila strategi dihentikan, 20% daripada keuntungan anda akan dibahagikan kepada penyedia strategi semasa penyelesaian.",
+        "Semasa strategi berjalan, anda akan mengikuti semua tindakan penyedia strategi (memulakan/menamatkan)."
+      ]
+    },
+    "useStrategy": "Gunakan Strategi",
+    "imitation": "Simulasi",
+    "createStrategy": "Cipta Strategi",
+    "cancel": "Batal"
+  },
+  "deal": {
+    "title": "Perdagangan Kuantitatif AI",
+    "subtitle": ["Tangkap Isyarat Pasaran", "Salin Keuntungan Pakar"],
+    "order": "Pesanan Perdagangan",
+    "tabs": ["Dalam Proses", "Telah Dihentikan"],
+    "runtime": "Tempoh Operasi",
+    "endStrategy": "Akhiri Strategi",
+    "endStrategyQuestion": "Adakah anda pasti mahu mengakhiri strategi ini?",
+    "unrealizedGain": "Keuntungan Belum Direalisasi",
+    "totalInvest": "Jumlah Pelaburan",
+    "profit": "Keuntungan Direalisasi",
+    "filledCount": "Jumlah Perdagangan",
+    "openPrice": "Harga Pembukaan",
+    "profitRate": "Kadar Keuntungan",
+    "filledTotalAmount": "Jumlah Jumlah Perdagangan",
+    "qty": "Posisi Semasa",
+    "direction": "Arah Posisi",
+    "closePosition": "Tutup Posisi",
+    "closePositionQuestion": "Adakah anda pasti mahu menutup posisi secara manual? (Tindakan manual boleh mempengaruhi kadar keuntungan strategi)",
+    "showDetail": "Lihat Butiran"
+  },
+  "dealContracts": {
+    "title": "Perdagangan Kuantitatif AI",
+    "subtitle": ["Tangkap Isyarat Pasaran", "Salin Keuntungan Pakar"],
+    "order": "Pesanan Perdagangan",
+    "tabs": ["Dalam Proses", "Telah Dihentikan"],
+    "runtime": "Tempoh Operasi",
+    "endStrategy": "Akhiri Strategi",
+    "endStrategyQuestion": "Adakah anda pasti mahu mengakhiri strategi ini?",
+    "unrealizedGain": "Keuntungan Belum Direalisasi",
+    "totalInvest": "Jumlah Pelaburan",
+    "profit": "Keuntungan Direalisasi",
+    "filledCount": "Jumlah Perdagangan",
+    "openPrice": "Harga Pembukaan",
+    "profitRate": "Kadar Keuntungan",
+    "filledTotalAmount": "Jumlah Jumlah Perdagangan",
+    "qty": "Posisi Semasa",
+    "direction": "Arah Posisi",
+    "closePosition": "Tutup Posisi",
+    "closePositionQuestion": "Adakah anda pasti mahu menutup posisi secara manual? (Tindakan manual boleh mempengaruhi kadar keuntungan strategi)",
+    "showDetail": "Lihat Butiran"
+  },
+  "about": {
+    "title": "Tentang Kami",
+    "subtitle": "KeepBit adalah platform perdagangan derivatif aset digital yang selamat dan telus. Kami mengutamakan nilai 'Pengguna di Utama, Mudah, Telus, dan Kepercayaan', dengan fokus untuk menyediakan perkhidmatan kewangan aset digital yang lengkap untuk pelabur.",
+    "advantage": {
+      "title": "Kelebihan Kami",
+      "list": [
+        {
+          "title": "Platform Perdagangan Yang Selamat dan Boleh Dipercayai",
+          "desc": "Teknologi keselamatan terkemuka dalam industri dan operasi yang mematuhi peraturan, memastikan pengalaman perdagangan yang selamat, lancar, dan boleh dipercayai untuk pengguna!"
+        },
+        {
+          "title": "Pilihan Perdagangan yang Pelbagai",
+          "desc": "Pelbagai cara perdagangan dan banyak rakan kongsi memastikan pengguna mempunyai banyak pilihan dalam instrumen perdagangan dan aset, sambil mengekalkan kecairan perdagangan yang mencukupi."
+        },
+        {
+          "title": "Rakan Kongsi Ekosistem",
+          "desc": "Rakan kongsi ekosistem KeepBit mendapat sokongan strategik pelbagai jenis, berkongsi nilai ekosistem KeepBit dan manfaat era mata wang digital."
+        },
+        { "title": "Perkhidmatan Perdagangan Sejagat", "desc": "KeepBit menyediakan perkhidmatan berkualiti tinggi dalam pelbagai bahasa 7x24 jam untuk lebih daripada satu juta pengguna di puluhan negara!" }
+      ]
+    },
+    "contact": {
+      "title": "Hubungi Kami",
+      "list": ["Kerjasama Perniagaan", "Kerjasama Media", "Sokongan Operasi"]
+    }
+  },
+  "agencyPlan": {
+    "title": "Penerangan Standard Tahap Ejen",
+    "commissionRule": "Peraturan Komisen Ejen (Nota: Standard penilaian untuk setiap ejen adalah lebih dari 20000, jika tidak mencapai standard, mereka hanya akan mendapat 10% daripada yuran transaksi rakan yang dijemput)",
+    "inviteRule": "Ajak rakan anda untuk menyertai KeepBit melalui pautan jemputan eksklusif atau kod jemputan anda, dengan jumlah deposit ≥1000U untuk menikmati ganjaran komisen 10% daripada yuran transaksi mereka. Apabila jumlah aset rakan yang dijemput mencapai 20000U, mereka akan dinaikkan pangkat menjadi ejen dan menikmati 10% yuran transaksi + komisen keuntungan strategi mengikut tahap ejen mereka.",
+    "level1": "Tahap 1: 1000--19999, komisen yuran transaksi 10%",
+    "level2": "Tahap 2: ≥20000    Komisen yuran transaksi 10%, komisen keuntungan 15%",
+    "level3": "Tahap 3: ≥100000    Komisen yuran transaksi 10%, komisen keuntungan 20%",
+    "level4": "Tahap 4: ≥500000    Komisen yuran transaksi 10%, komisen keuntungan 25%",
+    "level5": "Tahap 5 (Rakan Kongsi Muda): ≥1000000  Komisen yuran transaksi 15%, komisen keuntungan 35%",
+    "level6": "Tahap 6 (Rakan Kongsi Pertengahan): ≥2000000  Komisen yuran transaksi 20%, komisen keuntungan 40%",
+    "level7": "Tahap 7 (Rakan Kongsi Tinggi): ≥3000000  Komisen yuran transaksi 25%, komisen keuntungan 45%",
+    "commissionCalculation": "Kaedah pengiraan yuran transaksi: Apabila yuran transaksi rakan menghasilkan 100USDT, anda akan menerima komisen 10USDT (100 * 10%)",
+    "profitSharingCalculation": "Kaedah pengiraan komisen keuntungan: Keuntungan strategi rakan dalam talian (strategi yang telah tamat) akan dibahagi mengikut peratusan tahap VIP akaun yang sesuai. Jumlah keuntungan × peratusan keuntungan tahap ejen = komisen keuntungan",
+    "subAgentCommission": "Komisen Sub-Ejen: Ejen utama yang mengajak rakan mereka untuk menyertai KeepBit, jumlah aset rakan sub-ejen akan diambil kira untuk penilaian tahap mereka. Apabila jumlah aset rakan sub-ejen mencapai 20000U, mereka akan dinaikkan pangkat menjadi sub-ejen dan menerima 5% komisen daripada jumlah keuntungan rakan sub-ejen dalam talian mereka. Sub-ejen akan menikmati komisen yuran transaksi biasa + komisen keuntungan mengikut tahap mereka.",
+    "agentLevelAssessment": "Penilaian Tahap Ejen dan Rakan Kongsi: Jumlah aset rakan dalam talian + jumlah aset rakan sub-ejen dalam talian = tahap ejen dan rakan kongsi (Nota: Komisen yuran transaksi dan komisen keuntungan hanya terpakai untuk rakan dalam talian ejen utama + 5% komisen keuntungan daripada rakan sub-ejen).",
+    "notes": "Nota:",
+    "notesContent": "Model ejen terbuka, sesiapa sahaja boleh menjadi ejen. Syarikat memberikan peluang yang adil dan saksama kepada setiap ejen. Setiap orang mempunyai peluang dan faedah yang sama. Sistem akan menilai tahap VIP akaun dan tahap ejen secara automatik berdasarkan jumlah aset setiap hari dan mengira komisen yuran transaksi dan komisen keuntungan setiap hari.",
+    "agentExampleTitle": "Contoh Komisen dan Penilaian Tahap Ejen:",
+    "agentAAssessment": "Penilaian Tahap Ejen A:",
+    "agentADetails": "Jumlah aset pelanggan langsung (A-01 hingga A-05) adalah 60000U + jumlah aset sub-ejen A-05 (B-06 hingga B-09) adalah 40000U = 100000U = Ejen Tahap 3",
+    "agentACommission": "Komisen Ejen A:",
+    "agentACommissionDetails": "Pelanggan langsung (A-01 hingga A-05)  Komisen yuran transaksi 10% + komisen keuntungan 20%<br> Sub-ejen A-05 pelanggan langsung (B-06 hingga B-09) komisen keuntungan 5%",
+    "agentA05Assessment": "Penilaian Tahap Ejen A-05:",
+    "agentA05Details": "Jumlah aset pelanggan langsung (B-06 hingga B-09) adalah 40000U + jumlah aset sub-ejen B-09 (C-10 hingga C-12) adalah 15000U = 55000U = Ejen Tahap 2",
+    "agentA05Commission": "Komisen Ejen A-05:",
+    "agentA05CommissionDetails": "Pelanggan langsung (B-06 hingga B-09)  Komisen yuran transaksi 10% + komisen keuntungan 15%",
+    "subAgentB09Assessment": "Penilaian Tahap Sub-Ejen B-09:",
+    "subAgentB09Details": "Jumlah aset pelanggan langsung (C-10 hingga C-12) adalah 15000U = Ejen Tahap 1",
+    "subAgentB09Commission": "Komisen Sub-Ejen B-09:",
+    "subAgentB09CommissionDetails": "Pelanggan langsung (C-10 hingga C-12)  Komisen yuran transaksi 10%",
+    "agentSystemTitle": "Sistem Pengurusan Ejen:",
+    "agentSystemLink": "https://agent.keepbit.top/login?redirect=/index",
+    "agentSystemDetails": "Setiap ejen boleh log masuk menggunakan emel dan kata laluan mereka untuk melihat butiran. Sistem ini akan disatukan dalam aplikasi untuk memudahkan semua orang melihat usaha mereka setiap hari.",
+    "opportunityTitle": "Peluang! Sudut pandangan yang betul akan membantu anda mencapai puncak!",
+    "striveTitle": "Berusaha! Kejayaan usaha anda akan menjadi milik anda!"
+  },
+  "agreement": {
+    "title": "Terma Perkhidmatan Keepbit",
+    "subtitle": "Sila baca terma berikut dengan teliti sebelum menggunakan perkhidmatan ini.",
+    "termsOfService": "Terma Perkhidmatan",
+    "effectDate": "Terma perkhidmatan ini akan berkuatkuasa pada 2 April 2024 untuk semua pengguna.",
+    "importantNotice": "Peringatan penting: Produk dan perkhidmatan yang disediakan di Keepbit.com tidak sesuai untuk pengguna individu atau institusi yang berasal dari sumber yang tidak sah. Tiada kandungan di Keepbit.com boleh ditafsirkan sebagai tawaran untuk menarik pengguna global. Menerima terma perkhidmatan ini bermakna anda telah menerima dan mengesahkan pemberitahuan di atas.",
+    "general": "Am",
+    "generalText": "Selamat datang ke www.Keepbit.com (dikenali sebagai 'Laman Web'). Terma dan syarat perkhidmatan ini ('Perjanjian') mengatur hubungan anda ('anda' atau 'anda') dengan pengendali Keepbit (ditakrifkan di bawah, 'kami') mengenai penggunaan laman web/aplikasi ini, akaun anda dan perkhidmatan yang disediakan.",
+    "readTerms": "Sila baca semua terma dan syarat dalam perjanjian ini, dasar privasi, maklumat penting mengenai penggunaan platform Keepbit, dan penafian risiko ('Penafian') yang berkaitan dengan setiap perjanjian yang terpakai sebelum menggunakan perkhidmatan.",
+    "qualification": "Syarat Kelayakan",
+    "qualificationText": "Untuk menggunakan perkhidmatan ini, anda mesti memenuhi syarat berikut:",
+    "qualificationItem1": "Jika anda seorang individu, anda mesti berumur 18 tahun atau lebih untuk membuka akaun dan menggunakan perkhidmatan.",
+    "qualificationItem2": "Anda tidak berada di Afghanistan, Cuba, Iran, Korea Utara, Syria, atau Kanada (semua adalah 'Wilayah Larangan') atau berada di bawah kawalan mereka, atau merupakan warganegara atau penduduk negara-negara tersebut, atau anda tersenarai sebagai individu yang dilarang oleh pihak berkuasa yang berkenaan.",
+    "qualificationItem3": "Anda tidak boleh menyediakan mana-mana aset digital atau perkhidmatan kepada wilayah larangan, warganegara atau penduduk wilayah larangan, atau individu yang dilarang.",
+    "qualificationItem4": "Jika mana-mana negeri, wilayah atau negara menjadi wilayah larangan atau jika kami memutuskan untuk melakukannya, laman web ini mungkin akan menamatkan dan/atau menggantung akaun anda atau menghalang transaksi yang tidak memenuhi keperluan kelayakan yang ditetapkan dalam perjanjian ini, dengan atau tanpa notis.",
+    "account": "Akaun",
+    "createAccount": "1. Membuka Akaun",
+    "accountInfo": "1.1 Untuk menggunakan perkhidmatan ini, anda perlu membuka akaun. Anda akan diminta untuk menyediakan butiran pendaftaran tertentu dan mengenal pasti setiap individu yang membuka akaun. Kami berhak untuk menolak membuka akaun untuk mana-mana individu. Kami tidak membenarkan pembukaan akaun duplikat dan akan membuka hanya satu akaun untuk setiap pengguna.",
+    "phoneEmail": "1.3 Anda perlu menyediakan nombor telefon dan alamat e-mel yang sah untuk membuka akaun, dan akaun anda mungkin perlu melalui proses pengesahan kami, dan anda mesti menetapkan kata laluan untuk akaun anda.",
+    "services": "Perkhidmatan",
+    "servicesListIntro": "Laman web ini membolehkan pengguna membeli dan menjual aset digital melalui internet dengan menggunakan perkhidmatan kami.",
+    "service1": "Perkhidmatan Dompet Digital",
+    "service2": "Perkhidmatan Perdagangan",
+    "service3": "Perdagangan Fiat",
+    "service4": "Perkhidmatan Staking",
+    "service5": "Alat API",
+    "digitalAssetRisk": "Risiko Aset Digital",
+    "digitalAssetRiskText": "Penggunaan perkhidmatan adalah sepenuhnya di bawah tanggungjawab anda dan risiko mungkin besar. Kami tidak memberi nasihat mengenai pelaburan, cukai, atau undang-undang. Semua transaksi dilakukan secara automatik mengikut arahan anda, dan anda bertanggungjawab sepenuhnya untuk menentukan sama ada mana-mana transaksi atau strategi perdagangan sesuai dengan matlamat pelaburan, keadaan kewangan, dan toleransi risiko peribadi anda.",
+    "fees": "Yuran",
+    "feesText": "Kami mungkin mengenakan yuran untuk menggunakan mana-mana atau semua perkhidmatan. Anda boleh melihat jadual yuran perkhidmatan tertentu di laman web dan aplikasi kami. Kami juga berhak untuk mengenakan yuran untuk pemindahan aset digital ke dalam atau keluar dari akaun anda. Penyedia perkhidmatan dompet aset digital anda mungkin juga mengenakan yuran untuk transaksi dan yuran lain yang berkaitan dengan pemindahan aset digital ke akaun anda.",
+    "modificationsAndTerminations": "Pindaan dan Penamatan",
+    "modificationsText": "Kami berhak untuk mengubah, meng修, memperbaharui atau meminda mana-mana terma dan syarat dalam perjanjian ini dari semasa ke semasa. Kami akan mengemas kini versi baru perjanjian ini di sini atau memaklumkan anda melalui e-mel mengenai sebarang pindaan atau kemas kini.",
+    "userDeclaration": "Penyataan Pengguna",
+    "userDeclarationText": "Dengan menggunakan perkhidmatan, anda dengan jelas menyatakan dan menjamin bahawa:<br> 1. Anda mempunyai kuasa sah untuk menandatangani perjanjian ini;<br> 2. Anda akan menggunakan laman web, aplikasi, dan perkhidmatan ini mengikut terma kami dan mematuhi semua kewajipan anda;<br> 3. Penggunaan perkhidmatan akan mematuhi undang-undang yang terpakai di kawasan undang-undang anda dan anda tidak akan menggunakan perkhidmatan untuk apa-apa kegiatan haram atau jenayah;<br> 4. Anda menggunakan perkhidmatan hanya untuk diri anda sendiri dan bukan bagi pihak mana-mana pihak ketiga;<br> 5. Sebarang aset digital yang anda gunakan berkaitan dengan perkhidmatan adalah milik anda dan berasal dari sumber yang sah.",
+    "thankYou": "Terima kasih kerana membaca perjanjian perkhidmatan kami."
+  },
+  "disclaimer": {
+    "title": "Penafian",
+    "subtitle": "Sila baca dengan teliti penafian berikut",
+    "overview": "Maklumat penting mengenai penggunaan platform Keepbit dan penafian risiko",
+    "overviewText": "Dengan mengakses laman web https://www.Keepbit.com dan mana-mana halaman yang berkaitan serta aplikasi mudah alih Keepbit (yang boleh dimuat turun secara percuma di kedai aplikasi untuk sistem operasi iOS dan Android) (secara kolektif disebut sebagai 'platform'), anda mengakui bahawa anda telah membaca maklumat berikut dan menerima terma dan syarat yang disenaraikan di bawah, dan bersetuju untuk terikat oleh dokumen ini. Istilah 'anda' atau 'anda' dalam dokumen ini merujuk kepada individu anda serta mana-mana orang lain yang anda wakili untuk mengakses platform mengikut konteks.",
+    "general": "Am",
+    "generalText": "Platform ini beroperasi di seluruh dunia dengan nama dagang 'Keepbit' ('Keepbit', 'kami', atau 'kami').",
+    "generalText2": "Kandungan platform ini tidak disemak oleh mana-mana badan pengawalselia. Jika anda mempunyai sebarang pertanyaan mengenai kandungan platform, anda harus mendapatkan nasihat profesional secara bebas.",
+    "usSpecific": "Maklumat Khusus untuk Warganegara Amerika Syarikat",
+    "usSpecificText": "Maklumat di platform ini tidak ditujukan atau bertujuan untuk diedarkan kepada penduduk mana-mana negeri, wilayah atau teritorial AS, atau mana-mana 'warganegara AS' seperti yang diterangkan dalam Seksyen 902(k) Akta Sekuriti 1933 (Akta Sekuriti), atau bagi kegunaan mereka.",
+    "usSpecificText2": "Mana-mana aset digital yang diterangkan di platform ini tidak didaftarkan di bawah Akta Sekuriti dan tidak boleh ditawarkan atau dijual di AS atau kepada warganegara AS, kecuali jika pengecualian yang berkenaan diberikan berdasarkan kehendak Akta Sekuriti atau jika Suruhanjaya Sekuriti dan Bursa AS (SEC) memutuskan bahawa aset digital tersebut diatur oleh mereka.",
+    "canadaSpecific": "Maklumat Khusus untuk Penduduk Kanada",
+    "canadaSpecificText": "Tiada mana-mana suruhanjaya sekuriti atau badan yang serupa di Kanada yang telah mengkaji atau menyampaikan sebarang penilaian terhadap kandungan yang terdapat di platform ini. Mana-mana kenyataan yang bertentangan adalah suatu kesalahan.",
+    "noOffer": "Tiada Tawaran",
+    "noOfferText": "Kandungan di platform ini hanya untuk tujuan maklumat dan perdagangan yang adil, dan tidak membentuk tawaran untuk membeli, menjual atau mempromosikan tawaran untuk membeli, menjual atau memperoleh mana-mana hak atau kepentingan.",
+    "noAdvice": "Tiada Nasihat",
+    "noAdviceText": "Platform ini membenarkan pelanggan yang telah mendaftar dengan Keepbit untuk berdagang aset digital dengan Keepbit sebagai entiti. Sistem perdagangan AI kuantitatif, selepas pelanggan mengaktifkan strategi, boleh membuat pesanan kepada platform rakan strategik Keepbit (contohnya Bitget atau Binance) berdasarkan kedudukan terbuka terkumpul.",
+    "digitalAssetRisk": "Risiko Perdagangan dan Pelaburan Aset Digital",
+    "digitalAssetRiskText": "Sebagai pelanggan atau bakal pelanggan platform, sebelum membuat sebarang pembayaran atau transaksi aset digital kepada Keepbit, anda harus memahami perkara berikut:",
+    "digitalAssetRiskItem1": "Keepbit mungkin tidak mempunyai lesen untuk menyediakan perkhidmatan di platform di kawasan undang-undang anda.",
+    "digitalAssetRiskItem2": "Jika anda tidak biasa dengan aset digital tersebut, anda tidak seharusnya terlibat dalam perdagangan aset digital tersebut.",
+    "digitalAssetRiskItem3": "Anda harus sedar bahawa nilai aset digital boleh berubah dengan ketara.",
+    "digitalAssetRiskItem4": "Prestasi masa lalu tidak menjamin prestasi masa depan.",
+    "digitalAssetRiskItem5": "Pelaburan dalam mana-mana aset digital yang ditawarkan di platform ini membawa risiko yang signifikan.",
+    "digitalAssetRiskItem6": "Perdagangan dan pelaburan dalam aset digital yang ditawarkan di platform ini tidak sesuai untuk semua orang.",
+    "digitalAssetRiskItem7": "Kami berhak untuk membuka dan/atau mengekalkan dompet/akaun luar di penyedia dompet aset digital pihak ketiga dan/atau bursa aset digital luaran.",
+    "noGuarantee": "Tiada Jaminan",
+    "noGuaranteeText": "Walaupun Keepbit percaya bahawa maklumat yang disediakan di platform adalah tepat dan terkini, ia tidak memberikan sebarang kenyataan atau jaminan mengenai ketepatan atau kelengkapan maklumat tersebut.",
+    "liabilityLimit": "Had Tanggungjawab",
+    "liabilityLimitText": "Selain daripada kenyataan atau jaminan yang dinyatakan dengan jelas dalam terma penggunaan ini, Keepbit tidak memberikan sebarang kenyataan atau jaminan.",
+    "amlCtfCompliance": "Pemenuhan AML/CTF dan Kepatuhan Pengawalseliaan",
+    "amlCtfComplianceText": "Keepbit komited untuk mematuhi semua undang-undang, peraturan, serta piawaian dan garis panduan pengawalseliaan yang berhubung dengan AML/CTF.",
+    "websiteAvailability": "Ketersediaan Laman Web dan Perisian",
+    "websiteAvailabilityText": "Platform ini boleh diakses pada komputer dan peranti mudah alih yang menjalankan aplikasi Keepbit.",
+    "supportDesk": "Meja Sokongan",
+    "supportDeskText": "Keepbit menyelenggara meja sokongan dalam talian di platform untuk menjawab sebarang pertanyaan mengenai platform.",
+    "privacy": "Privasi",
+    "privacyText": "Keepbit komited untuk melindungi privasi, kerahsiaan, dan keselamatan maklumat peribadi atau data peribadi yang dikumpulkan mengikut semua undang-undang perlindungan data yang berkenaan.",
+    "footer": "Hak Cipta ©2024 Keepbit AS"
+  },
+  "easyMoneyClause": {
+    "title": "Terma Keepbit Mudah Menjana",
+    "section1Title": "1. Mudah Menjana",
+    "section1Text1": "1.1 Dengan melanggan Keepbit Easy Earn, anda mengakui bahawa anda telah membaca, memahami, dan menerima semua terma dan syarat dalam Terma Keepbit Easy Earn ini, dan anda mengakui serta bersetuju untuk terikat oleh terma dan syarat ini. Jika anda tidak sepenuhnya memahami dan menerima terma-terma ini, anda tidak dibenarkan untuk melanggan.",
+    "section1Text2": "1.2 Dengan melanggan Easy Earn, anda boleh menerima ganjaran yang ditetapkan oleh Keepbit dan dipersetujui oleh anda sebelum setiap transaksi. Namun, kecuali dinyatakan secara jelas oleh Keepbit, melanggan Easy Earn tidak menjamin modal atau ganjaran.",
+    "section2Title": "2. Melanggan Mudah Menjana",
+    "section2Text1": "2.1 Apabila anda melanggan Easy Earn, sistem akan meminta anda untuk bersetuju dengan sebahagian atau semua terma berikut:",
+    "section2Item1": "2.1.1 Kadar ganjaran Easy Earn;",
+    "section2Item2": "2.1.2 Aset dan jumlah yang akan digunakan untuk langganan;",
+    "section2Item3": "2.1.3 Sama ada anda melanggan Easy Earn dengan tempoh fleksibel atau tetap; jika tetap, tempoh Easy Earn (termasuk tarikh mula dan tarikh tamat) serta tarikh penyelesaian Easy Earn.",
+    "section2Text2": "2.2 Keepbit mungkin menetapkan jumlah minimum aset yang diperlukan untuk melanggan Easy Earn, dan/atau menetapkan sebarang had yang dianggap sesuai oleh Keepbit.",
+    "section2Text3": "2.3 Kecuali dinyatakan secara jelas oleh Keepbit, Keepbit tidak menjamin modal anda.",
+    "section3Title": "3. Ganjaran Mudah Menjana",
+    "section3Text1": "3.1 Setelah melanggan Easy Earn, Keepbit boleh menentukan sama ada untuk menetapkan kadar ganjaran mengikut terma produk.",
+    "section3Text2": "Jika kadar ganjaran ditetapkan dalam terma produk semasa melanggan, ganjaran akan dikumpul bermula dari tarikh mula setiap transaksi Easy Earn yang ditetapkan oleh Keepbit dan dipersetujui oleh anda sebelum melanggan.",
+    "section3Text3": "Ganjaran akan diberikan dalam bentuk aset digital yang sama dengan Easy Earn anda.",
+    "section3Text4": "Ganjaran akan dikira berdasarkan kadar ganjaran yang dipersetujui sebelum melanggan Easy Earn.",
+    "section3Text5": "Ganjaran akan dipindahkan ke akaun Keepbit anda pada tarikh pengagihan aset yang dipersetujui.",
+    "section3Text6": "Ganjaran akan dibundarkan ke tempat perpuluhan terdekat, dan angka tertentu mungkin berbeza bergantung kepada aset digital.",
+    "section4Title": "4. Tebusan",
+    "section4Text1": "4.1 Keepbit akan mengembalikan aset Easy Earn kepada anda pada tarikh pengagihan aset yang dipersetujui.",
+    "section4Text2": "4.2 Tiada tebusan awal yang disokong. Ini bermakna aset yang anda langgan dan ganjaran yang berkaitan tidak boleh ditebus sebelum tarikh penyelesaian.",
+    "section4Text3": "4.3 Dalam beberapa keadaan, termasuk tetapi tidak terhad kepada turun naik pasaran yang ketara, kelewatan rangkaian, atau sebarang kejadian yang tidak dijangka, tebusan anda mungkin ditangguhkan, dan Keepbit akan berusaha sebaik mungkin untuk menebus aset anda secara komersial wajar.",
+    "section4Text4": "4.4 Langganan automatik. Berdasarkan terma dan syarat setiap transaksi Easy Earn, Keepbit boleh memutuskan untuk membenarkan anda menggunakan aset Easy Earn dari transaksi terdahulu untuk melanggan transaksi Easy Earn baru secara automatik pada tarikh penyelesaian.",
+    "section4Text5": "4.5 Walau bagaimanapun, Keepbit berhak untuk tidak mengikuti arahan langganan automatik anda. Ia boleh menolak untuk mengikuti arahan ini atas sebarang alasan, termasuk tetapi tidak terhad kepada had langganan Easy Earn telah dicapai.",
+    "section5Title": "5. Menghentikan, Menangguhkan atau Membatalkan Transaksi Easy Earn Anda",
+    "section5Text1": "5.1 Keepbit mungkin menghentikan, menangguhkan, atau membatalkan akses anda ke Easy Earn, atau menangguhkan beberapa transaksi dalam keadaan berikut:",
+    "section5Item1": "5.1.1 Anda gagal memberikan maklumat tambahan yang diminta oleh Keepbit untuk mengesahkan identiti atau sumber dana anda;",
+    "section5Item2": "5.1.2 Keepbit perlu bertindak mengikut perintah mahkamah untuk mematuhi mana-mana undang-undang yang berkenaan (termasuk undang-undang anti-pengubahan wang haram atau sekatan), yang merangkumi semua peraturan atau undang-undang yang relevan, prinsip peraturan, notis, perintah atau keputusan yang relevan;",
+    "section5Item3": "5.1.3 Keepbit perlu bertindak untuk mematuhi sebarang arahan daripada agensi kerajaan atau institusi;",
+    "section5Item4": "5.1.4 Keepbit berpendapat bahawa maklumat yang anda berikan kepada Keepbit adalah salah, tidak benar, ketinggalan zaman atau tidak lengkap; atau",
+    "section5Item5": "5.1.5 Anda gagal menyediakan maklumat tambahan yang kami perlukan dalam masa yang munasabah atau tepat.",
+    "section6Title": "6. Penafian Teknikal",
+    "section6Text1": "6.1 Keepbit boleh menangguhkan akses ke Easy Earn, akaun Keepbit dan/atau platform Keepbit untuk penyelenggaraan berkala dan kecemasan. Keepbit akan berusaha sebaik mungkin untuk memastikan transaksi di platform diproses dengan segera, tetapi Keepbit tidak membuat sebarang jaminan atau kenyataan mengenai tempoh masa yang diperlukan untuk menyelesaikan pemprosesan, kerana tempoh tersebut bergantung kepada banyak faktor yang di luar kawalan kami.",
+    "section6Text2": "6.2 Walaupun Keepbit berusaha untuk mengemas kini maklumat di platform, kami tidak memberikan sebarang jaminan atau kenyataan mengenai ketepatan, kelengkapan, atau kemaskini kandungan di platform (termasuk maklumat yang berkaitan dengan perkhidmatan Keepbit).",
+    "section6Text3": "6.3 Anda bertanggungjawab untuk mendapatkan akses rangkaian data yang diperlukan untuk menggunakan perkhidmatan Keepbit. Anda juga bertanggungjawab untuk mendapatkan dan mengemas kini perkakasan atau peranti yang serasi untuk mengakses dan menggunakan perkhidmatan Keepbit, platform, dan sebarang kemas kini. Keepbit tidak menjamin bahawa perkhidmatan Keepbit atau mana-mana bahagiannya akan berfungsi pada perkakasan atau peranti tertentu. Perkhidmatan Keepbit mungkin terjejas oleh gangguan dan kelewatan yang wujud dalam komunikasi internet dan elektronik.",
+    "section7Title": "7. Terma Umum",
+    "section7Text1": "7.1 Semua istilah dan rujukan yang digunakan dalam Terma Keepbit Easy Earn ini dan istilah-istilah dan rujukan yang ditakrifkan dan diterangkan dalam Terma Perkhidmatan Keepbit tetapi tidak ditakrifkan atau diterangkan dalam terma ini akan mempunyai makna dan penjelasan yang sama seperti yang diterangkan dalam Terma Perkhidmatan.",
+    "section7Text2": "7.2 Terma Keepbit Easy Earn ini harus dibaca bersama Terma Perkhidmatan. Sekiranya terdapat sebarang percanggahan atau ketidakserasian antara Terma Keepbit Easy Earn dan Terma Perkhidmatan, Terma Keepbit Easy Earn akan diguna pakai.",
+    "section7Text3": "7.3 Keepbit akan menggunakan maklumat yang anda berikan untuk menghubungi anda. Ini termasuk menghubungi anda melalui e-mel, SMS, atau telefon. Sila pastikan maklumat hubungan anda adalah tepat dan terkini. Jika maklumat hubungan anda berubah, anda mesti memaklumkan kepada kami dengan segera. Jika tidak, Keepbit tidak akan bertanggungjawab jika anda tidak menerima maklumat, notis, atau maklumat penting lain dari Keepbit.",
+    "footer": "Hak Cipta ©2024 Keepbit AS"
+  },
+  "privacyPolicy": {
+    "title": "Polisi Privasi",
+    "section1Title": "1. Gambaran Umum",
+    "section1Text1": "Apabila anda mengunjungi laman web ini atau menggunakan perkhidmatan, polisi privasi ini akan terpakai ke atas maklumat peribadi anda. Polisi privasi ini menerangkan bagaimana kami mengumpul, menyimpan, memproses, berkongsi, dan memindahkan maklumat peribadi anda apabila anda mengunjungi laman web ini atau menggunakan perkhidmatan.",
+    "section1Text2": "Polisi privasi ini bertujuan untuk membantu anda memahami amalan privasi kami dan memberi anda pilihan privasi semasa menggunakan laman web dan perkhidmatan kami.",
+    "section1Text3": "Sekiranya anda mempunyai sebarang pertanyaan mengenai amalan privasi kami yang tidak disebut dalam polisi privasi ini, sila hubungi kami melalui email di service@keepbit.top.",
+    "section1Text4": "Polisi privasi ini dimasukkan secara rujukan dalam sebarang terma perkhidmatan yang disediakan di laman web atau perkhidmatan. Penggunaan perkhidmatan menunjukkan bahawa anda bersetuju dengan terma polisi privasi ini. Jika anda tidak bersetuju atau tidak berpuas hati dengan mana-mana aspek polisi privasi ini, anda harus segera berhenti menggunakan perkhidmatan.",
+    "section1Text5": "Setelah anda menerima polisi privasi ini, maklumat peribadi yang kami kumpul sebelum penerimaan anda juga akan terikat dengan polisi privasi ini.",
+    "section2Title": "2. Definisi",
+    "section2Item1": "\"Akaun\" merujuk kepada akaun pengguna di laman web ini.",
+    "section2Item2": "\"Maklumat peribadi\" merujuk kepada maklumat yang boleh dikaitkan dengan individu yang dikenal pasti atau boleh dikenal pasti. Maklumat peribadi boleh termasuk nama, alamat surat menyurat, nombor telefon, alamat emel, maklumat akaun kewangan, nombor akaun, tarikh lahir, dan dokumen yang dikeluarkan oleh kerajaan (seperti nombor lesen memandu, kad pengenalan nasional, pasport, dan nombor pengenalan pembayar cukai). Maklumat peribadi tidak termasuk maklumat yang tidak dapat mengenal pasti pengguna tertentu.",
+    "section2Item3": "\"Perkhidmatan\" merujuk kepada laman web, sebarang alat API atau aplikasi mudah alih yang kami miliki atau kendalikan serta semua perkhidmatan, ciri, fungsi, dan kandungan yang disediakan melalui laman web atau alat API.",
+    "section2Item4": "\"Laman web\" merujuk kepada laman web www.keepbit.com serta aplikasi mudah alih kami, platform media sosial rasmi, atau aset dalam talian lain di mana kami menyediakan perkhidmatan.",
+    "section2Item5": "\"Pengguna\" merujuk kepada individu yang berjaya mendaftar di laman web ini.",
+    "section3Title": "3. Apakah maklumat peribadi yang kami kumpul?",
+    "section3Text1": "Apabila anda mengunjungi laman web kami atau menggunakan perkhidmatan, kami mungkin mengumpul maklumat tentang anda, termasuk maklumat berikut:",
+    "section3Item1": "Maklumat pendaftaran: Apabila anda membuat akaun atau menggunakan perkhidmatan, kami mungkin meminta anda untuk menyediakan nama, alamat surat menyurat, nombor telefon, dan alamat emel untuk mencipta akaun.",
+    "section3Item2": "Maklumat pengesahan: Apabila anda menggunakan perkhidmatan, kami mungkin meminta anda untuk memberikan maklumat peribadi tambahan untuk mengesahkan identiti, sumber dana, dan alamat anda.",
+    "section3Item3": "Maklumat transaksi dan pengalaman: Apabila anda menggunakan perkhidmatan, kami mungkin mengumpul maklumat tentang transaksi, termasuk alamat dompet digital, alamat IP, maklumat tentang penyemak imbas atau peranti, dan lain-lain.",
+    "section3Item4": "Maklumat daripada sumber pihak ketiga: Di mana dibenarkan oleh undang-undang, kami mungkin mendapat maklumat daripada pangkalan data awam, rakan kongsi pengesahan, dan sumber pihak ketiga lain.",
+    "section3Item5": "Maklumat lain: Kami juga mungkin mengumpul maklumat lain, seperti maklumat yang anda berikan apabila berkomunikasi dengan kami melalui emel atau sokongan pelanggan.",
+    "section4Title": "4. Bagaimana kami memproses maklumat peribadi?",
+    "section4Text1": "Kami mungkin memproses maklumat anda untuk tujuan berikut:",
+    "section4Item1": "Mengendalikan laman web dan menyediakan perkhidmatan, termasuk pengurusan akaun, pengesahan akses, pemprosesan transaksi, dan lain-lain.",
+    "section4Item2": "Menguruskan keperluan perniagaan kami, seperti memantau, menganalisis, dan memperbaiki perkhidmatan.",
+    "section4Item3": "Mengesahkan identiti anda dan meningkatkan keselamatan, memerangi perisian hasad, dan memastikan pematuhan undang-undang yang berkenaan.",
+    "section4Item4": "Menyediakan kemudahan perkhidmatan kepada pihak ketiga, memproses maklumat peribadi berkaitan dengan perkhidmatan yang disediakan oleh pihak ketiga.",
+    "section4Item5": "Menyesuaikan kandungan pengiklanan berdasarkan pilihan anda, serta melakukan pemasaran.",
+    "section4Item6": "Mematuhi kewajipan undang-undang kami dan menguatkuasakan terma perkhidmatan.",
+    "section4Item7": "Memberikan sokongan pelanggan, menangani permintaan anda, dan menyelesaikan pertikaian.",
+    "section5Title": "5. Bagaimana kami menggunakan Cookies dan teknologi penjejakan?",
+    "section5Text1": "Apabila anda mengunjungi laman web atau menggunakan perkhidmatan, kami mungkin menggunakan Cookies, tag piksel, penyimpanan tempatan, dan teknologi penjejakan lain (secara kolektif disebut sebagai \"Cookies\") untuk mengumpul maklumat secara automatik bagi tujuan berikut:",
+    "section5Item1": "Mengenal pasti anda sebagai pengguna dan menyesuaikan pengalaman dalam talian anda.",
+    "section5Item2": "Mengukur keberkesanan promosi dan melakukan analisis.",
+    "section5Item3": "Membantu kami memahami bagaimana pengguna menggunakan perkhidmatan dan berinteraksi dengannya, supaya kami dapat meningkatkan perkhidmatan dan memberikan ciri-ciri yang dipertingkatkan semasa anda menggunakan perkhidmatan.",
+    "section5Item4": "Membantu mencegah aktiviti penipuan yang berpotensi dan meningkatkan keselamatan.",
+    "section5Text2": "Jika anda ingin memilih untuk tidak menggunakan Cookies, anda boleh mengubah tetapan dalam penyemak imbas atau peranti anda. Walau bagaimanapun, sila ambil perhatian bahawa melumpuhkan Cookies mungkin akan mempengaruhi beberapa ciri laman web.",
+    "section6Title": "6. Adakah kami berkongsi maklumat peribadi?",
+    "section6Text1": "Kami mungkin berkongsi maklumat peribadi anda dengan pihak-pihak berikut mengikut polisi privasi:",
+    "section6Item1": "Dengan anggota keluarga korporat kami yang lain.",
+    "section6Item2": "Dengan pihak ketiga yang menyediakan perkhidmatan.",
+    "section6Item3": "Dengan pihak ketiga yang melindungi kepentingan perniagaan dan pengguna kami.",
+    "section6Item4": "Mengikut permintaan undang-undang atau pihak berkuasa penguatkuasa.",
+    "section6Item5": "Dengan persetujuan anda, kepada pihak ketiga.",
+    "section7Title": "7. Mengapa kami menyimpan maklumat peribadi?",
+    "section7Text1": "Kami menyimpan maklumat peribadi untuk memenuhi kewajipan undang-undang kami, keperluan perniagaan, atau terma perkhidmatan. Kami akan menyimpan maklumat peribadi anda untuk tempoh yang diperlukan dan memastikan pematuhan undang-undang yang berkenaan.",
+    "section8Title": "8. Bagaimana kami melindungi maklumat peribadi anda?",
+    "section8Text1": "Kami mengambil langkah teknikal, fizikal, dan pengurusan untuk melindungi maklumat peribadi anda daripada kehilangan, penyalahgunaan, atau akses tanpa kebenaran. Walau bagaimanapun, kami tidak dapat memberikan jaminan keselamatan sepenuhnya ke atas maklumat.",
+    "section9Title": "9. Bolehkah kanak-kanak menggunakan perkhidmatan?",
+    "section9Text1": "Laman web dan perkhidmatan kami tidak disasarkan kepada individu yang berumur di bawah 18 tahun (\"Kanak-kanak\"). Kami tidak sengaja mengumpul maklumat peribadi daripada kanak-kanak.",
+    "section10Title": "10. Laman web pihak ketiga dan platform media sosial",
+    "section10Text1": "Laman web kami mungkin mengandungi pautan kepada laman web pihak ketiga. Maklumat yang anda berikan di laman web tersebut akan tertakluk kepada polisi privasi mereka masing-masing, dan kami tidak bertanggungjawab terhadap amalan privasi atau keselamatan laman web tersebut.",
+    "section11Title": "11. Lain-lain",
+    "section11Text1": "Perubahan pada polisi privasi ini. Kami mungkin menyemak semula, mengubah, atau menggantikan polisi privasi ini dari semasa ke semasa untuk mencerminkan perubahan dalam perniagaan kami, laman web atau perkhidmatan kami atau undang-undang yang terpakai.",
+    "section11Text2": "Pemindahan maklumat peribadi ke negara lain. Operasi kami disokong oleh rangkaian komputer, pelayan berasaskan awan, serta infrastruktur dan teknologi maklumat lain (termasuk tetapi tidak terhad kepada penyedia perkhidmatan pihak ketiga).",
+    "section12Title": "12. Hubungi Kami",
+    "section12Text1": "Sekiranya anda mempunyai sebarang pertanyaan atau kebimbangan mengenai polisi privasi kami, anda boleh menghubungi kami melalui emel di service@keepbit.com.",
+    "footer": "Hak Cipta ©2024 Keepbit AS. Semua Hak Cipta Terpelihara"
+  },
+  "serviceAgreement": {
+    "title": "Perjanjian Pembiayaan Terjamin",
+    "section1Text1": "Jika anda memohon perkhidmatan pembiayaan terjamin melalui laman web kami, selain daripada Terma Perkhidmatan Keepbit, Perjanjian Pembiayaan Terjamin ini (\"MFA\") juga akan terpakai ke atas anda. Jika terdapat ketidakselarasan antara MFA ini dan Terma Perkhidmatan Keepbit, MFA ini akan diutamakan.",
+    "section1Text2": "Kami menyediakan bahagian ini untuk memberi anda fakta asas mengenai pembelian aset melalui pembiayaan terjamin dan mengingatkan anda mengenai risiko yang terlibat dalam perdagangan margin. Perdagangan melalui akaun margin berisiko tinggi dan boleh menyebabkan kehilangan semua aset yang dimasukkan ke dalam akaun margin. Selain itu, anda mesti memahami sepenuhnya risiko yang terlibat dalam perdagangan aset melalui pembiayaan terjamin.",
+    "section2Title": "1. Penjelasan dan Definisi",
+    "section2Text1": "Istilah besar yang digunakan dalam MFA ini, jika tidak didefinisikan di sini, akan mempunyai makna yang diberikan dalam Perjanjian Pengguna.",
+    "section2Item1": "\"Aset\" merujuk kepada mana-mana kontrak, seperti derivatif atau kontrak niaga hadapan, atau mana-mana aset digital.",
+    "section2Item2": "\"Margin\" merujuk kepada jumlah aset yang anda masukkan ke dalam akaun margin untuk menanggung risiko perdagangan margin.",
+    "section2Item3": "\"Penambahan Margin\" merujuk kepada arahan daripada kami, Keepbit, untuk menambah margin.",
+    "section2Item4": "\"Akaun Margin\" merujuk kepada akaun yang menyediakan kemudahan margin kepada anda.",
+    "section2Item5": "\"Perdagangan Margin\" merujuk kepada penyertaan dalam mana-mana perdagangan yang melibatkan pembelian aset sepenuhnya atau sebahagian melalui kemudahan margin yang disediakan kepada anda.",
+    "section3Title": "2. Aset dalam Akaun Margin",
+    "section3Text1": "Aset dalam akaun margin anda akan digunakan sebagai cagaran untuk pinjaman aset kepada anda. Jika aset tersebut susut nilai, cagaran juga akan susut nilai. Oleh itu, kami boleh mengambil tindakan, seperti menjual cagaran yang dipegang dalam akaun margin atau mengeluarkan notis penambahan margin untuk memastikan nilai aset dalam akaun margin mencukupi.",
+    "section4Title": "3. Penambahan Margin",
+    "section4Text1": "Anda perlu faham bahawa, mengikut MFA ini, kami biasanya tidak akan mengeluarkan notis penambahan margin atau menambah deposit ke dalam akaun anda untuk memenuhi syarat margin. Sebaliknya, kami biasanya akan menutup posisi dalam akaun margin anda tanpa sebarang pemberitahuan terlebih dahulu untuk memenuhi keperluan margin, dan anda tidak mempunyai peluang untuk memilih posisi mana yang akan ditutup atau masa atau urutan penutupan.",
+    "section5Title": "4. Pengendalian Kekurangan Dana",
+    "section5Text1": "Jika kami tidak menutup posisi tetapi mengeluarkan notis penambahan margin, anda perlu segera memasukkan aset ke dalam akaun margin anda untuk memenuhi notis penambahan margin kami.",
+    "section6Title": "5. Kehilangan Aset",
+    "section6Text1": "Aset yang anda hilang mungkin lebih banyak daripada aset yang dimasukkan ke dalam akaun margin anda. Penurunan nilai aset yang dibeli melalui margin mungkin memerlukan anda menyediakan aset tambahan untuk mengelakkan penutupan posisi.",
+    "section7Title": "6. Perubahan Keperluan Margin",
+    "section7Text1": "Keperluan margin yang dipaparkan di laman web ini hanya sebagai rujukan dan tidak mencerminkan keperluan margin sebenar. Keperluan margin sebenar mungkin berubah dengan cepat berdasarkan keadaan pasaran.",
+    "section8Title": "7. Pengubahsuaian Keperluan Margin",
+    "section8Text1": "Kami berhak untuk mengubah dan menaikkan keperluan margin pada bila-bila masa tanpa notis bertulis kepada anda. Perubahan ini biasanya akan berkuat kuasa serta-merta dan akan mempengaruhi margin sedia ada anda. Jika anda tidak mematuhi keperluan margin yang dipinda atau ditingkatkan, anda boleh ditutup segera tanpa sebarang notis.",
+    "section9Title": "8. Pematuhan Margin",
+    "section9Text1": "Anda mesti sentiasa mematuhi keperluan margin yang kami tetapkan, dan anda bersetuju untuk mengekalkan margin anda dalam julat yang ditetapkan oleh keperluan margin tersebut.",
+    "section10Title": "9. Kawalan Risiko",
+    "section10Text1": "Keperluan margin atau kawalan risiko kami mungkin termasuk had saiz posisi atau had lain. Jika had ini tercapai atau dilampaui, anda mungkin tidak dapat membuat pesanan baru, dan anda memberi kuasa kepada kami untuk menutup posisi sedia ada dan/atau membuat transaksi untuk mengurangkan risiko agar akaun margin anda mematuhi keperluan margin yang berkenaan.",
+    "section11Title": "10. Penilaian Posisi dan Aset",
+    "section11Text1": "Untuk menentukan sama ada anda mematuhi keperluan margin kami, kami berhak untuk menentukan nilai posisi dan aset dalam akaun margin anda. Pengiraan kami mungkin berbeza daripada penilaian dan harga yang diumumkan oleh pasaran lain, dan anda bersetuju menerima penilaian kami tanpa syarat.",
+    "section12Title": "11. Penutupan Margin",
+    "section12Text1": "Jika margin anda jatuh di bawah keperluan margin atau kami mengubah keperluan margin kepada yang lebih tinggi, kami boleh menjual aset dalam akaun margin anda untuk menampung kekurangan margin. Jika penutupan tidak mencukupi untuk menampung kekurangan, anda akan bertanggungjawab untuk menampung jurang tersebut secara undang-undang.",
+    "section13Title": "12. Penolakan Pesanan",
+    "section13Text1": "Jika aset dalam akaun margin anda tidak mencukupi untuk memenuhi keperluan margin, kami mungkin akan menolak mana-mana pesanan dan mungkin menangguhkan pemprosesan mana-mana pesanan ketika menentukan status margin akaun anda.",
+    "section14Title": "13. Pemberitahuan Penutupan",
+    "section14Text1": "Kami tidak berkewajipan untuk menghubungi anda sebelum pemberitahuan penambahan margin atau penutupan berkuat kuasa. Oleh itu, anda perlu memahami bahawa anda perlu sentiasa menyemak keperluan margin terdahulu dan bagaimana perubahan keperluan margin boleh memberi kesan kepada anda. Anda juga perlu memastikan anda menguruskan risiko dengan sewajarnya berdasarkan toleransi risiko anda.",
+    "section15Title": "14. Tanggungjawab Penutupan",
+    "section15Text1": "Penutupan biasanya berlaku secara automatik, tetapi walaupun dengan ketentuan tersebut, jika akaun margin anda tidak memenuhi keperluan margin, kami tidak berkewajipan untuk mengambil sebarang tindakan.",
+    "section16Title": "15. Penutupan Automatik",
+    "section16Text1": "Jika anda tidak mematuhi keperluan margin, anda tidak boleh bergantung pada kami untuk menutup atau menutupi posisi dalam akaun margin anda. Secara khusus, anda tidak boleh bergantung kepada hak penutupan automatik atau sistem sebagai pesanan henti rugi. Anda tidak boleh menganggap bahawa kami akan menutup posisi untuk mengelakkan kerugian anda melebihi jumlah yang dimasukkan.",
+    "section17Title": "16. Pilihan Penutupan",
+    "section17Text1": "Anda tidak berhak untuk memilih aset mana yang akan ditutup. Kami mempunyai hak untuk memutuskan posisi mana yang perlu ditutup bagi melindungi kepentingan kami. Dalam keadaan margin yang tidak mencukupi, kami mungkin membenarkan anda untuk meminta penutupan aset dalam akaun margin anda, tetapi permintaan ini tidak mengikat kami, dan kami berhak untuk menentukan aset mana yang akan ditutup.",
+    "section18Title": "17. Risiko Jual Pendek",
+    "section18Text1": "Risiko khas jual pendek. Risiko lain yang berkaitan dengan jual pendek aset mungkin menyebabkan anda mengalami kerugian yang besar. Jika akaun margin anda tidak mempunyai margin yang mencukupi, kami mungkin akan menutup posisi anda dengan membeli semula aset tersebut.",
+    "section19Title": "18. Hak Penutupan Margin",
+    "section19Text1": "Anda bersetuju bahawa kami berhak untuk menutup dan/atau menyelesaikan semua atau sebahagian daripada posisi atau aset dalam akaun margin anda pada bila-bila masa tanpa pemberitahuan terlebih dahulu.",
+    "section20Title": "19. Tanggungjawab Selepas Penutupan",
+    "section20Text1": "Anda bertanggungjawab untuk membayar sebarang kekurangan yang timbul daripada penutupan atau kekurangan yang masih wujud selepas penutupan tersebut.",
+    "section21Title": "20. Hak Pembekuan Penutupan",
+    "section21Text1": "Jika penutupan berlaku, anda bersetuju bahawa kami mempunyai hak eksklusif untuk membekukan keseluruhan atau sebahagian daripada akaun margin atau aset anda dan/atau melaksanakan posisi dalam akaun margin anda tanpa notis terlebih dahulu.",
+    "section22Title": "21. Perlindungan Pasaran",
+    "section22Text1": "Terma-terma dan keperluan margin ini bertujuan untuk melindungi integriti pasaran, bukan untuk melindungi anda."
+  },
+  "userBehaviorCode": {
+    "title": "Kod Tingkah Laku Pengguna Keepbit",
+    "section1Text1": "Pengguna Keepbit bersetuju untuk mematuhi peraturan tingkah laku berikut untuk memastikan bahawa platform Keepbit tidak digunakan untuk tujuan merosakkan atau memanipulasi. Sebarang aktiviti perdagangan yang mengganggu atau memanipulasi transaksi aset digital adalah dilarang. Senarai berikut tidak bersifat eksklusif dan bertujuan untuk memberi penjelasan mengenai aktiviti yang dilarang.",
+    "section1Text2": "Apabila menggunakan perkhidmatan kami, akaun anda, atau berinteraksi dengan kami, pengguna lain atau pihak ketiga:",
+    "section1Item1": "Tidak melanggar mana-mana undang-undang, peraturan, atau peraturan yang berkaitan (seperti undang-undang mengenai perkhidmatan kewangan, perlindungan pengguna, persaingan tidak adil, anti-diskriminasi atau iklan palsu);",
+    "section1Item2": "Jangan pegang atau dagangkan aset digital yang kami anggap berpotensi penipuan;",
+    "section1Item3": "Jangan terlibat dalam aktiviti atau transaksi yang berpotensi penipuan atau mencurigakan;",
+    "section1Item4": "Jangan melakukan apa-apa yang akan memberi beban yang tidak munasabah atau tidak seimbang kepada laman web, perisian, sistem (termasuk rangkaian dan pelayan yang digunakan untuk menyediakan mana-mana perkhidmatan) atau perkhidmatan kami;",
+    "section1Item5": "Jangan bantu dalam penyebaran virus, trojan, perisian hasad, cacing atau program komputer lain yang mungkin merosakkan, mengganggu, mencuri, atau mengakses tanpa kebenaran sebarang sistem, data, maklumat atau perkhidmatan;",
+    "section1Item6": "Jangan meletakkan pesanan dengan tujuan untuk mencipta ketidakstabilan yang tidak perlu atau menetapkan harga yang tidak mencerminkan atau tidak akan mencerminkan nilai pasaran yang adil. Ini termasuk memanipulasi perdagangan atau menggunakan pesanan yang bertujuan untuk menunjukkan momentum atau aktiviti perdagangan yang tidak semula jadi;",
+    "section1Item7": "Jangan letakkan pesanan dengan tujuan untuk membatalkan pesanan beli atau jual sebelum ia dilaksanakan;",
+    "section1Item8": "Jangan susun pesanan terlebih dahulu untuk tujuan melaksanakan pesanan secara artifisial;",
+    "section1Item9": "Jangan letakkan pesanan untuk membantu orang lain membuat perdagangan;",
+    "section1Item10": "Jangan letakkan pesanan beli dan jual yang boleh dilaksanakan serentak;",
+    "section1Text3": "Keepbit berhak untuk membuat keputusan terakhir mengenai tafsiran perjanjian ini."
+  },
+  "footer": {
+    "logo": "KeepBit",
+    "copyright": "©2017 - 2024 KEEPBIT.COM",
+    "serviceTitle": "Perkhidmatan Platform",
+    "appDownload": "Muat turun Aplikasi",
+    "market": "Pasaran",
+    "serviceAgreement": "Perjanjian Perkhidmatan",
+    "userSupportTitle": "Sokongan Pengguna",
+    "customerSupport": "Sokongan Pelanggan Dalam Talian",
+    "companyTitle": "Syarikat",
+    "aboutUs": "Tentang Kami",
+    "agencyPlan": "Rancangan Agensi",
+    "termsTitle": "Terma-terma",
+    "userAgreement": "Perjanjian Pengguna",
+    "privacyPolicy": "Dasar Privasi",
+    "disclaimer": "Penafian",
+    "userBehaviorCode": "Kod Tingkah Laku Pengguna",
+    "easyMoneyClause": "Terma Mudah Duit"
+  }
 }

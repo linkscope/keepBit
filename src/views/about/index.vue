@@ -57,17 +57,17 @@ const { t } = useI18n()
       <div class="border border-slate-200/80 rounded-2xl py-8 flex flex-col items-center gap-y-4">
         <img class="size-[80px]" src="/about_contact1.png" />
         <div class="text-2xl font-bold">{{ t('about.contact.list[0]') }}</div>
-        <div class="text-lg font-bold">1234564@163.com</div>
+        <div class="text-lg font-bold">service@keepbit.top</div>
       </div>
       <div class="border border-slate-200/80 rounded-2xl py-8 flex flex-col items-center gap-y-4">
         <img class="size-[80px]" src="/about_contact2.png" />
         <div class="text-2xl font-bold">{{ t('about.contact.list[1]') }}</div>
-        <div class="text-lg font-bold">1234564@163.com</div>
+        <div class="text-lg font-bold">service@keepbit.top</div>
       </div>
       <div class="border border-slate-200/80 rounded-2xl py-8 flex flex-col items-center gap-y-4">
         <img class="size-[80px]" src="/about_contact3.png" />
         <div class="text-2xl font-bold">{{ t('about.contact.list[2]') }}</div>
-        <div class="text-lg font-bold">1234564@163.com</div>
+        <div class="text-lg font-bold">service@keepbit.top</div>
       </div>
     </div>
   </div>

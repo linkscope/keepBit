@@ -26,7 +26,12 @@ let scrollInterval = 0
 const navigateToLink = () => {
   window.open('https://t.me/+1hz-GvUuw0FmNDM1', '_blank')
 }
-
+const handleClickToAgencyPlan = () => {
+  window.open('/#/article/agencyPlan', '_blank')
+}
+const easyMoneyClause = () => {
+  window.open('/#/article/easyMoneyClause', '_blank')
+}
 onMounted(() => {
   // 创建Ticker Tape组件
   const script = initTickerTape()
@@ -78,8 +83,8 @@ onUnmounted(() => {
       </div>
       <div class="carousel px-4 lg:p-0 flex gap-4 overflow-x-auto">
         <img class="lg:w-0 lg:flex-1 h-[260px]" src="/home_card_1.png" alt="Link to Telegram" @click="navigateToLink" />
-        <img class="lg:w-0 lg:flex-1 h-[260px]" src="/home_card_2.png" />
-        <img class="lg:w-0 lg:flex-1 h-[260px]" src="/home_card_3.png" />
+        <img class="lg:w-0 lg:flex-1 h-[260px]" src="/home_card_2.png" alt="Home Card" @click="handleClickToAgencyPlan"/>
+        <img class="lg:w-0 lg:flex-1 h-[260px]" src="/home_card_3.png" alt="Home Card" @click="easyMoneyClause" />
       </div>
     </div>
   </div>
@@ -146,8 +151,8 @@ onUnmounted(() => {
         <div class="space-y-4">
           <Coin
             v-for="item of currentTab === 'stock'
-              ? sortedByLastPriceCoinSpotList.list.slice(0, 3)
-              : sortedByLastPriceCoinList.list.slice(0, 3)"
+              ? sortedCoinSpotList.list.slice(0, 3)
+              : sortedCoinList.list.slice(0, 3)"
             :key="item.instId"
             :coin="item"
           />
@@ -156,8 +161,8 @@ onUnmounted(() => {
         <div class="space-y-4">
           <Coin
             v-for="item of currentTab === 'stock'
-              ? sortedByLastPriceCoinSpotList.list.slice(-3)
-              : sortedByLastPriceCoinList.list.slice(-3)"
+              ? sortedCoinSpotList.list.slice(-3)
+              : sortedCoinList.list.slice(-3)"
             :key="item.instId"
             :coin="item"
           />

@@ -1,11 +1,40 @@
 <script setup>
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { NTabs, NTabPane, NForm, NFormItem, NInput, NButton, NDivider } from 'naive-ui'
+import axios from 'axios'
+import md5 from 'crypto-js/md5'
 
 const { t } = useI18n()
+const router = useRouter()
 const formData = reactive({
   email: '',
   password: '',
 })
+const errorMessage = ref('') // 错误消息
+
+// 登录方法
+const handleLogin = async () => {
+  try {
+    const encryptedPassword = md5(formData.password).toString()
+    const response = await axios.post('https://test.keepbit.top/app_api/v1/Login/UserLogin', {
+      userName: formData.email,
+      pwd: encryptedPassword,
+    })
+
+    if (response.data.Success) {
+      // 将 AccessToken 存入本地存储
+      localStorage.setItem('accessToken', response.data.ResData.AccessToken)
+      alert('登录成功')
+      router.push('/') // 跳转到首页
+    } else {
+      errorMessage.value = response.data.ErrMsg || '登录失败，请检查您的邮箱和密码'
+    }
+  } catch (error) {
+    console.error('登录请求出错', error)
+    errorMessage.value = '登录失败，请稍后再试'
+  }
+}
 </script>
 
 <template>
@@ -23,24 +52,21 @@ const formData = reactive({
     <div class="flex-1 bg-white flex flex-col justify-center items-center">
       <div class="lg:w-[550px] space-y-8 m-4">
         <div class="text-4xl font-bold">{{ t('login.title') }}</div>
-        <NTabs
-          size="large"
-          animated
-          pane-wrapper-style="margin: 0 -4px"
-          pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
-        >
+        <NTabs size="large" animated>
           <NTabPane name="email" :tab="t('login.tabs[0]')">
             <div class="border-2 border-[#76E43B] p-4 px-10 lg:py-10 lg:px-16 rounded-xl space-y-4">
               <NForm :modelValue="formData">
-                <NFormItem :label="t('login.email.label[0]')" class="text-4xl">
-                  <NInput :placeholder="t('login.email.placeholder[0]')" />
+                <NFormItem :label="t('login.email.label[0]')">
+                  <NInput v-model="formData.email" :placeholder="t('login.email.placeholder[0]')" />
                 </NFormItem>
                 <NFormItem :label="t('login.email.label[1]')">
-                  <NInput :placeholder="t('login.email.placeholder[1]')" />
+                  <NInput type="password" v-model="formData.password" :placeholder="t('login.email.placeholder[1]')" />
                 </NFormItem>
+                <!-- 错误信息 -->
+                <div v-if="errorMessage" class="text-red-500 text-sm">{{ errorMessage }}</div>
               </NForm>
               <div class="text-right text-[#5bc17f]">{{ t('login.forget') }}</div>
-              <NButton class="bg-[#76e43b] rounded-lg w-full h-12 text-lg font-bold">登录</NButton>
+              <NButton class="bg-[#76e43b] rounded-lg w-full h-12 text-lg font-bold" @click="handleLogin">登录</NButton>
               <NDivider class="text-sm text-slate-400">{{ t('login.other') }}</NDivider>
               <div class="flex items-center justify-center gap-x-4">
                 <div class="p-2 rounded-full bg-green-400 border border-green-200 flex items-center justify-center">
@@ -66,6 +92,7 @@ const formData = reactive({
     </div>
   </div>
 </template>
+
 <style scoped>
 :deep(.n-form-item .n-form-item-label) {
   @apply text-base;

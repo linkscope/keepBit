@@ -23,7 +23,18 @@
 
           <!-- 插入图片 -->
           <div class="mt-8">
-            <img src="/agencyPlanImag1.png" alt="ima" class="w-full h-auto mb-8">
+            <img
+                v-if="$i18n.locale === 'zhCN'"
+                src="/agencyPlanImag1.png"
+                alt="ima"
+                class="w-full h-auto mb-8"
+            />
+            <img
+                v-else
+                src="/agencyPlanImag_en1.png"
+                alt="ima"
+                class="w-full h-auto mb-8"
+            />
           </div>
 
           <h2 class="mt-4 text-xl font-bold">{{ t('agencyPlan.level1') }}</h2>
@@ -55,7 +66,18 @@
 
           <!-- 插入图片 -->
           <div class="mt-8">
-            <img src="/agencyPlanImag2.png" alt="ima" class="w-full h-auto mb-8">
+            <img
+                v-if="$i18n.locale === 'zhCN'"
+                src="/agencyPlanImag2.png"
+                alt="ima"
+                class="w-full h-auto mb-8"
+            />
+            <img
+                v-else
+                src="/agencyPlanImag_en2.png"
+                alt="ima"
+                class="w-full h-auto mb-8"
+            />
           </div>
 
           <h3 class="mt-4 text-lg text-gray-700">{{ t('agencyPlan.agentAAssessment') }}</h3>

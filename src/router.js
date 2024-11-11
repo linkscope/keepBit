@@ -49,6 +49,16 @@ export default createRouter({
           component: () => import('@/views/download/index.vue'),
         },
         {
+          path: 'login',
+          name: 'Login',
+          component: () => import('@/views/login/index.vue'),
+        },
+        {
+          path: 'register',
+          name: 'Register',
+          component: () => import('@/views/register/index.vue'),
+        },
+        {
           path: 'article/agreement',
           name: 'Agreement',
           component: () => import('@/views/article/agreement.vue'),

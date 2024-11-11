@@ -107,10 +107,10 @@ const menuList = computed(() => [
     />
     <div class="flex items-center gap-x-8">
       <router-link to="/login">
-        <NButton size="large" class="bg-white rounded-md">{{ t('login') }}</NButton>
+        <NButton size="large" class="bg-white rounded-md">{{ t('login.title') }}</NButton>
       </router-link>
       <router-link to="register">
-        <NButton text>{{ t('register') }}</NButton>
+        <NButton text>{{ t('register.title') }}</NButton>
       </router-link>
       <NButton text class="text-3xl" @click="router.push('/download')">
         <NIcon>
@@ -154,10 +154,10 @@ const menuList = computed(() => [
     <NDrawer v-model:show="drawerModal" placement="right" :width="300">
       <div class="h-full overflow-hidden flex flex-col gap-y-8 p-4">
         <router-link to="/login">
-          <NButton size="large" type="primary" class="rounded-md">{{ t('login') }}</NButton>
+          <NButton size="large" type="primary" class="rounded-md">{{ t('login.title') }}</NButton>
         </router-link>
         <router-link to="register">
-          <NButton text>{{ t('register') }}</NButton>
+          <NButton text>{{ t('register.title') }}</NButton>
         </router-link>
         <NMenu
           class="flex-1"

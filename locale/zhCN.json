@@ -19,8 +19,30 @@
       "vipService": "VIP服务"
     }
   },
-  "login": "登陆",
-  "register": "注册",
+  "login": {
+    "title": "登录",
+    "welcome": ["欢迎来到KeepBit", "你的Web3世界从这里开始"],
+    "tabs": ["邮箱"],
+    "email": {
+      "label": ["邮箱", "密码"],
+      "placeholder": ["请输入邮箱", "请输入密码"]
+    },
+    "forget": "忘记密码？",
+    "other": "或通过以下方式登录",
+    "noAccount": "没有账户？",
+    "join": "立即加入"
+  },
+  "register": {
+    "title": "注册",
+    "welcome": ["立即注册KeepBit"],
+    "tabs": ["邮箱"],
+    "email": {
+      "label": ["邮箱", "邀请码(选填)"],
+      "placeholder": ["请输入邮箱", "请输入邀请码"]
+    },
+    "announce": "继续注册代表同意",
+    "according": ["《用户协议》", "隐私条款"]
+  },
   "home": {
     "welcome": ["欢迎来到KeepBit", "你的Web3世界从这里", "开始"],
     "subWelcome": ["The easy to manage and trade", "your cryptocurency asset"],

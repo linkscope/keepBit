@@ -109,7 +109,7 @@ const showExplanation = ref(clientWidth > 1280)
           </div>
           <template v-if="showExplanation">
             <a href="/#/article/agreement" class="block">{{ t('footer.userAgreement') }}</a>
-            <a href="/#/article/privacyPolicy" class="block">{{ t('footer.privacyPolicy') }}</a>
+            <a href="/#/article/privacyPolicyIndex" class="block">{{ t('footer.privacyPolicyIndex') }}</a>
             <a href="/#/article/disclaimer" class="block">{{ t('footer.disclaimer') }}</a>
             <a href="/#/article/userBehaviorCode" class="block">{{ t('footer.userBehaviorCode') }}</a>
             <a href="/#/article/easyMoneyClause" class="block">{{ t('footer.easyMoneyClause') }}</a>

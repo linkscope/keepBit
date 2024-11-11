@@ -59,9 +59,9 @@ export default createRouter({
           component: () => import('@/views/article/serviceAgreement.vue'),
         },
         {
-          path: 'article/privacyPolicy',
-          name: 'PrivacyPolicy',
-          component: () => import('@/views/article/privacyPolicy.vue'),
+          path: 'article/privacyPolicyIndex',
+          name: 'PrivacyPolicyIndex',
+          component: () => import('@/views/article/privacyPolicyIndex.vue'),
         },
         {
           path: 'article/disclaimer',

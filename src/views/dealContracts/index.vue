@@ -16,7 +16,7 @@ const stoppedMissions = ref([])   // 已停止任务列表
 // 停止任务的函数
 async function endMission(appsId) {
   try {
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTEyMTIzNywiZXhwIjoxNzMxMjA3NjM3LCJpYXQiOjE3MzExMjEyMzd9.nbfE5OBuHPV474ADOihT-HI-0lghuJ3wBjVRsZ6Ce3A' // 请替换为实际的token
+    const token = localStorage.getItem('accessToken');
     const response = await axios.post('https://test.keepbit.top/app_api/v1/DemoTrading/StopContract',
         {ContractId: appsId},
         {headers: {Authorization: `Bearer ${token}`}}
@@ -36,7 +36,7 @@ async function endMission(appsId) {
 // 获取订单详情函数
 async function getOrderDetails(missionId) {
   try {
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTEyMTIzNywiZXhwIjoxNzMxMjA3NjM3LCJpYXQiOjE3MzExMjEyMzd9.nbfE5OBuHPV474ADOihT-HI-0lghuJ3wBjVRsZ6Ce3A' // 请替换为实际的token
+    const token = localStorage.getItem('accessToken');
     const response = await axios.get(`https://test.keepbit.top/app_api/v1/DemoTrading/GetOrders?contractId=${missionId}`, {
       headers: {Authorization: `Bearer ${token}`}
     })
@@ -55,7 +55,7 @@ async function getOrderDetails(missionId) {
 // 组件挂载时获取数据
 onMounted(async () => {
   try {
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTEyMTIzNywiZXhwIjoxNzMxMjA3NjM3LCJpYXQiOjE3MzExMjEyMzd9.nbfE5OBuHPV474ADOihT-HI-0lghuJ3wBjVRsZ6Ce3A' // 请替换为实际的token
+    const token = localStorage.getItem('accessToken');
     const response = await axios.get('https://test.keepbit.top/app_api/v1/DemoTrading/GetMyContracts', {
       headers: {Authorization: `Bearer ${token}`}
     })

@@ -45,7 +45,7 @@ const openModal = (tactic) => {
 
 // 使用策略请求
 const useStrategy = async () => {
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTEyMTIzNywiZXhwIjoxNzMxMjA3NjM3LCJpYXQiOjE3MzExMjEyMzd9.nbfE5OBuHPV474ADOihT-HI-0lghuJ3wBjVRsZ6Ce3A"
+  const token = localStorage.getItem('accessToken');
   isDemoMode.value = false
   try {
     const response = await axios.post('https://test.keepbit.top/app_api/v1/User/GetMyAccount', {}, {
@@ -66,7 +66,7 @@ const useStrategy = async () => {
 
 // 模拟请求
 const demoStrategy = async () => {
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTEyMTIzNywiZXhwIjoxNzMxMjA3NjM3LCJpYXQiOjE3MzExMjEyMzd9.nbfE5OBuHPV474ADOihT-HI-0lghuJ3wBjVRsZ6Ce3A"
+  const token = localStorage.getItem('accessToken');
   isDemoMode.value = true
   try {
     const response = await axios.post('https://test.keepbit.top/app_api/v1/DemoTrading/GetMyDemoAccount', {}, {
@@ -87,7 +87,7 @@ const demoStrategy = async () => {
 
 // 创建策略请求
 const createStrategy = async () => {
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTEyMTIzNywiZXhwIjoxNzMxMjA3NjM3LCJpYXQiOjE3MzExMjEyMzd9.nbfE5OBuHPV474ADOihT-HI-0lghuJ3wBjVRsZ6Ce3A"
+  const token = localStorage.getItem('accessToken');
   const qty = 1000 // 设置投资数量
   const payload = {
     tacticsId: selectedTactic.value.Id,

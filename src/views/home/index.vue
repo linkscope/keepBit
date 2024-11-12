@@ -66,8 +66,8 @@ onUnmounted(() => {
             <div>{{ t('home.subWelcome[1]') }}</div>
           </div>
           <div class="flex flex-col lg:flex-row items-center gap-8 my-16">
-            <NButton class="w-60 h-14 rounded-2xl bg-[#76e43b] text-black">{{ t('register') }}</NButton>
-            <NButton class="w-60 h-14 rounded-2xl bg-white text-black">{{ t('login') }}</NButton>
+            <NButton class="w-60 h-14 rounded-2xl bg-[#76e43b] text-black">{{ t('register.title') }}</NButton>
+            <NButton class="w-60 h-14 rounded-2xl bg-white text-black">{{ t('login.title') }}</NButton>
           </div>
         </div>
         <div class="lg:w-0 lg:flex-1 relative">

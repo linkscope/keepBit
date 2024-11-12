@@ -59,6 +59,16 @@ export default createRouter({
           component: () => import('@/views/register/index.vue'),
         },
         {
+          path: 'user',
+          name: 'User',
+          component: () => import('@/views/user/index.vue'),
+        },
+        {
+          path: 'assets',
+          name: 'Assets',
+          component: () => import('@/views/assets/index.vue'),
+        },
+        {
           path: 'article/agreement',
           name: 'Agreement',
           component: () => import('@/views/article/agreement.vue'),

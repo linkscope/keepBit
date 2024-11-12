@@ -4,6 +4,7 @@ import { ArrowDownload16Regular, Headphones20Regular, ArrowLeft16Regular } from 
 import Coin from './components/Coin.vue'
 import useCryptoWS from '@/hooks/useCryptoWS'
 import initTickerTape from '@/utils/initTickerTape.js'
+import axios from 'axios'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -32,7 +33,30 @@ const handleClickToAgencyPlan = () => {
 const easyMoneyClause = () => {
   window.open('/#/article/easyMoneyClause', '_blank')
 }
+
+// 定义市场数据变量和获取数据的方法
+const marketData = ref(null)
+
+async function fetchMarketData() {
+  const cachedData = localStorage.getItem('marketData')
+
+  if (cachedData) {
+    marketData.value = JSON.parse(cachedData) // 如果有缓存，则使用缓存数据
+  } else {
+    try {
+      const response = await axios.get('https://test.keepbit.top/app_api/v1/Market/GetMarketContacts')
+      if (response.data.ErrCode === "0" && response.data.Success) {
+        marketData.value = response.data.ResData // 存储数据到响应式变量
+        localStorage.setItem('marketData', JSON.stringify(response.data.ResData)) // 缓存数据到 localStorage
+      }
+    } catch (error) {
+      console.error("获取市场数据失败:", error)
+    }
+  }
+}
+
 onMounted(() => {
+  fetchMarketData();
   // 创建Ticker Tape组件
   const script = initTickerTape()
   tickerTapRef.value.appendChild(script)
@@ -42,7 +66,7 @@ onMounted(() => {
     if (carouselRef.value.scrollLeft + carouselRef.value.clientWidth >= carouselRef.value.scrollWidth) {
       carouselRef.value.scrollLeft = 0 // 重置到开头
     } else {
-      carouselRef.value.scrollLeft += 1 // 每次向右滚动1px，可根据需求调整
+      carouselRef.value.scrollLeft += 2 // 每次向右滚动1px，可根据需求调整
     }
   }, 20)
 })

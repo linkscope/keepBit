@@ -3,7 +3,9 @@ import { images } from '@/views/home/model.js'
 export default function useCryptoWS() {
   const coinList = ref([])
   const coinSpotList = ref([])
-
+  const coinBook15List = ref([])
+  const book15Data = ref({}); // 将 book15Data 定义为响应式 ref
+  const tradeData = ref({}); // 将 book15Data 定义为响应式 ref
   const sortedCoinList = computed(() => {
     const sortedList = coinList.value.slice().sort((a, b) => b.priceChangePercent - a.priceChangePercent)
     return {
@@ -87,6 +89,28 @@ export default function useCryptoWS() {
             { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'ADAUSDT' },
             { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'BCHUSDT' },
             { instType: 'USDT-FUTURES', channel: 'ticker', instId: 'USDCUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'books15', instId: 'BTCUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'books15', instId: 'ETHUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'books15', instId: 'LTCUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'books15', instId: 'DOGEUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'books15', instId: 'SOLUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'books15', instId: 'TRXUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'books15', instId: 'PEPEUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'books15', instId: 'XRPUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'books15', instId: 'ADAUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'books15', instId: 'BCHUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'books15', instId: 'USDCUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'trade', instId: 'BTCUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'trade', instId: 'ETHUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'trade', instId: 'LTCUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'trade', instId: 'DOGEUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'trade', instId: 'SOLUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'trade', instId: 'TRXUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'trade', instId: 'PEPEUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'trade', instId: 'XRPUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'trade', instId: 'ADAUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'trade', instId: 'BCHUSDT' },
+            { instType: 'USDT-FUTURES', channel: 'trade', instId: 'USDCUSDT' },
             { instType: 'SPOT', channel: 'ticker', instId: 'BTCUSDT' },
             { instType: 'SPOT', channel: 'ticker', instId: 'ETHUSDT' },
             { instType: 'SPOT', channel: 'ticker', instId: 'LTCUSDT' },
@@ -106,20 +130,39 @@ export default function useCryptoWS() {
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data)
-      if (data && data.arg && data.data) {
-        const ticker = data.data[0]
-        const instId = data.arg.instId
-        const instType = data.arg.instType
-        const change24h = parseFloat(ticker.change24h)
-        const priceChangePercent = (change24h * 100).toFixed(2)
+      if (data && data.arg && data.data && data.arg.channel === "ticker") {
+        const ticker = data.data[0];
+        const instId = data.arg.instId;
+        const instType = data.arg.instType;
+        const change24h = parseFloat(ticker.change24h);
+        const priceChangePercent = (change24h * 100).toFixed(2);
         const coin = {
           instId,
+          instType,
           lastPrice: parseFloat(ticker.lastPr),
-          priceChangePercent: parseFloat(priceChangePercent),
-          volume: parseFloat(ticker.baseVolume),
+          bidPrice: parseFloat(ticker.bidPr),
+          askPrice: parseFloat(ticker.askPr),
+          bidSize: parseFloat(ticker.bidSz),
+          askSize: parseFloat(ticker.askSz),
+          open24h: parseFloat(ticker.open24h),
+          high24h: parseFloat(ticker.high24h),
+          low24h: parseFloat(ticker.low24h),
           change24h,
-          image: images[instId] || 'img/default.png',
-        }
+          priceChangePercent: parseFloat(priceChangePercent),
+          fundingRate: parseFloat(ticker.fundingRate),
+          nextFundingTime: parseInt(ticker.nextFundingTime, 10),
+          markPrice: parseFloat(ticker.markPrice),
+          indexPrice: parseFloat(ticker.indexPrice),
+          holdingAmount: parseFloat(ticker.holdingAmount),
+          baseVolume: parseFloat(ticker.baseVolume),
+          quoteVolume: parseFloat(ticker.quoteVolume),
+          openUtc: parseFloat(ticker.openUtc),
+          symbolType: parseInt(ticker.symbolType, 10),
+          symbol: ticker.symbol,
+          deliveryPrice: parseFloat(ticker.deliveryPrice),
+          timestamp: parseInt(ticker.ts, 10),
+          image: images[instId] || 'img/default.png'
+        };
         if (instType === 'SPOT') {
           const findIndex = coinSpotList.value.findIndex((i) => i.instId === instId)
           if (~findIndex) {
@@ -135,6 +178,11 @@ export default function useCryptoWS() {
             coinList.value.push(coin)
           }
         }
+      }
+      else if (data && data.arg && data.data && data.arg.channel === "books15"){
+        book15Data.value = data; // 更新 book15Data 的值
+      }else if (data && data.arg && data.data && data.arg.channel === "trade"){
+        tradeData.value = data; // 更新 book15Data 的值
       }
     }
 
@@ -166,5 +214,7 @@ export default function useCryptoWS() {
     sortedCoinSpotList,
     sortedByLastPriceCoinList,
     sortedByLastPriceCoinSpotList,
+    book15Data,
+    tradeData
   }
 }

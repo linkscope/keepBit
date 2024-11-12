@@ -20,7 +20,17 @@
     }
   },
   "message": {
-    "loginSuccess": "登录成功"
+    "loginSuccess": "登录成功",
+    "addSuccess": "添加成功",
+    "addError": "添加失败",
+    "getTacticsError": "获取策略列表失败",
+    "createSuccess": "创建成功",
+    "createError": "创建失败",
+    "finishSuccess": "结束策略成功",
+    "finishError": "结束策略失败",
+    "closePositionSuccess": "平仓成功",
+    "searchSuccess": "查询成功",
+    "searchError": "查询失败"
   },
   "login": {
     "title": "登录",

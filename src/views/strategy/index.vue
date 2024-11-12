@@ -1,7 +1,7 @@
 <script setup>
 import {ref, onMounted, computed} from 'vue'
 import axios from 'axios'
-import {NInput, NIcon, NButton, NPagination, NModal} from 'naive-ui'
+import {NInput, NIcon, NButton, NPagination, NModal, useMessage} from 'naive-ui'
 import {Search24Regular} from '@vicons/fluent'
 
 const {t} = useI18n()
@@ -17,6 +17,8 @@ const tacticsList = computed(() => {
 const selectedTactic = ref(null) // 用于存储当前选中的策略数据
 const availableAmount = ref(null) // 用于存储可用金额
 const isDemoMode = ref(false) // 判断是使用策略还是模拟
+const message = useMessage()
+const qty = ref('')  // 初始值为空字符串
 
 const pagination = ref({
   current: 1,
@@ -33,7 +35,7 @@ const fetchTactics = async () => {
       pagination.value.count = Math.ceil(allTactics.value.length / pagination.value.pageSize) // 计算总页数
     }
   } catch (error) {
-    console.error('Failed to fetch tactics:', error)
+    message.error(t('message.getTacticsError'));
   }
 }
 
@@ -57,10 +59,10 @@ const useStrategy = async () => {
       availableAmount.value = response.data.ResData.Available // 设置可用金额
       showInvestment.value = true // 显示投资部分
     } else {
-      console.error('Error:', response.data.ErrMsg)
+      message.error(response.data.ErrMsg);
     }
   } catch (error) {
-    console.error('Failed to fetch account:', error)
+    message.error( error)
   }
 }
 
@@ -78,42 +80,48 @@ const demoStrategy = async () => {
       availableAmount.value = response.data.ResData.Available // 设置可用金额
       showInvestment.value = true // 显示投资部分
     } else {
-      console.error('Error:', response.data.ErrMsg)
+      message.error(response.data.ErrMsg)
     }
   } catch (error) {
-    console.error('Failed to fetch demo account:', error)
+    message.error(error)
   }
 }
 
 // 创建策略请求
 const createStrategy = async () => {
   const token = localStorage.getItem('accessToken');
-  const qty = 1000 // 设置投资数量
+  if (!qty.value || isNaN(qty.value) || parseFloat(qty.value) <= 0) {
+    message.error(t('message.invalidAmount'));  // 提示用户输入有效的金额
+    return;
+  }
+
   const payload = {
     tacticsId: selectedTactic.value.Id,
-    qty: qty
-  }
+    qty: parseFloat(qty.value) // 使用输入框中的 qty 值
+  };
   const url = isDemoMode.value
       ? 'https://test.keepbit.top/app_api/v1/DemoTrading/StartContract'
-      : 'https://test.keepbit.top/app_api/v1/Trade/StartMission'
+      : 'https://test.keepbit.top/app_api/v1/Trade/StartMission';
 
   try {
     const response = await axios.post(url, payload, {
       headers: {
         Authorization: `Bearer ${token}`
       }
-    })
+    });
     if (response.data.Success) {
-      console.log('Operation Success:', response.data.ResData)
-      showModal.value = false // 关闭模态框
-      showInvestment.value = false // 重置投资部分显示
+      console.log('Operation Success:', response.data.ResData);
+      showModal.value = false; // 关闭模态框
+      showInvestment.value = false; // 重置投资部分显示
+      message.success(t('message.createSuccess'));
     } else {
-      console.error('Error:', response.data.ErrMsg)
+      console.log(response.data.ErrMsg);
+      message.error(response.data.ErrMsg);
     }
   } catch (error) {
-    console.error('Failed to create strategy:', error)
+    message.error(error);
   }
-}
+};
 
 onMounted(() => {
   fetchTactics() // 组件挂载时获取数据
@@ -257,7 +265,11 @@ onMounted(() => {
       </div>
       <div v-if="showInvestment" class="pb-4 border-b border-b-slate-200 space-y-4">
         <div class="text-xl font-bold">{{ t('strategy.investment.title') }}</div>
-        <NInput style="width: 100%" placeholder=">=1000 USDT"/>
+        <NInput
+            v-model:value="qty"
+            style="width: 100%"
+            placeholder=">=1000 USDT"
+        />
         <div class="text-right">{{ t('strategy.investment.usage') }}: {{ availableAmount }}</div>
         <div class="text-rose-500">{{ t('strategy.investment.desc[0]') }}</div>
         <div class="text-rose-500">{{ t('strategy.investment.desc[1]') }}</div>

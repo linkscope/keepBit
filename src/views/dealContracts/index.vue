@@ -1,5 +1,5 @@
 <script setup>
-import { NTable, NTabs, NTabPane, NButton, NPagination, NModal, NPopconfirm } from 'naive-ui'
+import { NTable, NTabs, NTabPane, NButton, NPagination, NModal, NPopconfirm, useMessage  } from 'naive-ui'
 import axios from 'axios'
 import { ref, onMounted } from 'vue'
 import dayjs from 'dayjs' // 使用 dayjs 库处理日期
@@ -12,6 +12,7 @@ const showModal = ref(false)
 const orderDetails = ref([]) // 订单详情列表
 const executingMissions = ref([]) // 执行中任务列表
 const stoppedMissions = ref([])   // 已停止任务列表
+const message = useMessage()
 
 // 停止任务的函数
 async function endMission(appsId) {
@@ -23,13 +24,13 @@ async function endMission(appsId) {
     )
 
     if (response.data.Success) {
-      console.log('任务已成功停止')
+      message.success(t('message.finishSuccess'))
       executingMissions.value = executingMissions.value.filter(mission => mission.MissionId !== appsId)
     } else {
-      console.error('错误信息:', response.data.ErrMsg)
+      message.error(response.data.ErrMsg)
     }
   } catch (error) {
-    console.error('API 请求失败:', error)
+    message.error(error)
   }
 }
 
@@ -45,10 +46,10 @@ async function getOrderDetails(missionId) {
       orderDetails.value = response.data.ResData
       showModal.value = true
     } else {
-      console.error('错误信息:', response.data.ErrMsg)
+      message.error(response.data.ErrMsg)
     }
   } catch (error) {
-    console.error('API 请求失败:', error)
+    message.error(error)
   }
 }
 
@@ -76,10 +77,10 @@ onMounted(async () => {
       executingMissions.value = missions.filter(mission => mission.State === 1)
       stoppedMissions.value = missions.filter(mission => mission.State === 2)
     } else {
-      console.error('错误信息:', response.data.ErrMsg)
+      message.error(response.data.ErrMsg)
     }
   } catch (error) {
-    console.error('API 请求失败:', error)
+    message.error(error)
   }
 })
 

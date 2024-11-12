@@ -12,6 +12,7 @@ const {coinList, sortedCoinList, coinSpotList, sortedByLastPriceCoinList, sorted
 const checkedSelfList = ref([])
 const selfChoiceList = ref([])
 const apiSelfChoiceSymbols = ref([]) // 保存从 API 获取的自选标识符
+const message = useMessage()
 
 // 监听 currentTab 的变化，在切换到“自选”时执行查询
 watch(currentTab, (newTab) => {
@@ -89,13 +90,14 @@ async function addToFavorites() {
         if (response.data.ErrCode === "0" && response.data.Success) {
           console.error(`${symbol_name} 添加成功`)
         } else {
-          console.error(`${symbol_name} 添加失败: ${response.data.ErrMsg}`)
+          message.error(t('message.addError')`:${response.data.ErrMsg}`)
         }
       } catch (error) {
-        console.error("添加自选列表失败:", error)
+        message.error(t('message.addError'))
       }
     }
   }
+  message.success(t('message.addSuccess'))
   // 添加完毕后重新查询自选列表
   await fetchSelfChoiceList()
 }

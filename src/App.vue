@@ -1,6 +1,7 @@
 <script setup>
 import {
   NConfigProvider,
+  NMessageProvider,
   zhCN,
   dateZhCN,
   zhTW,
@@ -74,6 +75,8 @@ const localeValue = computed(() => {
 
 <template>
   <NConfigProvider :locale="localeValue.locale" :date-locale="localeValue.date" class="h-full">
-    <router-view />
+    <NMessageProvider>
+      <router-view />
+    </NMessageProvider>
   </NConfigProvider>
 </template>

@@ -19,6 +19,9 @@
       "vipService": "VIP服务"
     }
   },
+  "message": {
+    "loginSuccess": "登录成功"
+  },
   "login": {
     "title": "登录",
     "welcome": ["欢迎来到KeepBit", "你的Web3世界从这里开始"],

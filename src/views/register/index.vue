@@ -1,5 +1,5 @@
 <script setup>
-import { NTabs, NTabPane, NForm, NFormItem, NInput, NButton, NDivider } from 'naive-ui'
+import { NTabs, NTabPane, NForm, NFormItem, NInput, NButton } from 'naive-ui'
 
 const { t } = useI18n()
 const formData = reactive({

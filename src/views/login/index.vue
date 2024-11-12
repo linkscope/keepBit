@@ -1,12 +1,13 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { NTabs, NTabPane, NForm, NFormItem, NInput, NButton, NDivider } from 'naive-ui'
+import { NTabs, NTabPane, NForm, NFormItem, NInput, NButton, NDivider, useMessgae } from 'naive-ui'
 import axios from 'axios'
 import md5 from 'crypto-js/md5'
 
 const { t } = useI18n()
 const router = useRouter()
+const message = useMessgae()
 const formData = reactive({
   email: '',
   password: '',
@@ -23,6 +24,7 @@ const handleLogin = async () => {
     })
 
     if (response.data.Success) {
+      message.success(t('message.loginSuccess'))
       // 将 AccessToken 存入本地存储
       localStorage.setItem('accessToken', response.data.ResData.AccessToken)
       router.push('/') // 跳转到首页

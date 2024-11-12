@@ -465,9 +465,9 @@ watch(
 );
 
 // 初始化 tradeList，存储最近的交易记录
+
 const tradeList = ref([]);
 
-// 监听 tradeData 和 selectedCoin 的变化
 watch(
     [tradeData, selectedCoin],
     () => {
@@ -478,15 +478,14 @@ watch(
           tradeData.value.data &&
           tradeData.value.data.length > 0
       ) {
-        // 1. 获取最新的数据
+        // 获取最新的交易数据
         const newTrades = tradeData.value.data;
 
-        // 2. 将新数据添加到 tradeList 的最前面
-        tradeList.value = [...newTrades, ...tradeList.value];
+        // 每次更新时，创建一个新列表并只保留前 30 条数据
+        tradeList.value = [...newTrades, ...tradeList.value].slice(0, 30);
 
-        // 3. 只保留前 30 条记录，移除多余部分
-        tradeList.value = tradeList.value.slice(30);
-        console.log(tradeList.value)
+        // 调试：查看更新后的 tradeList
+        console.log('Updated Trade List:', tradeList.value);
       }
     },
     { immediate: true, deep: true }
@@ -771,6 +770,7 @@ onMounted(() => {
             <div class="text-rose-500 border border-rose-500 size-6 text-center leading-6">S</div>
           </div>
         </template>
+
         <template v-else>
           <!-- 表头 -->
           <div class="flex text-xs text-slate-400 mt-2">
@@ -780,7 +780,7 @@ onMounted(() => {
           </div>
 
           <!-- 显示时间最新的 30 条交易记录 -->
-          <div v-for="(trade, index) in tradeList" :key="trade.tradeId || index" class="flex gap-y-2 p-1 text-xs">
+          <div v-for="(trade, index) in tradeList" :key="`${trade.ts}-${trade.tradeId}`" class="flex gap-y-2 p-1 text-xs">
             <!-- 价格，根据买卖方向动态设置颜色 -->
             <div class="flex-1" :class="{ 'text-green-500': trade.side === 'buy', 'text-red-500': trade.side === 'sell' }">
               {{ parseFloat(trade.price).toFixed(2) }}

@@ -1,13 +1,13 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { NTabs, NTabPane, NForm, NFormItem, NInput, NButton, NDivider, useMessgae } from 'naive-ui'
+import { NTabs, NTabPane, NForm, NFormItem, NInput, NButton, NDivider, useMessage } from 'naive-ui'
 import axios from 'axios'
 import md5 from 'crypto-js/md5'
 
 const { t } = useI18n()
 const router = useRouter()
-const message = useMessgae()
+const message = useMessage()
 const formData = reactive({
   email: '',
   password: '',

@@ -85,6 +85,39 @@ const menuList = computed(() => [
     ],
   },
 ])
+const userInfo = ref(null)
+
+const handleUserOption = (key) => {
+  if (key === 'logout') {
+    localStorage.removeItem('accessToken')
+    location.reload()
+    return
+  }
+  router.push(key)
+}
+
+onMounted(async () => {
+  // const token = localStorage.getItem('accessToken')
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTQzNDk0NywiZXhwIjoxNzMxNTIxMzQ3LCJpYXQiOjE3MzE0MzQ5NDd9.p4nGVVmx9iQgB1mUjKvg9ZPfMz8ssNtyk7KiRjbJUog'
+  // if (!token) {
+  //   return
+  // }
+  const response = await fetch('https://test.keepbit.top/app_api/v1/User/GetMyInfo', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  const data = await response.json()
+  if (!data.Success) {
+    message.error('获取用户信息失败，请刷新重试')
+    return
+  }
+
+  userInfo.value = data.ResData
+})
 </script>
 
 <template>
@@ -106,12 +139,27 @@ const menuList = computed(() => [
       @update:value="router.push($event)"
     />
     <div class="flex items-center gap-x-8">
-      <router-link to="/login">
-        <NButton size="large" class="bg-white rounded-md">{{ t('login.title') }}</NButton>
-      </router-link>
-      <router-link to="register">
-        <NButton text>{{ t('register.title') }}</NButton>
-      </router-link>
+      <template v-if="userInfo">
+        <NDropdown
+          trigger="hover"
+          :options="[
+            { label: '个人资料', key: '/user' },
+            { label: '资产总览', key: '/assets' },
+            { label: '退出登录', key: 'logout' },
+          ]"
+          @select="handleUserOption"
+        >
+          <img class="size-8 rounded-full" :src="userInfo.ProfileUrl" />
+        </NDropdown>
+      </template>
+      <template v-else>
+        <router-link to="/login">
+          <NButton size="large" class="bg-white rounded-md">{{ t('login.title') }}</NButton>
+        </router-link>
+        <router-link to="register">
+          <NButton text>{{ t('register.title') }}</NButton>
+        </router-link>
+      </template>
       <NButton text class="text-3xl" @click="router.push('/download')">
         <NIcon>
           <ArrowDownload16Regular />
@@ -152,13 +200,21 @@ const menuList = computed(() => [
       </NButton>
     </div>
     <NDrawer v-model:show="drawerModal" placement="right" :width="300">
-      <div class="h-full overflow-hidden flex flex-col gap-y-8 p-4">
-        <router-link to="/login">
-          <NButton size="large" type="primary" class="rounded-md">{{ t('login.title') }}</NButton>
-        </router-link>
-        <router-link to="register">
-          <NButton text>{{ t('register.title') }}</NButton>
-        </router-link>
+      <div class="h-full overflow-hidden flex flex-col gap-y-4 p-4">
+        <template v-if="userInfo">
+          <div class="mx-auto">
+            <img class="size-8 rounded-full" :src="userInfo.ProfileUrl" />
+          </div>
+          <NButton size="large" type="primary" class="rounded-md" @click="router.push('/user')">个人资料</NButton>
+          <NButton size="large" @click="router.push('/assets')">资产总览</NButton>
+          <NButton size="large" @click="handleUserOption('logout')">退出登录</NButton>
+        </template>
+        <template v-else>
+          <NButton size="large" type="primary" class="rounded-md" @click="router.push('/login')">{{
+            t('login.title')
+          }}</NButton>
+          <NButton size="large" @click="router.push('/register')">{{ t('register.title') }}</NButton>
+        </template>
         <NMenu
           class="flex-1"
           :default-value="route.path"

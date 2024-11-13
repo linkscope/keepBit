@@ -1,9 +1,10 @@
 <script setup>
-import { NMenu, NButton, NIcon, NDropdown, NDrawer } from 'naive-ui'
+import { NMenu, NButton, NIcon, NDropdown, NDrawer, useMessage } from 'naive-ui'
 import { Earth16Regular, ArrowDownload16Regular, List16Regular } from '@vicons/fluent'
 import { loadLanguageAsync } from '@/i18n'
 import { languageList } from './model.js'
 
+const message = useMessage();
 const router = useRouter()
 const route = useRoute()
 const { t, locale } = useI18n()

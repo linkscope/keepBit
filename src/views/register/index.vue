@@ -5,6 +5,7 @@ import axios from 'axios';
 import CryptoJS from 'crypto-js';
 import { ErrorCircle16Filled } from '@vicons/fluent';
 import { useRouter } from 'vue-router'
+import LoadingOverlay from '@/components/LoadingOverlay.vue'; // 引入遮罩组件
 
 const router = useRouter()
 const message = useMessage();
@@ -17,6 +18,7 @@ const formData = reactive({
 });
 const step = ref(1);
 const verifyCodeKey = ref(''); // 验证码Key
+const isLoading = ref(false); // 控制遮罩显示状态
 
 const checkEmailAndSendCode = async () => {
   // 校验邮箱格式
@@ -24,7 +26,7 @@ const checkEmailAndSendCode = async () => {
     message.error('请输入有效的邮箱地址');
     return;
   }
-
+  isLoading.value = true; // 显示遮罩层
   try {
     // 发送请求校验邮箱是否已注册
     const checkEmailResponse = await axios.get(
@@ -51,6 +53,8 @@ const checkEmailAndSendCode = async () => {
     }
   } catch (error) {
     message.error('请求出错，请稍后重试');
+  } finally {
+    isLoading.value = false; // 隐藏遮罩层
   }
 };
 
@@ -73,7 +77,7 @@ const register = async () => {
     VerifyCodeKey: verifyCodeKey.value, // 使用获取验证码时的 VerifyCodeKey
     InviteCode: formData.inviteCode,
   };
-
+  isLoading.value = true; // 显示遮罩层
   try {
     // 发送注册请求
     const response = await axios.post('https://test.keepbit.top/app_api/v1/Register/Register', payload);
@@ -86,11 +90,16 @@ const register = async () => {
     }
   } catch (error) {
     message.error('请求出错，请稍后重试');
+  } finally {
+    isLoading.value = false; // 隐藏遮罩层
   }
 };
 </script>
 
 <template>
+  <!-- 只在请求时显示遮罩 -->
+  <LoadingOverlay v-model="isLoading" />
+
   <div class="lg:flex lg:h-[calc(100%-75px)]">
     <div class="hidden lg:block flex-1 bg-black flex-col relative text-white font-bold text-[60px]">
       <div class="absolute left-0 w-full top-[10%] text-center">{{ t('register.welcome[0]') }}</div>

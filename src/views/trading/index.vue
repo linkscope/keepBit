@@ -1,11 +1,12 @@
 <script setup>
-import { NIcon, NButton, NTabs, NTabPane, NDataTable, NInput } from 'naive-ui'
+import { NIcon, NButton, NTabs, NTabPane, NDataTable, NInput, useMessage  } from 'naive-ui'
 import { Star16Regular, Star16Filled, CaretDown16Filled } from '@vicons/fluent'
 import { ref, onMounted } from 'vue'
 import initTickerTape from '@/utils/initTickerTape.js'
 import useCryptoWS from '@/hooks/useCryptoWS.js'
 import OptionCard from './components/OptionCard.vue'
 
+const message = useMessage();
 const { coinList, book15Data, tradeData } = useCryptoWS()
 const tickerTapRef = ref(null)
 const tradingViewRef = ref(null)
@@ -120,189 +121,290 @@ const positionTableColumns = ref([
   },
 ])
 const commissionTableColumns = ref([
-  {
-    title: '合约1',
-    key: '合约1',
-    width: 100,
-  },
+  { title: '合约', key: 'Symbol', width: 100, align: 'center' },
   {
     title: '类型',
-    key: '类型',
+    key: 'OrderType',
     width: 100,
+    align: 'center',
+    render(row) {
+      return row.OrderType === 'Limit' ? '限价' : '市价';
+    }
   },
   {
     title: '杠杆',
-    key: '杠杆',
+    key: 'Leverage',
     width: 100,
+    align: 'center',
+    render(row) {
+      return `${row.Leverage}X`;
+    }
   },
   {
     title: '方向',
-    key: '方向',
+    key: 'Side',
     width: 100,
+    align: 'center',
+    render(row) {
+      let sideText;
+      let sideColor;
+
+      switch (row.Side) {
+        case 0:
+          sideText = '开多';
+          sideColor = 'green';
+          break;
+        case 1:
+          sideText = '开空';
+          sideColor = 'red';
+          break;
+        case 2:
+          sideText = '平多';
+          sideColor = 'red';
+          break;
+        case 3:
+          sideText = '平空';
+          sideColor = 'green';
+          break;
+        case 4:
+          sideText = '单向持仓买';
+          sideColor = 'black';
+          break;
+        case 5:
+          sideText = '单向持仓卖';
+          sideColor = 'black';
+          break;
+        default:
+          sideText = '未知';
+          sideColor = 'black';
+      }
+
+      return h('span', { style: { color: sideColor } }, sideText);
+    }
   },
-  {
-    title: '委托数量',
-    key: '委托数量',
-    width: 100,
-  },
-  {
-    title: '已成交数量',
-    key: '已成交数量',
-    width: 100,
-  },
-  {
-    title: '委托价格',
-    key: '委托价格',
-    width: 100,
-  },
-  {
-    title: '创建时间',
-    key: '创建时间',
-    width: 100,
-  },
+  { title: '委托数量', key: 'Quantity', width: 100, align: 'center' },
+  { title: '已成交数量', key: 'QuantityFilled', width: 100, align: 'center' },
+  { title: '委托价格', key: 'Price', width: 100, align: 'center' },
+  { title: '创建时间', key: 'CreateTime', width: 100, align: 'center' },
   {
     title: '操作',
-    fixed: 'right',
+    key: 'action',
     width: 80,
+    align: 'center',
     render(row) {
       return h(
-        'div',
-        {
-          style: {
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0 8px',
-          },
-        },
-        [
-          h(
-            NButton,
-            {
-              type: 'primary',
-            },
-            {
-              default: () => '操作按钮',
-            },
-          ),
-        ],
-      )
-    },
-  },
-])
+          NButton,
+          { type: 'primary' },
+          { default: () => '撤单' }
+      );
+    }
+  }
+]);
 const positionRecordTableColumns = ref([
-  {
-    title: '合约',
-    key: '合约',
-    width: 100,
-  },
+  { title: '合约', key: 'Symbol', width: 100, align: 'center' },
   {
     title: '持仓方向',
-    key: '持仓方向',
+    key: 'HoldSide',
     width: 100,
+    align: 'center',
+    render(row) {
+      const holdSideText = row.HoldSide === 'Long' ? '多头' : '空头';
+      const color = row.HoldSide === 'Long' ? 'green' : 'red';
+      return h('span', { style: { color } }, holdSideText);
+    },
   },
   {
     title: '持仓模式',
-    key: '持仓模式',
+    key: 'MarginMode',
     width: 100,
+    align: 'center',
+    render(row) {
+      return row.MarginMode === 'isolated' ? '逐仓' : '全仓';
+    },
   },
   {
     title: '持仓均价',
-    key: '持仓均价',
+    key: 'OpenPrice',
     width: 100,
+    align: 'center',
   },
   {
     title: '累计开仓数量',
-    key: '累计开仓数量',
+    key: 'OpenTotal',
     width: 100,
+    align: 'center',
   },
   {
     title: '已实现盈亏',
-    key: '已实现盈亏',
+    key: 'Pnl',
     width: 100,
+    align: 'center',
+    render(row) {
+      const color = parseFloat(row.Pnl) > 0 ? 'green' : 'red';
+      return h('span', { style: { color } }, row.Pnl);
+    },
   },
   {
     title: '净盈亏',
-    key: '净盈亏',
+    key: 'NetProfit',
     width: 100,
+    align: 'center',
+    render(row) {
+      const color = parseFloat(row.NetProfit) > 0 ? 'green' : 'red';
+      return h('span', { style: { color } }, row.NetProfit);
+    },
   },
   {
     title: '累计手续费',
-    key: '累计手续费',
+    key: 'TotalFillFee',
     width: 100,
+    align: 'center',
   },
   {
     title: '累计资金费用',
-    key: '累计资金费用',
+    key: 'TotalFunding',
     width: 100,
+    align: 'center',
   },
   {
     title: '开仓时间',
-    key: '开仓时间',
-    width: 100,
+    key: 'CreateTime',
+    width: 150,
+    align: 'center',
   },
   {
     title: '平仓时间',
-    key: '平仓时间',
-    width: 100,
+    key: 'CloseTime',
+    width: 150,
+    align: 'center',
   },
-])
+]);
+
 const commissionRecordTableColumns = ref([
   {
     title: '合约',
-    key: '合约',
+    key: 'Symbol',
     width: 100,
+    align: 'center'
   },
   {
     title: '订单类型',
-    key: '订单类型',
+    key: 'OrderType',
     width: 100,
+    align: 'center',
+    render(row) {
+      return row.OrderType === 'Limit' ? '限价' : '市价';
+    }
   },
   {
     title: '开单方向',
-    key: '开单方向',
+    key: 'Side',
     width: 100,
+    align: 'center',
+    render(row) {
+      let sideText;
+      let sideColor;
+      switch (row.TradeSide) {
+        case 0:
+          sideText = '开多';
+          sideColor = 'green';
+          break;
+        case 1:
+          sideText = '开空';
+          sideColor = 'red';
+          break;
+        case 2:
+          sideText = '平多';
+          sideColor = 'red';
+          break;
+        case 3:
+          sideText = '平空';
+          sideColor = 'green';
+          break;
+        default:
+          sideText = '未知';
+          sideColor = 'black';
+      }
+      return h('span', { style: { color: sideColor } }, sideText);
+    }
   },
   {
     title: '持仓模式',
-    key: '持仓模式',
+    key: 'MarginMode',
     width: 100,
+    align: 'center',
+    render(row) {
+      return row.MarginMode === 'isolated' ? '逐仓' : '全仓';
+    }
   },
   {
     title: '杠杆',
-    key: '杠杆',
+    key: 'Leverage',
     width: 100,
+    align: 'center',
+    render(row) {
+      return `${row.Leverage}X`;
+    }
   },
   {
     title: '订单状态',
-    key: '订单状态',
+    key: 'Status',
     width: 100,
+    align: 'center',
+    render(row) {
+      let orderStatus;
+      switch (row.Status) {
+        case 'New':
+          orderStatus = "新建订单";
+          break;
+        case 'Partially_filled':
+          orderStatus = "部分成交";
+          break;
+        case 'Filled':
+          orderStatus = "全部成交";
+          break;
+        case 'Canceled':
+          orderStatus = "已撤销";
+          break;
+        default:
+          orderStatus = "未知";
+      }
+      return orderStatus;
+    }
   },
   {
     title: '成交均价',
-    key: '成交均价',
+    key: 'AvgPrice',
     width: 100,
+    align: 'center'
   },
   {
     title: '成交数量',
-    key: '成交数量',
+    key: 'QuantityFilled',
     width: 100,
+    align: 'center'
   },
   {
     title: '委托价格',
-    key: '委托价格',
+    key: 'Price',
     width: 100,
+    align: 'center'
   },
   {
     title: '委托数量',
-    key: '委托数量',
+    key: 'Quantity',
     width: 100,
+    align: 'center'
   },
   {
     title: '创建时间',
-    key: '创建时间',
-    width: 100,
+    key: 'CreateTime',
+    width: 150, // 增加创建时间的宽度
+    align: 'center'
   },
-])
+]);
+
+
 
 watch(
   coinList,
@@ -343,6 +445,88 @@ const coinBook15List = ref({
   asks: [],
   bids: [],
 })
+const positionData = ref([]);
+const commissionData = ref([]);
+const positionRecordData = ref([]);
+const filledOrdersData = ref([]);
+const fetchLiveOrders = async () => {
+  const token = localStorage.getItem('accessToken'); // 从本地存储获取 token
+  if (!token) {
+    message.error('请先登录');
+    return;
+  }
+
+  try {
+    const response = await fetch('https://test.keepbit.top/app_api/v1/KrtContract/GetMyLiveOrders', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    // 检查响应是否成功
+    if (!response.ok) {
+      throw new Error('网络响应失败');
+    }
+
+    const data = await response.json(); // 解析为 JSON
+
+    if (data.Success) {
+      commissionData.value = data.ResData; // 将返回的数据赋值给 commissionData
+    } else {
+      message.error(data.ErrMsg || '加载数据失败');
+    }
+  } catch (error) {
+    message.error('请求出错，请稍后重试');
+  }
+};
+// 函数: 获取历史委托数据
+const fetchFilledOrders = async () => {
+  const token = localStorage.getItem('accessToken');
+  if (!token) {
+    message.error('请先登录');
+    return;
+  }
+
+  try {
+    const response = await fetch('https://test.keepbit.top/app_api/v1/KrtContract/GetMyFilledOrders', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!response.ok) throw new Error('网络响应失败');
+
+    const data = await response.json();
+    if (data.Success) {
+      filledOrdersData.value = data.ResData;
+    } else {
+      message.error(data.ErrMsg || '加载数据失败');
+    }
+  } catch (error) {
+    message.error('请求出错，请稍后重试');
+  }
+};
+const fetchHistoryPositions = async () => {
+  const token = localStorage.getItem('accessToken');
+  if (!token) {
+    message.error('请先登录');
+    return;
+  }
+
+  try {
+    const response = await fetch('https://test.keepbit.top/app_api/v1/KrtContract/GetMyHistoryPositions', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) throw new Error('网络响应失败');
+
+    const data = await response.json();
+    if (data.Success) {
+      positionRecordData.value = data.ResData;
+    } else {
+      message.error(data.ErrMsg || '加载数据失败');
+    }
+  } catch (error) {
+    message.error('请求出错，请稍后重试');
+  }
+};
 
 // 节流的更新函数，用于更新总数和百分比条比例
 const updateCoinBookList = throttle((data) => {
@@ -476,6 +660,9 @@ onMounted(() => {
     }
     tradingViewRef.value.appendChild(script)
   }
+  fetchLiveOrders();
+  fetchFilledOrders();
+  fetchHistoryPositions();
 })
 </script>
 
@@ -750,23 +937,31 @@ onMounted(() => {
       </div>
       <div class="p-4">
         <NTabs
-          default-value="position"
-          size="small"
-          animated
-          pane-wrapper-style="margin: 0 -4px"
-          pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+            default-value="position"
+            size="small"
+            animated
+            pane-wrapper-style="margin: 0 -4px"
+            pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
         >
-          <NTabPane name="position" tab="仓位(0)">
-            <NDataTable size="small" :columns="positionTableColumns" :data="[]" :bordered-false="false" />
+          <NTabPane name="position" :tab="'仓位(' + (positionData?.length || 0) + ')'">
+            <div style="max-height: 400px; overflow-y: auto;">
+              <NDataTable size="small" :columns="positionTableColumns" :data="positionData" :bordered="false" />
+            </div>
           </NTabPane>
-          <NTabPane name="commission" tab="委托(0)">
-            <NDataTable size="small" :columns="commissionTableColumns" :data="[]" :bordered-false="false" />
+          <NTabPane :name="'commission'" :tab="'委托(' + (commissionData?.length || 0) + ')'">
+            <div style="max-height: 400px; overflow-y: auto;">
+              <NDataTable size="small" :columns="commissionTableColumns" :data="commissionData" :bordered="false" />
+            </div>
           </NTabPane>
-          <NTabPane name="positionRecord" tab="历史仓位(0)">
-            <NDataTable size="small" :columns="positionRecordTableColumns" :data="[]" :bordered-false="false" />
+          <NTabPane name="positionRecord" :tab="'历史仓位(' + (positionRecordData?.length || 0) + ')'">
+            <div style="max-height: 400px; overflow-y: auto;">
+              <NDataTable size="small" :columns="positionRecordTableColumns" :data="positionRecordData" :bordered="false" />
+            </div>
           </NTabPane>
-          <NTabPane name="commissionRecord" tab="历史委托(0)">
-            <NDataTable size="small" :columns="commissionRecordTableColumns" :data="[]" :bordered-false="false" />
+          <NTabPane :name="'commissionRecord'" :tab="'历史委托(' + (filledOrdersData?.length || 0) + ')'">
+            <div style="max-height: 400px; overflow-y: auto;">
+              <NDataTable size="small" :columns="commissionRecordTableColumns" :data="filledOrdersData" :bordered="false" />
+            </div>
           </NTabPane>
         </NTabs>
       </div>
@@ -774,3 +969,25 @@ onMounted(() => {
     <OptionCard class="hidden lg:block" />
   </div>
 </template>
+<style scoped>
+/* 自定义滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px; /* 设置滚动条宽度 */
+  height: 8px; /* 设置水平滚动条高度 */
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0; /* 滚动条背景颜色 */
+  border-radius: 10px; /* 使滚动条背景更圆滑 */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1; /* 滚动条颜色 */
+  border-radius: 10px; /* 滚动条的圆角 */
+  border: 2px solid #f0f0f0; /* 为滚动条增加内边框 */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a1a1a1; /* 滚动条悬停颜色 */
+}
+</style>

@@ -1,11 +1,11 @@
 <script setup>
 import { NIcon, NButton, NTabs, NTabPane, NDataTable, NInput, useMessage  } from 'naive-ui'
 import { Star16Regular, Star16Filled, CaretDown16Filled } from '@vicons/fluent'
-import { ref, onMounted } from 'vue'
+import { provide, ref, onMounted } from 'vue'
 import initTickerTape from '@/utils/initTickerTape.js'
 import useCryptoWS from '@/hooks/useCryptoWS.js'
 import OptionCard from './components/OptionCard.vue'
-
+const available = ref('0.000');
 const message = useMessage();
 const { coinList, book15Data, tradeData } = useCryptoWS()
 const tickerTapRef = ref(null)
@@ -16,6 +16,13 @@ const selectOptionRef = useTemplateRef('selectOptionRef')
 
 const websocket = ref(null);
 let heartbeatInterval = null; // 用于存储心跳包的定时器
+// 计算选中的币种符号
+const coinSymbol = computed(() => {
+  if (selectedCoin.value && selectedCoin.value.symbol) {
+    return selectedCoin.value.symbol.replace(/USDT$/, ''); // 去掉结尾的 "USDT"
+  }
+  return '';
+});
 
 // UUID 生成函数
 function generateUUID() {
@@ -93,6 +100,8 @@ function initializeWebSocket() {
         ProfitRate: item.ProfitRate,
         MarginMode: item.MarginMode === 'crossed' ? '全仓' : '逐仓'
       }));
+    } else if (data.PackageType === 6 && data.arg?.channel === 'Accounts') {
+      available.value = data.data[0].available; // 更新 available 值
     }
   };
 
@@ -106,7 +115,8 @@ function initializeWebSocket() {
     clearInterval(heartbeatInterval); // 清理心跳包定时器
   };
 }
-
+provide('available', available);
+provide('coinSymbol', coinSymbol);
 // 在组件销毁时清理 WebSocket 和心跳包
 onUnmounted(() => {
   if (websocket.value) {
@@ -548,7 +558,6 @@ const commissionRecordTableColumns = ref([
 ]);
 
 
-
 watch(
   coinList,
   (val) => {
@@ -886,7 +895,7 @@ onMounted(() => {
                 >
                   ${{ selectedCoin?.lastPrice ? selectedCoin.lastPrice : 'N/A' }}
                 </div>
-                <div class="text-xs">≈ ${{ selectedCoin?.markPrice ? selectedCoin.markPrice : 'N/A' }}</div>
+                <div class="text-xs">≈ ${{ selectedCoin?.lastPrice ? selectedCoin.lastPrice : 'N/A' }}</div>
               </div>
 
               <!-- 24h 涨跌幅 -->

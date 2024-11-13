@@ -13,13 +13,21 @@ import {
   NTabPane,
   NTabs,
   NIcon,
+  useMessage
 } from 'naive-ui'
 import { CaretDown16Filled } from '@vicons/fluent'
-import { ref } from 'vue'
+import { ref, inject  } from 'vue'
 
 const optionType = ref('open')
-const positionType = ref('all')
-const factor = ref(75)
+const positionType = ref('crossed')
+const factor = ref(20)
+
+const available = inject('available'); // 接收 available 值
+const coinSymbol = inject('coinSymbol');
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTQ3NTgzNywiZXhwIjoxNzMxNTYyMjM3LCJpYXQiOjE3MzE0NzU4Mzd9.rVtOjnqmV716ssbZcYPl9FhA2H8yZkKT6qn0vHF_B68";
+
+const message = useMessage();
+
 const factorOptions = ref([
   {
     label: '1x',
@@ -65,6 +73,92 @@ const factorOptions = ref([
 const commissionNum = ref('')
 const chargeModal = ref(false)
 const chargeType = ref('shift')
+const availableAmount = ref('0.000 BCT') // 新增变量用于显示 "可用" 数量
+
+const previousFactor = ref(factor.value)
+
+async function switchLeverage(newFactor) {
+  if (!token) {
+    message.error('请先登录')
+    return
+  }
+
+  const url = 'https://test.keepbit.top/app_api/v1/KrtContract/SetLeverage'
+  const params = {
+    Symbol: coinSymbol.value,
+    Leverage: newFactor
+  }
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(params)
+    })
+    const result = await response.json()
+
+    if (result.Success) {
+      // 切换成功后更新当前杠杆倍数
+      previousFactor.value = newFactor
+      message.success('杠杆切换成功')
+    } else {
+      // 请求失败时恢复之前的杠杆倍数
+      factor.value = previousFactor.value
+      message.error(result.ErrMsg || '杠杆切换失败')
+    }
+  } catch (error) {
+    // 请求错误时恢复之前的杠杆倍数
+    factor.value = previousFactor.value
+    message.error('请求出错，请稍后重试')
+    console.error(error)
+  }
+}
+
+// 在用户选择新杠杆倍数时调用 switchLeverage 函数
+function handleFactorChange(newFactor) {
+  factor.value = newFactor
+  switchLeverage(newFactor)
+}
+
+async function switchMarginMode() {
+  if (!token) {
+    message.error('请先登录');
+    return;
+  }
+
+  const newMarginMode = positionType.value === 'crossed' ? 'isolated' : 'crossed';
+  const url = 'https://test.keepbit.top/app_api/v1/KrtContract/SetMarginMode';
+  const params = {
+    Symbol: coinSymbol.value,
+    MarginMode: newMarginMode,
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(params),
+    });
+    const result = await response.json();
+
+    if (result.Success) {
+      // 切换成功后更新当前模式
+      positionType.value = positionType.value === 'crossed' ? 'position' : 'crossed';
+      message.success('保证金模式切换成功');
+    } else {
+      message.error(result.ErrMsg || '切换保证金模式失败');
+    }
+  } catch (error) {
+    message.error('请求出错，请稍后重试');
+    console.error(error);
+  }
+}
 </script>
 
 <template>
@@ -72,20 +166,20 @@ const chargeType = ref('shift')
     <div class="grid grid-cols-2 gap-2">
       <NButton :type="optionType === 'open' ? 'primary' : 'default'" @click="optionType = 'open'">开仓</NButton>
       <NButton :type="optionType === 'close' ? 'primary' : 'default'" @click="optionType = 'close'">平仓</NButton>
-      <NPopconfirm @positive-click="positionType = positionType === 'all' ? 'position' : 'all'">
+      <NPopconfirm @positive-click="switchMarginMode">
         <template #trigger>
-          <NButton>{{ positionType === 'all' ? '全仓' : '逐仓' }}</NButton>
+          <NButton>{{ positionType === 'crossed' ? '全仓' : '逐仓' }}</NButton>
         </template>
         {{
-          positionType === 'all'
-            ? '逐仓模式：每个仓位独立计算风险，仅使用该仓位的保证金进行风险控制。'
-            : '全仓模式：账户内的所有可用资金承担风险，以减少爆仓风险'
+          positionType === 'crossed'
+              ? '切换为逐仓模式：每个仓位独立计算风险，仅使用该仓位的保证金进行风险控制。'
+              : '切换为全仓模式：账户内的所有可用资金承担风险，以减少爆仓风险'
         }}
       </NPopconfirm>
-      <NPopselect v-model:value="factor" :options="factorOptions" trigger="click">
+      <NPopselect :options="factorOptions" trigger="click" @update:value="handleFactorChange">
         <NButton :type="optionType === 'factor' ? 'primary' : 'default'" @click="optionType = 'factor'">
           <div class="flex items-center gap-x-2">
-            {{ factor }}
+            {{ factor }}X
             <NIcon>
               <CaretDown16Filled />
             </NIcon>
@@ -162,6 +256,10 @@ const chargeType = ref('shift')
           <div class="text-slate-400">可平量</div>
           <div>0.000 BCT</div>
         </div>
+        <div>
+          <div class="text-slate-400">可平量</div>
+          <div>0.000 BCT</div>
+        </div>
       </template>
       <template v-else>
         <div>
@@ -181,8 +279,8 @@ const chargeType = ref('shift')
           <div>0.000 BCT</div>
         </div>
         <div>
-          <div class="text-slate-400">可多开</div>
-          <div>0.000 BCT</div>
+          <div class="text-slate-400">可用</div>
+          <div>{{ available }} USDT</div>
         </div>
         <div class="flex items-center" @click="chargeModal = true">充值</div>
       </template>

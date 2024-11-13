@@ -10,7 +10,7 @@ defineProps({
     <img class="size-12 lg:size-16" :src="coin.image" />
     <div class="space-y-2 w-[100px] lg:w-[200px] truncate">
       <div class="text-sm lg:text-2xl font-bold">{{ coin.instId.replace('USDT', '') }}</div>
-      <div class="text-sm text-slate-400/80">vol: {{ coin.volume }}</div>
+      <div class="text-sm text-slate-400/80">vol: {{ coin.baseVolume }}</div>
     </div>
     <div class="flex-1 flex items-center justify-evenly gap-x-8">
       <div class="text-sm lg:text-2xl">${{ coin.lastPrice.toFixed(5) }}</div>

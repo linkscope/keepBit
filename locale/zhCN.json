@@ -83,10 +83,10 @@
       "title": "新手指导",
       "subtitle": "从KeepBit开启您的Web3之旅",
       "list": [
-        { "title": "成为KeepBit合伙人", "subtitle": "享合约交易最高80%永久返佣" },
+        { "title": "立即注册", "subtitle": "享捕捉市场信号，复制高手收益" },
         { "title": "立即充值", "subtitle": "流程简单，极速开启Web3之旅" },
         { "title": "开启交易", "subtitle": "快速上手交易，享受Web3丰厚收益" },
-        { "title": "体验跟单", "subtitle": "享捕捉市场信号，复制高手收益" }
+        { "title": "邀请好友加入", "subtitle": "享合约交易最高80%永久返佣" }
       ]
     },
     "download": {

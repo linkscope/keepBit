@@ -33,7 +33,12 @@ const handleClickToAgencyPlan = () => {
 const easyMoneyClause = () => {
   window.open('/#/article/easyMoneyClause', '_blank')
 }
-
+const goToRegister = () => {
+  router.push('/register'); // 跳转到注册页
+};
+const goToLogin = () => {
+  router.push('/login'); // 跳转到登录页
+};
 // 定义市场数据变量和获取数据的方法
 const marketData = ref(null)
 
@@ -90,8 +95,19 @@ onUnmounted(() => {
             <div>{{ t('home.subWelcome[1]') }}</div>
           </div>
           <div class="flex flex-col lg:flex-row items-center gap-8 my-16">
-            <NButton class="w-60 h-14 rounded-2xl bg-[#76e43b] text-black">{{ t('register.title') }}</NButton>
-            <NButton class="w-60 h-14 rounded-2xl bg-white text-black">{{ t('login.title') }}</NButton>
+            <NButton
+                class="w-60 h-14 rounded-2xl bg-[#76e43b] text-black"
+                @click="goToRegister"
+            >
+              {{ t('register.title') }}
+            </NButton>
+
+            <NButton
+                class="w-60 h-14 rounded-2xl bg-white text-black"
+                @click="goToLogin"
+            >
+              {{ t('login.title') }}
+            </NButton>
           </div>
         </div>
         <div class="lg:w-0 lg:flex-1 relative">

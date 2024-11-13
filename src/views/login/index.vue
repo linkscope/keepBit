@@ -27,7 +27,8 @@ const handleLogin = async () => {
       message.success(t('message.loginSuccess'))
       // 将 AccessToken 存入本地存储
       localStorage.setItem('accessToken', response.data.ResData.AccessToken)
-      router.push('/') // 跳转到首页
+      await router.push('/')// 跳转到首页
+      location.reload()
     } else {
       errorMessage.value = response.data.ErrMsg || '登录失败，请检查您的邮箱和密码'
     }

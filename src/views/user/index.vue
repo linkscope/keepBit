@@ -6,14 +6,13 @@ const router = useRouter()
 const userInfo = ref(null)
 
 onMounted(async () => {
-  // const token = localStorage.getItem('accessToken')
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTQzNDk0NywiZXhwIjoxNzMxNTIxMzQ3LCJpYXQiOjE3MzE0MzQ5NDd9.p4nGVVmx9iQgB1mUjKvg9ZPfMz8ssNtyk7KiRjbJUog'
-  // if (!token) {
-  //   message.warning('请先登录')
-  //   router.push('/login')
-  //   return
-  // }
+  const token = localStorage.getItem('accessToken')
+
+  if (!token) {
+    message.warning('请先登录')
+    await router.push('/login')
+    return
+  }
   const response = await fetch('https://test.keepbit.top/app_api/v1/User/GetMyInfo', {
     method: 'GET',
     headers: {

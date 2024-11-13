@@ -5,6 +5,7 @@ import { ref, onMounted } from 'vue'
 import dayjs from 'dayjs' // 使用 dayjs 库处理日期
 import duration from 'dayjs/plugin/duration'
 import { Search24Regular } from '@vicons/fluent'
+import { useRouter } from 'vue-router'
 
 dayjs.extend(duration)
 const { t } = useI18n()
@@ -14,11 +15,17 @@ const orderDetails = ref([]) // 订单详情列表
 const executingMissions = ref([]) // 执行中任务列表
 const stoppedMissions = ref([]) // 已停止任务列表
 const message = useMessage()
+const router = useRouter()
 
 // 停止任务的函数
 async function endMission(appsId) {
   try {
     const token = localStorage.getItem('accessToken')
+    if (!token) {
+      message.warning('请先登录')
+      await router.push('/login')
+      return
+    }
     const response = await axios.post(
       'https://test.keepbit.top/app_api/v1/DemoTrading/StopContract',
       { ContractId: appsId },
@@ -40,6 +47,11 @@ async function endMission(appsId) {
 async function getOrderDetails(missionId) {
   try {
     const token = localStorage.getItem('accessToken')
+    if (!token) {
+      message.warning('请先登录')
+      await router.push('/login')
+      return
+    }
     const response = await axios.get(
       `https://test.keepbit.top/app_api/v1/DemoTrading/GetOrders?contractId=${missionId}`,
       {
@@ -62,6 +74,11 @@ async function getOrderDetails(missionId) {
 onMounted(async () => {
   try {
     const token = localStorage.getItem('accessToken')
+    if (!token) {
+      message.warning('请先登录')
+      await router.push('/login')
+      return
+    }
     const response = await axios.get('https://test.keepbit.top/app_api/v1/DemoTrading/GetMyContracts', {
       headers: { Authorization: `Bearer ${token}` },
     })

@@ -3,11 +3,14 @@ import {ref, onMounted, computed} from 'vue'
 import axios from 'axios'
 import {NInput, NIcon, NButton, NPagination, NModal, useMessage} from 'naive-ui'
 import {Search24Regular} from '@vicons/fluent'
+import { useRouter } from 'vue-router'
 
 const {t} = useI18n()
 const showModal = ref(false)
 const showInvestment = ref(false)
 const allTactics = ref([]) // 用于存储从接口获取的所有数据
+const router = useRouter()
+
 const tacticsList = computed(() => {
   // 计算当前页的数据
   const start = (pagination.value.current - 1) * pagination.value.pageSize
@@ -48,6 +51,11 @@ const openModal = (tactic) => {
 // 使用策略请求
 const useStrategy = async () => {
   const token = localStorage.getItem('accessToken');
+  if (!token) {
+    message.warning('请先登录')
+    await router.push('/login')
+    return
+  }
   isDemoMode.value = false
   try {
     const response = await axios.post('https://test.keepbit.top/app_api/v1/User/GetMyAccount', {}, {
@@ -69,6 +77,11 @@ const useStrategy = async () => {
 // 模拟请求
 const demoStrategy = async () => {
   const token = localStorage.getItem('accessToken');
+  if (!token) {
+    message.warning('请先登录')
+    await router.push('/login')
+    return
+  }
   isDemoMode.value = true
   try {
     const response = await axios.post('https://test.keepbit.top/app_api/v1/DemoTrading/GetMyDemoAccount', {}, {
@@ -90,6 +103,11 @@ const demoStrategy = async () => {
 // 创建策略请求
 const createStrategy = async () => {
   const token = localStorage.getItem('accessToken');
+  if (!token) {
+    message.warning('请先登录')
+    await router.push('/login')
+    return
+  }
   if (!qty.value || isNaN(qty.value) || parseFloat(qty.value) <= 0) {
     message.error(t('message.invalidAmount'));  // 提示用户输入有效的金额
     return;

@@ -3,6 +3,7 @@ import { useMessage, NIcon } from 'naive-ui'
 import { Eye16Regular, EyeOff16Regular } from '@vicons/fluent'
 import * as echarts from 'echarts'
 import { pieChartOption } from './model.js'
+import { useRouter } from 'vue-router'
 
 const message = useMessage()
 const router = useRouter()
@@ -23,7 +24,7 @@ onMounted(async () => {
   const token = localStorage.getItem('accessToken')
   if (!token) {
     message.warning('请先登录')
-    router.push('/login')
+    await router.push('/login')
     return
   }
   const response = await fetch('https://test.keepbit.top/app_api/v1/User/GetMyAccountAssets', {

@@ -13,6 +13,108 @@ const tradingViewRef = ref(null)
 const selectedCoin = ref(null)
 const showSelect = ref(false)
 const selectOptionRef = useTemplateRef('selectOptionRef')
+
+const websocket = ref(null);
+let heartbeatInterval = null; // 用于存储心跳包的定时器
+
+// UUID 生成函数
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = Math.random() * 16 | 0,
+        v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+function initializeWebSocket() {
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTQ3NTgzNywiZXhwIjoxNzMxNTYyMjM3LCJpYXQiOjE3MzE0NzU4Mzd9.rVtOjnqmV716ssbZcYPl9FhA2H8yZkKT6qn0vHF_B68";
+
+  if (!token) {
+    message.error('请先登录');
+    return;
+  }
+
+  // 建立 WebSocket 连接
+  websocket.value = new WebSocket('ws://wstest.keepbit.top/KBitClientServer/');
+
+  websocket.value.onopen = () => {
+    // 发送验证消息
+    const authMessage = {
+      MsgId: generateUUID(),
+      PackageType: 1,
+      AuthToken: `Bearer ${token}`
+    };
+    websocket.value.send(JSON.stringify(authMessage));
+
+    // 启动心跳包定时器，每隔20秒发送一次
+    heartbeatInterval = setInterval(() => {
+      const heartbeatMessage = {
+        MsgId: generateUUID(),
+        PackageType: 0,
+        Data: 'Ping'
+      };
+      websocket.value.send(JSON.stringify(heartbeatMessage));
+    }, 20000); // 20秒
+  };
+
+  websocket.value.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    if (data && data?.PackageType === 1 && data.ErrMsg === "Success") {
+      // 如果验证通过，发送订阅消息
+      const subscribeMessage = {
+        MsgId: generateUUID(),
+        PackageType: 4,
+        args: [
+          { instType: 'USDT-FUTURES', channel: 'orders' },
+          { instType: 'USDT-FUTURES', channel: 'positions' },
+          { instType: 'USDT-FUTURES', channel: 'accounts' }
+        ]
+      };
+      websocket.value.send(JSON.stringify(subscribeMessage));
+    } else if (data.PackageType === 6 && data.arg?.channel === 'positions') {
+      // 处理 `positions` 数据，更新仓位列表
+      positionData.value = data.data.map(item => ({
+        PosId: item.PosId,
+        Symbol: item.Symbol,
+        OpenPrice: item.OpenPrice,
+        MarkPrice: item.MarkPrice,
+        Available: item.Available,
+        Locked: item.Locked,
+        Size: item.Size,
+        ProfitAndLoss: item.ProfitAndLoss,
+        UnPnl: item.UnPnl,
+        HoldSide: item.HoldSide === 1 ? '空头' : '多头',
+        Margin: item.Margin,
+        MarginRate: item.MarginRate,
+        MarginAsset: item.MarginAsset,
+        ClosingPrice: item.ClosingPrice,
+        Leverage: item.Leverage,
+        Profit: item.Profit,
+        ProfitRate: item.ProfitRate,
+        MarginMode: item.MarginMode === 'crossed' ? '全仓' : '逐仓'
+      }));
+    }
+  };
+
+  websocket.value.onerror = (error) => {
+    console.error('WebSocket 连接错误:', error);
+    message.error('WebSocket 连接失败');
+  };
+
+  websocket.value.onclose = () => {
+    console.log('WebSocket 连接已关闭');
+    clearInterval(heartbeatInterval); // 清理心跳包定时器
+  };
+}
+
+// 在组件销毁时清理 WebSocket 和心跳包
+onUnmounted(() => {
+  if (websocket.value) {
+    websocket.value.close(); // 关闭 WebSocket 连接
+  }
+  clearInterval(heartbeatInterval); // 清理心跳包定时器
+});
+
 watch(showSelect, (val) => {
   const handleClickOutside = (e) => {
     if (selectOptionRef.value && !selectOptionRef.value.contains(e.target)) {
@@ -33,93 +135,134 @@ const showSell = ref(true)
 const positionTableColumns = ref([
   {
     title: '合约',
-    key: '合约',
+    key: 'Symbol',
     width: 100,
+    align: 'center',
   },
   {
     title: '持仓方向',
-    key: '持仓方向',
+    key: 'HoldSide',
     width: 100,
+    align: 'center',
+    render(row) {
+      const holdSideText = row.HoldSide === 1 ? '空头' : '多头';
+      const color = row.HoldSide === 1 ? 'red' : 'green';
+      return h('span', { style: { color } }, holdSideText);
+    }
   },
   {
     title: '持仓模式',
-    key: '持仓模式',
+    key: 'MarginMode',
     width: 100,
+    align: 'center',
+    render(row) {
+      return row.MarginMode === 'isolated' ? '逐仓' : '全仓';
+    }
   },
   {
     title: '杠杆',
-    key: '杠杆',
+    key: 'Leverage',
     width: 100,
+    align: 'center',
+    render(row) {
+      return `${row.Leverage}X`;
+    }
   },
   {
     title: '收益(USDT)',
-    key: '收益(USDT)',
+    key: 'Profit',
     width: 100,
+    align: 'center',
   },
   {
     title: '收益率',
-    key: '收益率',
+    key: 'ProfitRate',
     width: 100,
+    align: 'center',
   },
   {
     title: '持仓量',
-    key: '持仓量',
+    key: 'Size',
     width: 100,
+    align: 'center',
   },
   {
     title: '保证金(USDT)',
-    key: '保证金(USDT)',
+    key: 'Margin',
     width: 100,
+    align: 'center',
   },
   {
     title: '保证金率',
-    key: '保证金率',
+    key: 'MarginRate',
     width: 100,
+    align: 'center',
   },
   {
     title: '开仓均价',
-    key: '开仓均价',
+    key: 'OpenPrice',
     width: 100,
+    align: 'center',
   },
   {
     title: '标记价格',
-    key: '标记价格',
+    key: 'MarkPrice',
     width: 100,
+    align: 'center',
   },
   {
     title: '预估强平价',
-    key: '预估强平价',
+    key: 'ClosingPrice',
     width: 100,
+    align: 'center',
   },
   {
     title: '操作',
     fixed: 'right',
-    width: 80,
+    width: 150,
+    align: 'center',
     render(row) {
       return h(
-        'div',
-        {
-          style: {
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0 8px',
+          'div',
+          {
+            style: {
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center', // 水平居中
+              gap: '8px',
+            },
           },
-        },
-        [
-          h(
-            NButton,
-            {
-              type: 'primary',
-            },
-            {
-              default: () => '操作按钮',
-            },
-          ),
-        ],
-      )
+          [
+            h(
+                NButton,
+                {
+                  type: 'primary',
+                  size: 'small',
+                  onClick: () => {
+                    // 处理止盈/止损操作
+                    console.log('止盈/止损 clicked', row);
+                  },
+                },
+                { default: () => '止盈/止损' }
+            ),
+            h(
+                NButton,
+                {
+                  type: 'primary',
+                  size: 'small',
+                  onClick: () => {
+                    // 处理平仓操作
+                    console.log('平仓 clicked', row);
+                  },
+                },
+                { default: () => '平仓' }
+            ),
+          ]
+      );
     },
   },
-])
+]);
+
 const commissionTableColumns = ref([
   { title: '合约', key: 'Symbol', width: 100, align: 'center' },
   {
@@ -450,7 +593,8 @@ const commissionData = ref([]);
 const positionRecordData = ref([]);
 const filledOrdersData = ref([]);
 const fetchLiveOrders = async () => {
-  const token = localStorage.getItem('accessToken'); // 从本地存储获取 token
+  // const token = localStorage.getItem('accessToken'); // 从本地存储获取 token
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTQ3NTgzNywiZXhwIjoxNzMxNTYyMjM3LCJpYXQiOjE3MzE0NzU4Mzd9.rVtOjnqmV716ssbZcYPl9FhA2H8yZkKT6qn0vHF_B68";
   if (!token) {
     message.error('请先登录');
     return;
@@ -481,7 +625,8 @@ const fetchLiveOrders = async () => {
 };
 // 函数: 获取历史委托数据
 const fetchFilledOrders = async () => {
-  const token = localStorage.getItem('accessToken');
+  // const token = localStorage.getItem('accessToken');
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTQ3NTgzNywiZXhwIjoxNzMxNTYyMjM3LCJpYXQiOjE3MzE0NzU4Mzd9.rVtOjnqmV716ssbZcYPl9FhA2H8yZkKT6qn0vHF_B68";
   if (!token) {
     message.error('请先登录');
     return;
@@ -504,7 +649,8 @@ const fetchFilledOrders = async () => {
   }
 };
 const fetchHistoryPositions = async () => {
-  const token = localStorage.getItem('accessToken');
+  // const token = localStorage.getItem('accessToken');
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTQ3NTgzNywiZXhwIjoxNzMxNTYyMjM3LCJpYXQiOjE3MzE0NzU4Mzd9.rVtOjnqmV716ssbZcYPl9FhA2H8yZkKT6qn0vHF_B68";
   if (!token) {
     message.error('请先登录');
     return;
@@ -663,6 +809,7 @@ onMounted(() => {
   fetchLiveOrders();
   fetchFilledOrders();
   fetchHistoryPositions();
+  initializeWebSocket();
 })
 </script>
 

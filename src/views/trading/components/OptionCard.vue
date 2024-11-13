@@ -15,8 +15,8 @@ import {
   NIcon,
   useMessage
 } from 'naive-ui'
-import { CaretDown16Filled } from '@vicons/fluent'
-import { ref, inject  } from 'vue'
+import {CaretDown16Filled} from '@vicons/fluent'
+import {ref, inject} from 'vue'
 
 const optionType = ref('open')
 const positionType = ref('crossed')
@@ -79,14 +79,69 @@ const previousFactor = ref(factor.value)
 const selectedPrice = inject('selectedPrice');  // 接收主组件传递的价格
 const currentPriceType = ref('limit'); // 用于模拟当前价格类型（可替换为实际逻辑）
 const orderPrice = ref(null); // 用于绑定的委托价格
+const sliderValue = ref(0); // 用于更新滑动条的中间值
+const sliderValueMarket = ref(0); // 用于更新滑动条的中间值
+// 使用inject接收来自父组件的价格
+const currentOrderPrice = inject('currentOrderPrice');
+// 实际委托价格
+const actualOrderPrice = ref(null);
+// 市价单的委托价格和委托数量
+const orderPriceMarket = ref(null);
+const commissionNumMarket = ref('');
 
-// 计算 "可多开数量" = 可用 * 杠杆倍数 / 委托价格
-const maxOpenAmount = computed(() => {
-  return orderPrice.value && orderPrice.value > 0
-      ? (parseFloat(available.value) * parseFloat(factor.value)) / parseFloat(orderPrice.value)
-      : 0;
+
+
+watch(currentPriceType, async (newPriceType) => {
+  if (newPriceType === 'market') {
+    actualOrderPrice.value = currentOrderPrice.value; // 设置市价为当前价格
+  } else {
+    await nextTick(); // 等待 DOM 更新完成
+    orderPrice.value = ''; // 清空限价的委托价格
+    commissionNum.value = ''; // 清空委托数量
+    actualOrderPrice.value = null;
+  }
 });
 
+// 计算 "可多开数量" = 可用 * 杠杆倍数 / 使用实际或委托价格
+const maxOpenAmount = computed(() => {
+  const priceToUse = currentPriceType.value === 'market' ? actualOrderPrice.value : orderPrice.value
+  return priceToUse && parseFloat(priceToUse) > 0
+      ? (parseFloat(available.value) * parseFloat(factor.value)) / parseFloat(priceToUse)
+      : 0
+})
+
+// 计算保证金=委托数量*委托价格/杠杆
+const margin = computed(() => {
+  let actualCommissionNum;
+
+  if(currentPriceType.value !== 'market'){
+    if (commissionNum.value.endsWith('%')) {
+      // 当委托数量包含百分号时，计算实际的委托数量为：可用 * 百分比 / 委托价格
+      const percentage = parseFloat(commissionNum.value) / 100;
+      actualCommissionNum = (parseFloat(available.value) * percentage) / parseFloat(orderPrice.value);
+    } else {
+      // 当委托数量不包含百分号时，直接使用数值计算
+      actualCommissionNum = parseFloat(commissionNum.value);
+    }
+    // 计算保证金
+    return actualCommissionNum && orderPrice.value
+        ? (actualCommissionNum * parseFloat(orderPrice.value)) / parseFloat(factor.value)
+        : 0;
+  }else{
+    if (commissionNumMarket.value.endsWith('%')) {
+      // 当委托数量包含百分号时，计算实际的委托数量为：可用 * 百分比 / 委托价格
+      const percentage = parseFloat(commissionNumMarket.value) / 100;
+      actualCommissionNum = (parseFloat(available.value) * percentage) / parseFloat(actualOrderPrice.value);
+    } else {
+      // 当委托数量不包含百分号时，直接使用数值计算
+      actualCommissionNum = parseFloat(commissionNumMarket.value);
+    }
+    // 计算保证金
+    return actualCommissionNum && actualOrderPrice.value
+        ? (actualCommissionNum * parseFloat(actualOrderPrice.value)) / parseFloat(factor.value)
+        : 0;
+  }
+});
 watch(orderPrice, () => {
   // 此处触发 maxOpenAmount 计算，因为 orderPrice 改变时会触发 computed
   console.log('委托价格变化，重新计算可多开数量:', maxOpenAmount.value);
@@ -181,6 +236,16 @@ async function switchMarginMode() {
     console.error(error);
   }
 }
+
+// 监视滑块值更新委托数量
+watch(sliderValue, (newValue) => {
+  commissionNum.value = `${newValue}%`;
+});
+
+// 监视滑块值更新委托数量
+watch(sliderValueMarket, (newValue) => {
+  commissionNumMarket.value = `${newValue}%`;
+});
 </script>
 
 <template>
@@ -203,36 +268,32 @@ async function switchMarginMode() {
           <div class="flex items-center gap-x-2">
             {{ factor }}X
             <NIcon>
-              <CaretDown16Filled />
+              <CaretDown16Filled/>
             </NIcon>
           </div>
         </NButton>
       </NPopselect>
     </div>
     <NTabs
-      default-value="limit"
-      animated
-      pane-wrapper-style="margin: 0 -4px"
-      pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+        v-model:value="currentPriceType"
+        default-value="limit"
+        animated
+        pane-wrapper-style="margin: 0 -4px"
+        pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
     >
       <NTabPane name="limit" tab="限价单">
         <div class="text-xs space-y-4">
           <div class="font-bold">委托价格(USDT)</div>
-          <NInput v-model:value="orderPrice" size="small" placeholder="输入委托价格" />
+          <NInput v-model:value="orderPrice" size="small" placeholder="输入委托价格"/>
           <div class="font-bold">委托数量</div>
-          <NInput v-model:value="commissionNum" size="small" placeholder="输入委托数量" />
+          <NInput v-model:value="commissionNum" size="small" placeholder="输入委托数量"/>
           <div class="font-bold">≈ 0.00 USDT</div>
+          <!-- 滑块 -->
           <NSlider
-            v-model:value="commissionNum"
-            :marks="{
-              0: '0%',
-              25: '25%',
-              50: '50%',
-              75: '75%',
-              100: '100%',
-            }"
-            :step="1"
-            :format-tooltip="(v) => `${v}%`"
+              v-model:value="sliderValue"
+              :marks="{ 0: '0%', 25: '25%', 50: '50%', 75: '75%', 100: '100%' }"
+              :step="1"
+              :format-tooltip="(v) => `${v}%`"
           />
           <div class="flex gap-x-2 pt-4">
             <NButton class="flex-1" type="primary">{{ optionType === 'close' ? '开多' : '平空' }}</NButton>
@@ -242,21 +303,16 @@ async function switchMarginMode() {
       </NTabPane>
       <NTabPane name="market" tab="市价单">
         <div class="font-bold">委托价格(USDT)</div>
-        <NInput size="small" placeholder="输入市价" />
+        <NInput v-model:value="orderPriceMarket" size="small" placeholder="市价" disabled />
         <div class="font-bold">委托数量</div>
-        <NInput v-model:value="commissionNum" size="small" placeholder="输入委托数量" />
+        <NInput v-model:value="commissionNumMarket" size="small" placeholder="输入委托数量"/>
         <div class="font-bold">≈ 0.00 USDT</div>
+        <!-- 滑块 -->
         <NSlider
-          v-model:value="commissionNum"
-          :marks="{
-            0: '0%',
-            25: '25%',
-            50: '50%',
-            75: '75%',
-            100: '100%',
-          }"
-          :step="1"
-          :format-tooltip="(v) => `${v}%`"
+            v-model:value="sliderValueMarket"
+            :marks="{ 0: '0%', 25: '25%', 50: '50%', 75: '75%', 100: '100%' }"
+            :step="1"
+            :format-tooltip="(v) => `${v}%`"
         />
         <div class="flex gap-x-2 pt-4">
           <NButton class="flex-1" type="primary">{{ optionType === 'close' ? '开多' : '平空' }}</NButton>
@@ -290,15 +346,17 @@ async function switchMarginMode() {
         </div>
         <div>
           <div class="text-slate-400">可开空</div>
-          <div><div>{{ maxOpenAmount.toFixed(3) }} {{ coinSymbol }}</div></div>
+          <div>
+            <div>{{ maxOpenAmount.toFixed(3) }} {{ coinSymbol }}</div>
+          </div>
         </div>
         <div>
           <div class="text-slate-400">保证金</div>
-          <div>0.000 BCT</div>
+          <div>{{ margin.toFixed(3) }} USDT</div>
         </div>
         <div>
-          <div class="text-slate-400">可多开</div>
-          <div>0.000 BCT</div>
+          <div class="text-slate-400">保证金</div>
+          <div>{{ margin.toFixed(3) }} USDT</div>
         </div>
         <div>
           <div class="text-slate-400">可用</div>
@@ -312,7 +370,7 @@ async function switchMarginMode() {
       <div class="bg-white rounded-md w-full lg:w-[600px]">
         <div class="p-4 flex items-center justify-between">
           <div class="font-bold">选择充币方式</div>
-          <img class="size-4" src="/close.png" @click="chargeModal = false" />
+          <img class="size-4" src="/close.png" @click="chargeModal = false"/>
         </div>
         <div class="p-4 space-y-4">
           <NRadioGroup v-model:value="chargeType">
@@ -321,12 +379,12 @@ async function switchMarginMode() {
           </NRadioGroup>
           <template v-if="chargeType === 'shift'">
             <div class="flex items-center gap-x-4">
-              <img class="size-6" src="/usdt.png" />
+              <img class="size-6" src="/usdt.png"/>
               USDT
             </div>
-            <NSelect placeholder="选择网络" :options="[{ label: 'USDT-TRC20', value: 'USDT' }]" />
+            <NSelect placeholder="选择网络" :options="[{ label: 'USDT-TRC20', value: 'USDT' }]"/>
             <div>提示：选择与提币平台一致的网络进行充值,否则您将会遗失这笔资金.</div>
-            <img class="size-32" src="/download_qrcode.png" />
+            <img class="size-32" src="/download_qrcode.png"/>
             <div>充币地址：TQBwB9sa7iUzS28M82WZvDsVf5NuMaexfa</div>
             <div>充值至：资金账户</div>
             <div class="text-slate-500">您只能向此地址充值入USDT-TRC20, 充值入其他资产将无法退回。</div>
@@ -335,7 +393,7 @@ async function switchMarginMode() {
             <div>从：资金账户</div>
             <div>到：合约账户</div>
             <div>资产：USDT</div>
-            <NInputNumber placeholder="数量" clearable />
+            <NInputNumber placeholder="数量" clearable/>
           </template>
           <div class="flex justify-end">
             <NButton type="primary">确定</NButton>

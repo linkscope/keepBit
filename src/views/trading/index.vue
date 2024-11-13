@@ -778,6 +778,10 @@ function handlePriceClick(price) {
 
 // 使用 provide 传递 selectedPrice
 provide('selectedPrice', selectedPrice);
+// 使用provide提供当前价格，供子组件使用
+// 将 selectedCoin 的 lastPrice 设为一个 computed 引用，以便响应其变化
+const currentOrderPrice = computed(() => selectedCoin.value?.lastPrice);
+provide('currentOrderPrice', currentOrderPrice);
 
 onMounted(() => {
   if (tickerTapRef.value) {

@@ -76,6 +76,28 @@ const chargeType = ref('shift')
 const availableAmount = ref('0.000 BCT') // 新增变量用于显示 "可用" 数量
 
 const previousFactor = ref(factor.value)
+const selectedPrice = inject('selectedPrice');  // 接收主组件传递的价格
+const currentPriceType = ref('limit'); // 用于模拟当前价格类型（可替换为实际逻辑）
+const orderPrice = ref(null); // 用于绑定的委托价格
+
+// 计算 "可多开数量" = 可用 * 杠杆倍数 / 委托价格
+const maxOpenAmount = computed(() => {
+  return orderPrice.value && orderPrice.value > 0
+      ? (parseFloat(available.value) * parseFloat(factor.value)) / parseFloat(orderPrice.value)
+      : 0;
+});
+
+watch(orderPrice, () => {
+  // 此处触发 maxOpenAmount 计算，因为 orderPrice 改变时会触发 computed
+  console.log('委托价格变化，重新计算可多开数量:', maxOpenAmount.value);
+});
+
+// 监视价格类型和传递过来的价格
+watch([selectedPrice, currentPriceType], ([newPrice, priceType]) => {
+  if (priceType !== 'market') {
+    orderPrice.value = newPrice; // 如果不是市价类型，赋值给 orderPrice
+  }
+});
 
 async function switchLeverage(newFactor) {
   if (!token) {
@@ -196,7 +218,7 @@ async function switchMarginMode() {
       <NTabPane name="limit" tab="限价单">
         <div class="text-xs space-y-4">
           <div class="font-bold">委托价格(USDT)</div>
-          <NInput size="small" placeholder="输入委托价格" />
+          <NInput v-model:value="orderPrice" size="small" placeholder="输入委托价格" />
           <div class="font-bold">委托数量</div>
           <NInput v-model:value="commissionNum" size="small" placeholder="输入委托数量" />
           <div class="font-bold">≈ 0.00 USDT</div>
@@ -264,11 +286,11 @@ async function switchMarginMode() {
       <template v-else>
         <div>
           <div class="text-slate-400">可多开</div>
-          <div>0.000 BCT</div>
+          <div>{{ maxOpenAmount.toFixed(3) }} {{ coinSymbol }}</div>
         </div>
         <div>
           <div class="text-slate-400">可开空</div>
-          <div>0.000 BCT</div>
+          <div><div>{{ maxOpenAmount.toFixed(3) }} {{ coinSymbol }}</div></div>
         </div>
         <div>
           <div class="text-slate-400">保证金</div>

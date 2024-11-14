@@ -88,8 +88,7 @@ const actualOrderPrice = ref(null);
 // 市价单的委托价格和委托数量
 const orderPriceMarket = ref(null);
 const commissionNumMarket = ref('');
-
-
+const positionData = inject('positionData', []);
 
 watch(currentPriceType, async (newPriceType) => {
   if (newPriceType === 'market') {
@@ -101,6 +100,16 @@ watch(currentPriceType, async (newPriceType) => {
     actualOrderPrice.value = null;
   }
 });
+
+// 监视 currentOrderPrice 和 currentPriceType，当为市价类型时，actualOrderPrice 跟随 currentOrderPrice 变化
+watch(
+    [currentOrderPrice, currentPriceType],
+    ([newPrice, priceType]) => {
+      if (priceType === 'market') {
+        actualOrderPrice.value = newPrice;
+      }
+    }
+);
 
 // 计算 "可多开数量" = 可用 * 杠杆倍数 / 使用实际或委托价格
 const maxOpenAmount = computed(() => {
@@ -142,6 +151,43 @@ const margin = computed(() => {
         : 0;
   }
 });
+
+// 计算 BTC 近似值
+const approxBTCValue = computed(() => {
+  let actualPrice = currentPriceType.value === 'market' ? actualOrderPrice.value : orderPrice.value;
+  let actualCommission = currentPriceType.value === 'market' ? commissionNumMarket.value : commissionNum.value;
+
+  if (actualCommission.endsWith('%')) {
+    // 如果委托数量是百分比
+    const percentage = parseFloat(actualCommission) / 100;
+    actualCommission = (parseFloat(available.value) * percentage) / parseFloat(actualPrice);
+  } else {
+    // 如果委托数量是具体数值
+    actualCommission = parseFloat(actualCommission);
+  }
+
+  // 返回 BTC 的实际数量
+  return actualCommission ? actualCommission.toFixed(3) : '0.000';
+});
+
+// 计算 USDT 近似值
+const approxUSDTValue = computed(() => {
+  let actualPrice = currentPriceType.value === 'market' ? actualOrderPrice.value : orderPrice.value;
+  let actualCommission = currentPriceType.value === 'market' ? commissionNumMarket.value : commissionNum.value;
+
+  if (actualCommission.endsWith('%')) {
+    const percentage = parseFloat(actualCommission) / 100;
+    actualCommission = (parseFloat(available.value) * percentage) / parseFloat(actualPrice);
+  } else {
+    actualCommission = parseFloat(actualCommission);
+  }
+
+  // 返回 USDT 的实际价值
+  return actualPrice && actualCommission
+      ? (parseFloat(actualPrice) * actualCommission).toFixed(3)
+      : '0.000';
+});
+
 watch(orderPrice, () => {
   // 此处触发 maxOpenAmount 计算，因为 orderPrice 改变时会触发 computed
   console.log('委托价格变化，重新计算可多开数量:', maxOpenAmount.value);
@@ -162,7 +208,7 @@ async function switchLeverage(newFactor) {
 
   const url = 'https://test.keepbit.top/app_api/v1/KrtContract/SetLeverage'
   const params = {
-    Symbol: coinSymbol.value,
+    Symbol: coinSymbol.value + "USDT",
     Leverage: newFactor
   }
 
@@ -246,6 +292,58 @@ watch(sliderValue, (newValue) => {
 watch(sliderValueMarket, (newValue) => {
   commissionNumMarket.value = `${newValue}%`;
 });
+
+// 定义获取账户信息的函数
+async function fetchSymbolAccount(symbol) {
+  try {
+    const response = await fetch(`https://test.keepbit.top/app_api/v1/KrtContract/GetSymbolAccount?symbol=${symbol}USDT`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    const result = await response.json();
+
+    if (result.Success) {
+      // 获取到的数据用于初始化杠杆倍数和持仓模式
+      if (result.ResData.Leverage) {
+        factor.value = parseInt(result.ResData.Leverage, 10);
+        previousFactor.value = factor.value;
+      }
+      if (result.ResData.MarginMode) {
+        positionType.value = result.ResData.MarginMode;
+      }
+    } else {
+      console.error("获取数据失败:", result.ErrMsg);
+    }
+  } catch (error) {
+    console.error("请求出错:", error);
+  }
+}
+
+// 监听 coinSymbol 的变化，切换币种时调用 fetchSymbolAccount 函数
+watch(coinSymbol, (newSymbol) => {
+  if (newSymbol) {
+    fetchSymbolAccount(newSymbol);
+  }
+});
+
+// 计算当前币种的多头和空头持仓数据
+const longPosition = computed(() =>
+    positionData.value.find(position => position.Symbol === coinSymbol.value + "USDT" && position.HoldSide === 0)
+);
+
+const shortPosition = computed(() =>
+    positionData.value.find(position => position.Symbol === coinSymbol.value + "USDT" && position.HoldSide === 1)
+);
+
+// 在组件挂载时调用 fetchSymbolAccount 函数
+onMounted(() => {
+  if (coinSymbol.value) {
+    fetchSymbolAccount(coinSymbol.value);
+  }
+});
 </script>
 
 <template>
@@ -287,7 +385,7 @@ watch(sliderValueMarket, (newValue) => {
           <NInput v-model:value="orderPrice" size="small" placeholder="输入委托价格"/>
           <div class="font-bold">委托数量</div>
           <NInput v-model:value="commissionNum" size="small" placeholder="输入委托数量"/>
-          <div class="font-bold">≈ 0.00 USDT</div>
+          <div class="font-bold">≈ {{ approxBTCValue }} {{ coinSymbol }} / {{ approxUSDTValue }} USDT</div>
           <!-- 滑块 -->
           <NSlider
               v-model:value="sliderValue"
@@ -296,8 +394,8 @@ watch(sliderValueMarket, (newValue) => {
               :format-tooltip="(v) => `${v}%`"
           />
           <div class="flex gap-x-2 pt-4">
-            <NButton class="flex-1" type="primary">{{ optionType === 'close' ? '开多' : '平空' }}</NButton>
-            <NButton class="flex-1 bg-rose-500 text-white">{{ optionType === 'close' ? '开空' : '平多' }}</NButton>
+            <NButton class="flex-1" type="primary">{{ optionType === 'close' ? '平空' : '开多' }}</NButton>
+            <NButton class="flex-1 bg-rose-500 text-white">{{ optionType === 'close' ? '平多' : '开空' }}</NButton>
           </div>
         </div>
       </NTabPane>
@@ -306,37 +404,41 @@ watch(sliderValueMarket, (newValue) => {
         <NInput v-model:value="orderPriceMarket" size="small" placeholder="市价" disabled />
         <div class="font-bold">委托数量</div>
         <NInput v-model:value="commissionNumMarket" size="small" placeholder="输入委托数量"/>
-        <div class="font-bold">≈ 0.00 USDT</div>
+        <div class="font-bold">≈ {{ approxBTCValue }} {{ coinSymbol }} / {{ approxUSDTValue }} USDT</div>
         <!-- 滑块 -->
         <NSlider
             v-model:value="sliderValueMarket"
             :marks="{ 0: '0%', 25: '25%', 50: '50%', 75: '75%', 100: '100%' }"
             :step="1"
+            :show-tooltip="false"
             :format-tooltip="(v) => `${v}%`"
         />
         <div class="flex gap-x-2 pt-4">
-          <NButton class="flex-1" type="primary">{{ optionType === 'close' ? '开多' : '平空' }}</NButton>
-          <NButton class="flex-1 bg-rose-500 text-white">{{ optionType === 'close' ? '开空' : '平多' }}</NButton>
+          <NButton class="flex-1" type="primary">{{ optionType === 'close' ? '平空' : '开多' }}</NButton>
+          <NButton class="flex-1 bg-rose-500 text-white">{{ optionType === 'close' ? '平多' : '开空' }}</NButton>
         </div>
       </NTabPane>
     </NTabs>
     <div class="p-4 grid grid-cols-2 bg-slate-100 rounded-xl gap-2 text-xs">
       <template v-if="optionType === 'close'">
+        <!-- 空仓持仓量和可平量 -->
         <div>
           <div class="text-slate-400">空仓持仓</div>
-          <div>0.000 BCT</div>
+          <div>{{ shortPosition?.Size || '0.000' }} {{ coinSymbol }}</div>
         </div>
+        <div>
+          <div class="text-slate-400">可平量</div>
+          <div>{{ shortPosition?.Available || '0.000' }} {{ coinSymbol }}</div>
+        </div>
+
+        <!-- 多仓持仓量和可平量 -->
         <div>
           <div class="text-slate-400">多仓持仓</div>
-          <div>0.000 BCT</div>
+          <div>{{ longPosition?.Size || '0.000' }} {{ coinSymbol }}</div>
         </div>
         <div>
           <div class="text-slate-400">可平量</div>
-          <div>0.000 BCT</div>
-        </div>
-        <div>
-          <div class="text-slate-400">可平量</div>
-          <div>0.000 BCT</div>
+          <div>{{ longPosition?.Available || '0.000' }} {{ coinSymbol }}</div>
         </div>
       </template>
       <template v-else>

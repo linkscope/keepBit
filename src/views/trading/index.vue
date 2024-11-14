@@ -91,7 +91,7 @@ function initializeWebSocket() {
         Size: item.Size,
         ProfitAndLoss: item.ProfitAndLoss,
         UnPnl: item.UnPnl,
-        HoldSide: item.HoldSide === 1 ? '空头' : '多头',
+        HoldSide: item.HoldSide,
         Margin: item.Margin,
         MarginRate: item.MarginRate,
         MarginAsset: item.MarginAsset,
@@ -99,7 +99,7 @@ function initializeWebSocket() {
         Leverage: item.Leverage,
         Profit: item.Profit,
         ProfitRate: item.ProfitRate,
-        MarginMode: item.MarginMode === 'crossed' ? '全仓' : '逐仓'
+        MarginMode: item.MarginMode
       }));
     } else if (data.PackageType === 6 && data.arg?.channel === 'Accounts') {
       available.value = data.data[0].available; // 更新 available 值
@@ -185,12 +185,20 @@ const positionTableColumns = ref([
     key: 'Profit',
     width: 100,
     align: 'center',
+    render(row) {
+      const color = row.Profit >= 0 ? 'green' : 'red';
+      return h('span', { style: { color } }, row.Profit);
+    },
   },
   {
     title: '收益率',
     key: 'ProfitRate',
     width: 100,
     align: 'center',
+    render(row) {
+      const color = row.Profit >= 0 ? 'green' : 'red';
+      return h('span', { style: { color } }, `${row.ProfitRate}`);
+    },
   },
   {
     title: '持仓量',
@@ -660,6 +668,40 @@ const fetchFilledOrders = async () => {
     message.error('请求出错，请稍后重试');
   }
 };
+
+watch(
+    () => coinList.value,
+    (newCoinList) => {
+      console.log("Updating positionData's MarkPrice, profit, and profitRate fields...");
+
+      // 遍历 positionData，更新每个持仓对象的 MarkPrice、profit 和 profitRate 字段
+      positionData.value.forEach((position) => {
+        const matchedCoin = newCoinList.find((coin) => coin.instId === position.Symbol);
+        if (matchedCoin) {
+          const lastPrice = matchedCoin.lastPrice; // 获取最新的标记价格
+
+          // 更新 MarkPrice
+          position.MarkPrice = lastPrice;
+
+          // 根据新的 MarkPrice 计算 profit 和 profitRate
+          const profit = position.HoldSide === 0
+              ? (position.OpenPrice - lastPrice) * position.Available
+              : (lastPrice - position.OpenPrice) * position.Available;
+
+          const profitRate = parseFloat(((profit + position.ProfitAndLoss) / position.Margin) * 100).toFixed(2);
+
+          // 更新 position 的 profit 和 profitRate 字段
+          position.Profit = parseFloat(profit).toFixed(2);
+          position.ProfitRate = parseFloat(profitRate).toFixed(2) + "%";
+        }
+      });
+
+      console.log("Updated positionData with MarkPrice, Profit, and ProfitRate:", positionData.value);
+    },
+    { deep: true }
+);
+// 将 positionData 提供给子组件
+provide('positionData', positionData);
 const fetchHistoryPositions = async () => {
   // const token = localStorage.getItem('accessToken');
   const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTQ3NTgzNywiZXhwIjoxNzMxNTYyMjM3LCJpYXQiOjE3MzE0NzU4Mzd9.rVtOjnqmV716ssbZcYPl9FhA2H8yZkKT6qn0vHF_B68";
@@ -768,6 +810,8 @@ watch(
     },
     {immediate: true, deep: true},
 )
+
+
 
 const selectedPrice = ref(null); // 用于保存点击的价格
 

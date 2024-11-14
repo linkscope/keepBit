@@ -145,7 +145,7 @@ function formatDuration(ms) {
       </div>
     </div>
     <div class="flex flex-col gap-y-4 lg:flex-row lg:items-center justify-between">
-      <div class="text-[40px] font-bold">{{ t('dealContracts.order') }}</div>
+      <div class="text-xl lg:text-[40px] font-bold">{{ t('dealContracts.order') }}</div>
       <NInput v-model:value="missionsData" placeholder="搜索交易订单">
         <template #prefix>
           <div class="flex items-center justify-center text-black">

@@ -161,16 +161,16 @@ onMounted(() => {
     <div class="space-y-4">
       <div class="flex items-center gap-x-8">
         <img class="size-16" src="/group.png" />
-        <div class="text-[64px] font-bold">{{ t('strategy.title') }}</div>
+        <div class="text-4xl lg:text-[64px] font-bold">{{ t('strategy.title') }}</div>
       </div>
-      <div class="flex items-center text-2xl gap-x-8">
+      <div class="flex items-center text-sm lg:text-2xl gap-x-8">
         <span>{{ t('strategy.subtitle[0]') }}</span>
         <span>|</span>
         <span>{{ t('strategy.subtitle[1]') }}</span>
       </div>
     </div>
     <div class="flex flex-col gap-y-4 lg:flex-row lg:items-center justify-between">
-      <div class="text-[40px] font-bold">{{ t('strategy.trading.title') }}</div>
+      <div class="text-xl lg:text-[40px] font-bold">{{ t('strategy.trading.title') }}</div>
       <NInput v-model:value="searchValue" :placeholder="t('strategy.trading.search')" @change="pagination.current = 1">
         <template #prefix>
           <div class="flex items-center justify-center text-black">

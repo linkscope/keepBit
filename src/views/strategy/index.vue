@@ -171,7 +171,7 @@ onMounted(() => {
     </div>
     <div class="flex flex-col gap-y-4 lg:flex-row lg:items-center justify-between">
       <div class="text-xl lg:text-[40px] font-bold">{{ t('strategy.trading.title') }}</div>
-      <NInput v-model:value="searchValue" :placeholder="t('strategy.trading.search')" @change="pagination.current = 1">
+      <NInput v-model:value="searchValue" :placeholder="t('strategy.trading.search')" @input="pagination.current = 1">
         <template #prefix>
           <div class="flex items-center justify-center text-black">
             <NIcon class="text-2xl">

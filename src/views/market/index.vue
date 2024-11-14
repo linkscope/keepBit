@@ -1,7 +1,7 @@
 <script setup>
-import { ref, watch } from 'vue'
-import { NCheckboxGroup, NCheckbox, NIcon, useMessage, NTabs, NTabPane } from 'naive-ui' // 从 Naive UI 导入 useMessage
-import { AddCircle16Regular } from '@vicons/fluent'
+import { computed, ref, watch } from 'vue'
+import { NCheckboxGroup, NCheckbox, NIcon, useMessage, NTabs, NTabPane, NInput, NPagination } from 'naive-ui' // 从 Naive UI 导入 useMessage
+import { AddCircle16Regular, Search24Regular } from '@vicons/fluent'
 import Coin from '@/views/home/components/Coin.vue'
 import useCryptoWS from '@/hooks/useCryptoWS'
 import axios from 'axios'
@@ -14,6 +14,22 @@ const checkedSelfList = ref([])
 const selfChoiceList = ref([])
 const apiSelfChoiceSymbols = ref([]) // 保存从 API 获取的自选标识符
 const message = useMessage()
+const pagination = ref({ current: 1, pageSize: 5, count: 1 })
+const searchValue = ref('')
+
+const coinData = computed(() => {
+  const start = (pagination.value.current - 1) * pagination.value.pageSize
+  const end = start + pagination.value.pageSize
+  const filteredTactics = (
+    currentTab.value === 'stock'
+      ? sortedByLastPriceCoinSpotList.value.list
+      : currentTab.value === 'trading'
+        ? sortedByLastPriceCoinList.value.list
+        : selfChoiceList.value
+  )?.filter((i) => i.instId.toLowerCase().includes(searchValue.value.toLowerCase()))
+  pagination.value.count = Math.ceil(filteredTactics.length / pagination.value.pageSize)
+  return filteredTactics?.slice(start, end)
+})
 
 // 监听 currentTab 的变化，在切换到“自选”时执行查询
 watch(currentTab, (newTab) => {
@@ -188,29 +204,95 @@ async function addToFavorites() {
     <div class="flex gap-x-4"></div>
     <div class="font-bold text-[40px]">{{ t('market.default.title') }}</div>
     <div class="flex items-center gap-x-4">
-      <div :class="['tab-item', currentTab === 'stock' ? 'active-tab' : '']" @click="currentTab = 'stock'">
+      <div
+        :class="['tab-item', currentTab === 'stock' ? 'active-tab' : '']"
+        @click="
+          () => {
+            pagination.current = 1
+            currentTab = 'stock'
+          }
+        "
+      >
         {{ t('market.default.tab[0].label') }}
       </div>
-      <div :class="['tab-item', currentTab === 'trading' ? 'active-tab' : '']" @click="currentTab = 'trading'">
+      <div
+        :class="['tab-item', currentTab === 'trading' ? 'active-tab' : '']"
+        @click="
+          () => {
+            pagination.current = 1
+            currentTab = 'trading'
+          }
+        "
+      >
         {{ t('market.default.tab[1].label') }}
       </div>
-      <div :class="['tab-item', currentTab === 'self' ? 'active-tab' : '']" @click="currentTab = 'self'">
+      <div
+        :class="['tab-item', currentTab === 'self' ? 'active-tab' : '']"
+        @click="
+          () => {
+            pagination.current = 1
+            currentTab = 'self'
+          }
+        "
+      >
         {{ t('market.default.tab[2].label') }}
       </div>
     </div>
     <div v-show="currentTab === 'stock'" class="p-4 border border-slate-200 space-y-4 rounded-2xl">
-      <div class="text-[40px] font-bold">{{ t('market.default.tab[0].title') }}</div>
-      <Coin v-for="item of sortedByLastPriceCoinSpotList.list" :key="item.instId" :coin="item" show-stock />
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-y-2">
+        <div class="text-2xl lg:text-[40px] font-bold">{{ t('market.default.tab[0].title') }}</div>
+        <NInput v-model:value="searchValue" placeholder="搜索货币简称" @input="pagination.current = 1">
+          <template #prefix>
+            <div class="flex items-center justify-center text-black">
+              <NIcon class="text-2xl">
+                <Search24Regular />
+              </NIcon>
+            </div>
+          </template>
+        </NInput>
+      </div>
+      <Coin v-for="item of coinData" :key="item.instId" :coin="item" show-stock />
+      <div class="flex justify-end">
+        <NPagination v-model:page="pagination.current" :page-count="pagination.count" />
+      </div>
     </div>
     <div v-show="currentTab === 'trading'" class="p-4 border border-slate-200 space-y-4 rounded-2xl">
-      <div class="text-[40px] font-bold">{{ t('market.default.tab[1].title') }}</div>
-      <Coin v-for="item of sortedByLastPriceCoinList.list" :key="item.instId" :coin="item" show-stock />
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-y-2">
+        <div class="text-2xl lg:text-[40px] font-bold">{{ t('market.default.tab[1].title') }}</div>
+        <NInput v-model:value="searchValue" placeholder="搜索货币简称" @input="pagination.current = 1">
+          <template #prefix>
+            <div class="flex items-center justify-center text-black">
+              <NIcon class="text-2xl">
+                <Search24Regular />
+              </NIcon>
+            </div>
+          </template>
+        </NInput>
+      </div>
+      <Coin v-for="item of coinData" :key="item.instId" :coin="item" show-stock />
+      <div class="flex justify-end">
+        <NPagination v-model:page="pagination.current" :page-count="pagination.count" />
+      </div>
     </div>
     <div v-show="currentTab === 'self'" class="p-4 border border-slate-200 space-y-4 rounded-2xl">
       <template v-if="selfChoiceList.length > 0">
         <!-- 显示自选列表 -->
-        <div class="text-[40px] font-bold">{{ t('market.default.tab[2].label') }}</div>
-        <Coin v-for="item of selfChoiceList" :key="item.instId" :coin="item" show-stock />
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-y-2">
+          <div class="text-2xl lg:text-[40px] font-bold">{{ t('market.default.tab[2].title') }}</div>
+          <NInput v-model:value="searchValue" placeholder="搜索货币简称" @input="pagination.current = 1">
+            <template #prefix>
+              <div class="flex items-center justify-center text-black">
+                <NIcon class="text-2xl">
+                  <Search24Regular />
+                </NIcon>
+              </div>
+            </template>
+          </NInput>
+        </div>
+        <Coin v-for="item of coinData" :key="item.instId" :coin="item" show-stock />
+        <div class="flex justify-end">
+          <NPagination v-model:page="pagination.current" :page-count="pagination.count" />
+        </div>
       </template>
 
       <template v-else>
@@ -305,5 +387,21 @@ async function addToFavorites() {
   background-color: #5ac820; /* 选中状态背景色 */
   color: #ffffff; /* 选中状态文本色 */
   border-color: #5ac820; /* 选中状态边框色 */
+}
+
+:deep(.n-input:not(.n-input--autosize)) {
+  @apply w-60 h-10;
+}
+
+:deep(.n-input__border) {
+  @apply border-black rounded-xl;
+}
+
+:deep(.n-input__prefix) {
+  @apply flex items-center justify-center text-black;
+}
+
+:deep(.n-input--focus) {
+  @apply rounded-xl;
 }
 </style>

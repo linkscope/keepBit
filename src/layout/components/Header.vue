@@ -4,7 +4,7 @@ import { Earth16Regular, ArrowDownload16Regular, List16Regular } from '@vicons/f
 import { loadLanguageAsync } from '@/i18n'
 import { languageList } from './model.js'
 
-const message = useMessage();
+const message = useMessage()
 const router = useRouter()
 const route = useRoute()
 const { t, locale } = useI18n()
@@ -202,28 +202,22 @@ onMounted(async () => {
       </NButton>
     </div>
     <NDrawer v-model:show="drawerModal" placement="right" :width="300">
-      <div class="h-full overflow-hidden flex flex-col gap-y-4 p-4">
+      <div class="h-full overflow-auto space-y-4 p-4">
         <template v-if="userInfo">
           <div class="mx-auto">
             <img class="size-8 rounded-full" :src="userInfo.ProfileUrl" />
           </div>
-          <NButton size="large" type="primary" class="rounded-md" @click="router.push('/user')">个人资料</NButton>
-          <NButton size="large" @click="router.push('/assets')">资产总览</NButton>
-          <NButton size="large" @click="handleUserOption('logout')">退出登录</NButton>
+          <NButton block size="large" type="primary" class="rounded-md" @click="router.push('/user')">个人资料</NButton>
+          <NButton block size="large" @click="router.push('/assets')">资产总览</NButton>
+          <NButton block size="large" @click="handleUserOption('logout')">退出登录</NButton>
         </template>
         <template v-else>
-          <NButton size="large" type="primary" class="rounded-md" @click="router.push('/login')">{{
+          <NButton block size="large" type="primary" class="rounded-md" @click="router.push('/login')">{{
             t('login.title')
           }}</NButton>
-          <NButton size="large" @click="router.push('/register')">{{ t('register.title') }}</NButton>
+          <NButton block size="large" @click="router.push('/register')">{{ t('register.title') }}</NButton>
         </template>
-        <NMenu
-          class="flex-1"
-          :default-value="route.path"
-          responsive
-          :options="menuList"
-          @update:value="router.push($event)"
-        />
+        <NMenu :default-value="route.path" :options="menuList" @update:value="router.push($event)" />
       </div>
     </NDrawer>
   </header>

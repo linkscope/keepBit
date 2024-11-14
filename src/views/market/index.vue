@@ -121,11 +121,11 @@ async function addToFavorites() {
         <div class="flex items-center" v-for="item of sortedCoinList.list.slice(0, 6)" :key="item.instId">
           <div class="flex-1 flex items-center gap-x-2">
             <img class="size-[50px]" :src="item.image" />
-            <div class="text-xl">{{ item.instId.replace('USDT', '') }}</div>
+            <div class="text-xs lg:text-xl">{{ item.instId.replace('USDT', '') }}</div>
           </div>
-          <div class="flex-1 text-sm text-slate-700">${{ item.lastPrice.toFixed(5) }}</div>
+          <div class="flex-1 text-xs lg:text-sm text-slate-700">${{ item.lastPrice.toFixed(5) }}</div>
           <div
-            class="flex-1 text-sm"
+            class="flex-1 text-xs lg:text-sm"
             :style="{
               color: item.change24h > 0 ? '#5ac820' : 'red',
             }"
@@ -146,11 +146,11 @@ async function addToFavorites() {
         <div class="flex items-center" v-for="item of sortedCoinList.list.slice(-6)" :key="item.instId">
           <div class="flex-1 flex items-center gap-x-2">
             <img class="size-[50px]" :src="item.image" />
-            <div class="text-xl">{{ item.instId.replace('USDT', '') }}</div>
+            <div class="text-xs lg:text-xl">{{ item.instId.replace('USDT', '') }}</div>
           </div>
-          <div class="flex-1 text-sm text-slate-700">${{ item.lastPrice.toFixed(5) }}</div>
+          <div class="flex-1 text-xs lg:text-sm text-slate-700">${{ item.lastPrice.toFixed(5) }}</div>
           <div
-            class="flex-1 text-sm"
+            class="flex-1 text-xs lg:text-sm"
             :style="{
               color: item.change24h > 0 ? '#5ac820' : 'red',
             }"
@@ -171,11 +171,11 @@ async function addToFavorites() {
         <div class="flex items-center" v-for="item of sortedCoinList.list.slice(0, 6)" :key="item.instId">
           <div class="flex-1 flex items-center gap-x-2">
             <img class="size-[50px]" :src="item.image" />
-            <div class="text-xl">{{ item.instId.replace('USDT', '') }}</div>
+            <div class="text-xs lg:text-xl">{{ item.instId.replace('USDT', '') }}</div>
           </div>
-          <div class="flex-1 text-sm text-slate-700">${{ item.lastPrice.toFixed(5) }}</div>
+          <div class="flex-1 text-xs lg:text-sm text-slate-700">${{ item.lastPrice.toFixed(5) }}</div>
           <div
-            class="flex-1 text-sm"
+            class="flex-1 text-xs lg:text-sm"
             :style="{
               color: item.change24h > 0 ? '#5ac820' : 'red',
             }"
@@ -225,11 +225,11 @@ async function addToFavorites() {
                 class="border border-slate-200 bg-slate-100 rounded-md flex p-4 items-center gap-y-2"
                 :value="item.instId"
               >
-                <img class="size-[50px]" :src="item.image" />
-                <div class="text-2xl font-bold">{{ item.instId.replace('USDT', '') }}</div>
-                <div class="text-sm text-slate-700">${{ item.lastPrice.toFixed(5) }}</div>
+                <img class="size-8 lg:size-[50px]" :src="item.image" />
+                <div class="text-sm lg:text-2xl font-bold">{{ item.instId.replace('USDT', '') }}</div>
+                <div class="text-xs lg:text-sm text-slate-700">${{ item.lastPrice.toFixed(5) }}</div>
                 <div
-                  class="text-sm"
+                  class="text-xs lg:text-sm"
                   :style="{
                     color: item.change24h > 0 ? '#5ac820' : 'red',
                   }"
@@ -247,11 +247,11 @@ async function addToFavorites() {
                 class="border border-slate-200 bg-slate-100 rounded-md flex p-4 items-center gap-y-2"
                 :value="item.instId"
               >
-                <img class="size-[50px]" :src="item.image" />
-                <div class="text-2xl font-bold">{{ item.instId.replace('USDT', '') }}</div>
-                <div class="text-sm text-slate-700">${{ item.lastPrice.toFixed(5) }}</div>
+                <img class="size-8 lg:size-[50px]" :src="item.image" />
+                <div class="text-sm lg:text-2xl font-bold">{{ item.instId.replace('USDT', '') }}</div>
+                <div class="text-xs lg:text-sm text-slate-700">${{ item.lastPrice.toFixed(5) }}</div>
                 <div
-                  class="text-sm"
+                  class="text-xs lg:text-sm"
                   :style="{
                     color: item.change24h > 0 ? '#5ac820' : 'red',
                   }"

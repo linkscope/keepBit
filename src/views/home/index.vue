@@ -34,11 +34,11 @@ const easyMoneyClause = () => {
   window.open('/#/article/easyMoneyClause', '_blank')
 }
 const goToRegister = () => {
-  router.push('/register'); // 跳转到注册页
-};
+  router.push('/register') // 跳转到注册页
+}
 const goToLogin = () => {
-  router.push('/login'); // 跳转到登录页
-};
+  router.push('/login') // 跳转到登录页
+}
 // 定义市场数据变量和获取数据的方法
 const marketData = ref(null)
 
@@ -50,18 +50,18 @@ async function fetchMarketData() {
   } else {
     try {
       const response = await axios.get('https://test.keepbit.top/app_api/v1/Market/GetMarketContacts')
-      if (response.data.ErrCode === "0" && response.data.Success) {
+      if (response.data.ErrCode === '0' && response.data.Success) {
         marketData.value = response.data.ResData // 存储数据到响应式变量
         localStorage.setItem('marketData', JSON.stringify(response.data.ResData)) // 缓存数据到 localStorage
       }
     } catch (error) {
-      console.error("获取市场数据失败:", error)
+      console.error('获取市场数据失败:', error)
     }
   }
 }
 
 onMounted(() => {
-  fetchMarketData();
+  fetchMarketData()
   // 创建Ticker Tape组件
   const script = initTickerTape()
   tickerTapRef.value.appendChild(script)
@@ -95,17 +95,11 @@ onUnmounted(() => {
             <div>{{ t('home.subWelcome[1]') }}</div>
           </div>
           <div class="flex flex-col lg:flex-row items-center gap-8 my-16">
-            <NButton
-                class="w-60 h-14 rounded-2xl bg-[#76e43b] text-black"
-                @click="goToRegister"
-            >
+            <NButton class="w-60 h-14 rounded-2xl bg-[#76e43b] text-black" @click="goToRegister">
               {{ t('register.title') }}
             </NButton>
 
-            <NButton
-                class="w-60 h-14 rounded-2xl bg-white text-black"
-                @click="goToLogin"
-            >
+            <NButton class="w-60 h-14 rounded-2xl bg-white text-black" @click="goToLogin">
               {{ t('login.title') }}
             </NButton>
           </div>
@@ -294,8 +288,8 @@ onUnmounted(() => {
           </div>
         </a>
         <a
-            href="https://play.google.com/store/apps/details?id=com.keepbitpro.android&referrer=google_play"
-            target="_blank"
+          href="https://play.google.com/store/apps/details?id=com.keepbitpro.android&referrer=google_play"
+          target="_blank"
         >
           <div class="relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4">
             <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" alt="Background" />
@@ -316,8 +310,8 @@ onUnmounted(() => {
         </a>
       </div>
       <div
-          class="lg:hidden relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4"
-          @click="router.push('/download')"
+        class="lg:hidden relative bg-[#78e43f] p-8 rounded-lg flex items-center gap-x-4"
+        @click="router.push('/download')"
       >
         <img class="absolute top-0 left-0 size-full object-fill" src="/trading_strategy_bg.png" />
         <div class="size-[50px] rounded-full bg-white flex items-center justify-center">
@@ -359,7 +353,7 @@ onUnmounted(() => {
         </div>
       </a>
       <div class="h-[72px]">
-        <div v-if="showToolTip" class="bg-[#78e43f] p-4 flex items-center gap-x-2 rounded-md">
+        <div v-if="showToolTip" class="bg-[#78e43f] px-2 py-4 lg:p-4 flex items-center gap-x-0.5 lg:gap-x-2 rounded-md">
           <img class="size-[40px]" src="/logo.png" />
           <div>
             <div class="font-bold text-xs">KeepBit</div>
@@ -369,13 +363,13 @@ onUnmounted(() => {
             href="https://play.google.com/store/apps/details?id=com.keepbitpro.android&referrer=google_play"
             target="_blank"
           >
-            <div class="px-2 py-1 flex items-center gap-x-1 bg-black rounded-md">
+            <div class="px-1 lg:px-2 py-0.5 lg:py-1 flex items-center gap-x-1 bg-black rounded-md">
               <img class="hidden lg:block size-7" src="/google.png" alt="Google Play" />
               <span class="text-white truncate">Google Play</span>
             </div>
           </a>
           <a href="https://apps.apple.com/us/app/keepbit/id6499257545" target="_blank">
-            <div class="px-2 py-1 flex items-center gap-x-1 bg-black rounded-md">
+            <div class="px-1 lg:px-2 py-0.5 lg:py-1 flex items-center gap-x-1 bg-black rounded-md">
               <img class="hidden lg:block size-7" src="/apple.png" alt="Apple Store" />
               <span class="text-white truncate">Apple Store</span>
             </div>

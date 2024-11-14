@@ -10,11 +10,15 @@ import { useTableColumns } from './model'
 const {
   positionModal,
   profitModal,
+  profitModalData,
+  positionModalData,
+  openProfitModal,
+  openPositionModal,
   positionTableColumns,
   commissionTableColumns,
   commissionRecordTableColumns,
   positionRecordTableColumns,
-} = useTableColumns()
+} = useTableColumns(cancelOrder)
 
 const available = ref('0.000')
 const message = useMessage()
@@ -31,6 +35,56 @@ const selectOptionRef = useTemplateRef('selectOptionRef')
 
 const websocket = ref(null)
 let heartbeatInterval = null // 用于存储心跳包的定时器
+
+const profitPercentage = ref(0); // 止盈百分比
+const lossPercentage = ref(0);   // 止损百分比
+
+// 用于切换价格模式的状态
+const isLimitPrice = ref(true);
+
+// 用户输入的限价价格
+const inputPrice = ref('');
+const currentPrice = computed(() => selectedCoin.value.lastPrice);
+// 切换价格模式
+function togglePriceMode() {
+  isLimitPrice.value = !isLimitPrice.value;
+  if (!isLimitPrice.value) {
+    inputPrice.value = currentPrice.value; // 在切换为市价时，将价格设置为当前价格
+  }
+}
+const quantityPercentage = ref(0); // 百分比
+
+// 根据百分比计算平仓数量
+const calculatedQuantity = computed(() => {
+  return (quantityPercentage.value / 100 * positionModalData.value.available).toFixed(3);
+});
+
+// 计算预计盈亏 = (平仓价格 - 开仓均价) * 平仓数量
+const expectedProfitLoss = computed(() => {
+  const closePrice = isLimitPrice.value ? parseFloat(inputPrice.value || 0) : currentPrice.value;
+  const openPrice = parseFloat(positionModalData.value.openPrice);
+  const quantity = parseFloat(calculatedQuantity.value || 0);
+  return ((closePrice - openPrice) * quantity).toFixed(8);
+});
+
+// 计算包含预计平仓手续费 = 预计盈亏 * 0.006
+const estimatedClosingFee = computed(() => {
+  return (expectedProfitLoss.value * 0.006).toFixed(8);
+});
+
+// 计算止盈价为 (1 + 百分比) * 开仓均价
+const profitPrice = computed(() => {
+  return ((1 + profitPercentage.value / 100) * profitModalData.value.openPrice).toFixed(2);
+});
+
+// 计算止损价为 (1 - 百分比) * 开仓均价
+const lossPrice = computed(() => {
+  return ((1 - lossPercentage.value / 100) * profitModalData.value.openPrice).toFixed(2);
+});
+
+const expectedProfit = computed(() => ((profitPrice.value - profitModalData.value.openPrice) * profitModalData.value.available).toFixed(2));
+const expectedLoss = computed(() => ((lossPrice.value - profitModalData.value.openPrice) * profitModalData.value.available).toFixed(2));
+
 // 计算选中的币种符号
 const coinSymbol = computed(() => {
   if (selectedCoin.value && selectedCoin.value.symbol) {
@@ -50,7 +104,7 @@ function generateUUID() {
 
 function initializeWebSocket() {
   const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTQ3NTgzNywiZXhwIjoxNzMxNTYyMjM3LCJpYXQiOjE3MzE0NzU4Mzd9.rVtOjnqmV716ssbZcYPl9FhA2H8yZkKT6qn0vHF_B68'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc'
 
   if (!token) {
     message.error('请先登录')
@@ -207,7 +261,7 @@ const filledOrdersData = ref([])
 const fetchLiveOrders = async () => {
   // const token = localStorage.getItem('accessToken'); // 从本地存储获取 token
   const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTQ3NTgzNywiZXhwIjoxNzMxNTYyMjM3LCJpYXQiOjE3MzE0NzU4Mzd9.rVtOjnqmV716ssbZcYPl9FhA2H8yZkKT6qn0vHF_B68'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc'
   if (!token) {
     message.error('请先登录')
     return
@@ -240,7 +294,7 @@ const fetchLiveOrders = async () => {
 const fetchFilledOrders = async () => {
   // const token = localStorage.getItem('accessToken');
   const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTQ3NTgzNywiZXhwIjoxNzMxNTYyMjM3LCJpYXQiOjE3MzE0NzU4Mzd9.rVtOjnqmV716ssbZcYPl9FhA2H8yZkKT6qn0vHF_B68'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc'
   if (!token) {
     message.error('请先登录')
     return
@@ -296,7 +350,7 @@ provide('positionData', positionData)
 const fetchHistoryPositions = async () => {
   // const token = localStorage.getItem('accessToken');
   const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTQ3NTgzNywiZXhwIjoxNzMxNTYyMjM3LCJpYXQiOjE3MzE0NzU4Mzd9.rVtOjnqmV716ssbZcYPl9FhA2H8yZkKT6qn0vHF_B68'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc'
   if (!token) {
     message.error('请先登录')
     return
@@ -320,46 +374,47 @@ const fetchHistoryPositions = async () => {
   }
 }
 
-// 节流的更新函数，用于更新总数和百分比条比例
 const updateCoinBookList = throttle((data) => {
-  // 对 asks 从高到低排序并取出前 20 项
-  const sortedAsks = data.asks.slice().sort((a, b) => parseFloat(b[0]) - parseFloat(a[0]))
-  const lastTwentyAsks = sortedAsks.slice(0, 26)
-  totalAskVolume.value = lastTwentyAsks.reduce((acc, ask) => acc + parseFloat(ask[1]), 0)
+  const askCount = showBuy.value ? 10 : 26; // 当只显示十条时使用10，否则26
+  const bidCount = showSell.value ? 10 : 26;
 
-  // 对 bids 从高到低排序并取出前 20 项
-  const sortedBids = data.bids.slice().sort((a, b) => parseFloat(b[0]) - parseFloat(a[0]))
-  const firstTwentyBids = sortedBids.slice(0, 26)
-  totalBidVolume.value = firstTwentyBids.reduce((acc, bid) => acc + parseFloat(bid[1]), 0)
+  // 计算显示的asks和bids列表
+  const displayedAsks = data.asks.slice(0, askCount);
+  const displayedBids = data.bids.slice(0, bidCount);
 
-  // 计算百分比
-  const totalVolume = totalAskVolume.value + totalBidVolume.value
-  percentageB.value = ((totalBidVolume.value / totalVolume) * 100).toFixed(2)
-  percentageS.value = ((totalAskVolume.value / totalVolume) * 100).toFixed(2)
+  // 计算总量
+  totalAskVolume.value = displayedAsks.reduce((acc, ask) => acc + parseFloat(ask[1]), 0);
+  totalBidVolume.value = displayedBids.reduce((acc, bid) => acc + parseFloat(bid[1]), 0);
 
-  // 更新 coinBook15List 数据，包含排序后的 `asks` 和 `bids`
-  let cumulativeAskVolume = 0
-  const cumulativeAsks = lastTwentyAsks
-    .slice()
-    .reverse()
-    .map((ask) => {
-      cumulativeAskVolume += parseFloat(ask[1])
-      return [...ask, cumulativeAskVolume.toFixed(2), ((cumulativeAskVolume / totalAskVolume.value) * 100).toFixed(2)]
-    })
-    .reverse()
+  const totalVolume = totalAskVolume.value + totalBidVolume.value;
 
-  let cumulativeBidVolume = 0
-  const cumulativeBids = firstTwentyBids.map((bid) => {
-    cumulativeBidVolume += parseFloat(bid[1])
-    return [...bid, cumulativeBidVolume.toFixed(2), ((cumulativeBidVolume / totalBidVolume.value) * 100).toFixed(2)]
-  })
+  // 计算百分比比例
+  percentageB.value = ((totalBidVolume.value / totalVolume) * 100).toFixed(2);
+  percentageS.value = ((totalAskVolume.value / totalVolume) * 100).toFixed(2);
+
+  // 更新 `coinBook15List` 数据，包含排序后的 `asks` 和 `bids`
+  let cumulativeAskVolume = 0;
+  const cumulativeAsks = displayedAsks
+      .slice()
+      .reverse()
+      .map((ask) => {
+        cumulativeAskVolume += parseFloat(ask[1]);
+        return [...ask, cumulativeAskVolume.toFixed(2), ((cumulativeAskVolume / totalAskVolume.value) * 100).toFixed(2)];
+      })
+      .reverse();
+
+  let cumulativeBidVolume = 0;
+  const cumulativeBids = displayedBids.map((bid) => {
+    cumulativeBidVolume += parseFloat(bid[1]);
+    return [...bid, cumulativeBidVolume.toFixed(2), ((cumulativeBidVolume / totalBidVolume.value) * 100).toFixed(2)];
+  });
 
   coinBook15List.value = {
     ...data,
     asks: cumulativeAsks,
     bids: cumulativeBids,
-  }
-}, 500) // 每 0.5 秒最多执行一次
+  };
+}, 500); // 每0.5秒最多执行一次
 
 // 监听 book15Data 和 selectedCoin 的变化，使用节流函数更新
 watch(
@@ -417,6 +472,116 @@ provide('selectedPrice', selectedPrice)
 // 将 selectedCoin 的 lastPrice 设为一个 computed 引用，以便响应其变化
 const currentOrderPrice = computed(() => selectedCoin.value?.lastPrice)
 provide('currentOrderPrice', currentOrderPrice)
+
+async function cancelOrder(Id) {
+  const token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc'
+  if (!token) {
+    message.error('请先登录')
+    return
+  }
+
+  try {
+    const response = await fetch('https://test.keepbit.top/app_api/v1/KrtContract/CancelOrder', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ OrderId: Id }),
+    })
+
+    const result = await response.json()
+
+    if (result.Success) {
+      message.success('撤单成功')
+      fetchLiveOrders() // 重新获取订单列表
+    } else {
+      message.error(result.ErrMsg || '撤单失败')
+    }
+  } catch (error) {
+    message.error('请求出错，请稍后重试')
+    console.error('撤单请求出错:', error)
+  }
+}
+
+async function confirmStopProfitLoss() {
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc';
+  if (!token) {
+    message.error('请先登录')
+    return
+  }
+  const data = {
+    Symbol: profitModalData.value.symbol,
+    Side: profitModalData.value.direction === '多头' ? 'long' : 'short',
+    TakeProfitPrice: profitPrice.value,
+    StopLossPrice: lossPrice.value
+  };
+
+  try {
+    const response = await fetch('https://test.keepbit.top/app_api/v1/KrtContract/SetStopProfitLoss', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    if (result.Success) {
+      message.success('止盈/止损设置成功');
+      profitModal.value = false;
+    } else {
+      message.error(result.ErrMsg || '止盈/止损设置失败');
+    }
+  } catch (error) {
+    message.error('请求出错，请稍后重试');
+    console.error('设置止盈/止损请求出错:', error);
+  }
+}
+
+// 发送平仓请求
+async function sendCloseOrder() {
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc'; // 使用实际的token
+  const closePrice = isLimitPrice.value ? parseFloat(inputPrice.value) : currentPrice.value;
+  const orderSide = positionModalData.value.direction === '多头' ? 2 : 3;
+
+  const orderData = {
+    Symbol: positionModalData.value.symbol,
+    MarginMode: positionModalData.value.marginMode === '逐仓' ? 'isolated' : 'crossed',
+    MarginAsset: 'USDT',
+    OrderSide: orderSide,
+    OrderType: isLimitPrice.value ? 0 : 1, // 0为限价，1为市价
+    Quantity: calculatedQuantity.value,
+    Price: isLimitPrice.value ? closePrice : "0.0",
+    Leverage: parseInt(positionModalData.value.leverage),
+    ReduceOnly: false
+  };
+
+  try {
+    const response = await fetch('https://test.keepbit.top/app_api/v1/KrtContract/SendOrder', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(orderData)
+    });
+
+    const result = await response.json();
+    if (result.Success) {
+      message.success('平仓订单发送成功');
+      positionModal.value = false; // 关闭模态框
+    } else {
+      message.error(result.ErrMsg || '平仓订单发送失败');
+    }
+  } catch (error) {
+    message.error('请求出错，请稍后重试');
+    console.error('平仓请求出错:', error);
+  }
+}
 
 onMounted(() => {
   if (tickerTapRef.value) {
@@ -540,7 +705,7 @@ onMounted(() => {
                 <div
                   class="text-2xl font-bold"
                   :style="{
-                    color: selectedCoin?.change24h > 0 ? '#5ac820' : 'red',
+                    color: selectedCoin?.lastPrice > selectedCoin?.markPrice ? '#5ac820' : 'red',
                   }"
                 >
                   ${{ selectedCoin?.lastPrice ? selectedCoin.lastPrice : 'N/A' }}
@@ -664,12 +829,16 @@ onMounted(() => {
               <!-- 当前价格 -->
               <div class="flex items-center">
                 <div
-                  class="flex-1 text-red-500 text-sm lg:text-4xl font-bold"
-                  @click="handlePriceClick(selectedCoin?.lastPrice)"
+                    class="flex-1 text-sm lg:text-4xl font-bold"
+                    :style="{ color: selectedCoin?.lastPrice < selectedCoin?.markPrice ? '#ef4444' : '#5ac820' }"
+                    @click="handlePriceClick(selectedCoin?.lastPrice)"
                 >
                   {{ selectedCoin?.lastPrice }}
                 </div>
-                <div class="flex-1 text-xs lg:text-xl" @click="handlePriceClick(selectedCoin?.markPrice)">
+                <div
+                    class="flex-1 text-xs lg:text-xl"
+                    @click="handlePriceClick(selectedCoin?.markPrice)"
+                >
                   ${{ selectedCoin?.markPrice }}
                 </div>
               </div>
@@ -785,7 +954,7 @@ onMounted(() => {
         </NTabs>
       </div>
     </div>
-    <OptionCard class="hidden lg:block" />
+    <OptionCard class="hidden lg:block" @orderSuccess="fetchLiveOrders"/>
   </div>
 
   <NModal v-model:show="positionModal">
@@ -794,116 +963,120 @@ onMounted(() => {
         <div class="font-bold text-xl">平仓</div>
         <img class="size-4" src="/close.png" @click="positionModal = false" />
       </div>
-      <div class="text-xl font-bold">BTCUSDT</div>
+      <div class="text-xl font-bold">{{ positionModalData.symbol }}</div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">持仓方向</div>
-        <div class="font-bold">多头</div>
+        <div class="font-bold">{{ positionModalData.direction }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">持仓模式</div>
-        <div class="font-bold">全仓</div>
+        <div class="font-bold">{{ positionModalData.marginMode }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">杠杆</div>
-        <div class="font-bold">50X</div>
+        <div class="font-bold">{{ positionModalData.leverage }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">当前价格</div>
-        <div class="font-bold">87202.3</div>
+        <div class="font-bold">{{ selectedCoin?.lastPrice }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">开仓价格</div>
-        <div class="font-bold">87202.3</div>
+        <div class="font-bold">{{ positionModalData.openPrice }}</div>
       </div>
       <div class="flex items-center justify-between text-sm gap-x-4">
         <div class="text-slate-500 w-24">价格(USDT)</div>
-        <NInput style="flex: 1" placeholder="请输入价格" />
-        <NButton>限价</NButton>
+        <NInput
+            v-if="isLimitPrice"
+            style="flex: 1"
+            v-model:value="inputPrice"
+            placeholder="请输入价格"
+        />
+        <NInput
+            v-else
+            style="flex: 1"
+            placeholder="市价" disabled
+        />
+        <NButton @click="togglePriceMode">{{ isLimitPrice ? '限价' : '市价' }}</NButton>
       </div>
       <div class="flex items-center justify-between text-sm gap-x-4">
-        <div class="text-slate-500 w-24">数量(BTC)</div>
-        <NInput style="flex: 1" placeholder="0.000" />
+        <div class="text-slate-500 w-24">数量({{ positionModalData.symbol.replace('USDT', '') }})</div>
+        <NInput style="flex: 1" :value="calculatedQuantity" placeholder="0.000" />
       </div>
-      <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">开仓价格</div>
-        <div class="font-bold">87202.3</div>
-      </div>
-      <NSlider :step="1" :show-tooltip="false" :format-tooltip="(v) => `${v}%`" />
-      <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">当前数量</div>
-        <div class="font-bold">0</div>
-      </div>
+      <NSlider v-model:value="quantityPercentage" :step="1" :show-tooltip="false" :format-tooltip="(v) => `${v}%`" />
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">持仓量</div>
-        <div class="font-bold">0.003</div>
+        <div class="font-bold">{{ positionModalData.size }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">可平</div>
-        <div class="font-bold">0.00.3</div>
+        <div class="font-bold">{{ positionModalData.available }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">预计盈亏</div>
-        <div class="font-bold">87202.3 USDT</div>
+        <div class="font-bold">{{ expectedProfitLoss }} USDT</div>
       </div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">包含预计平仓手续费</div>
-        <div class="font-bold">87202.3 USDT</div>
+        <div class="font-bold">{{ estimatedClosingFee }} USDT</div>
       </div>
-      <NButton type="primary" block>确定</NButton>
+      <NButton type="primary" block @click="sendCloseOrder">确定</NButton>
     </div>
   </NModal>
+
   <NModal v-model:show="profitModal">
     <div class="bg-white rounded-md w-full lg:w-[600px] p-4 space-y-4">
       <div class="flex items-center justify-between">
         <div class="font-bold text-xl">止盈/止损</div>
         <img class="size-4" src="/close.png" @click="profitModal = false" />
       </div>
-      <div class="text-xl font-bold">BTCUSDT</div>
+      <div class="text-xl font-bold">{{ profitModalData.symbol }}</div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">持仓方向</div>
-        <div class="font-bold">多头</div>
+        <div class="font-bold">{{ profitModalData.direction }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">持仓模式</div>
-        <div class="font-bold">全仓</div>
+        <div class="font-bold">{{ profitModalData.marginMode }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">杠杆</div>
-        <div class="font-bold">50X</div>
+        <div class="font-bold">{{ profitModalData.leverage }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">当前价格</div>
-        <div class="font-bold">87202.3</div>
+        <div class="font-bold">{{ selectedCoin?.lastPrice }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">开仓价格</div>
-        <div class="font-bold">87202.3</div>
+        <div class="text-slate-500">开仓均价</div>
+        <div class="font-bold">{{ profitModalData.openPrice }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">标记价格</div>
-        <div class="font-bold">87202.3</div>
+        <div class="font-bold">${{ selectedCoin?.markPrice }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">预估强平价</div>
-        <div class="font-bold">87202.3 USDT</div>
+        <div class="font-bold">{{ profitModalData.estimatedLiquidationPrice }} USDT</div>
       </div>
       <div class="flex items-center justify-between text-sm gap-x-4">
         <div class="text-slate-500 w-24">止盈(USDT)</div>
-        <NInput style="flex: 1" placeholder="止盈触发价" />
+        <NInput style="flex: 1" :value="profitPrice" placeholder="止盈触发价"/>
       </div>
-      <NSlider :step="1" :show-tooltip="false" :format-tooltip="(v) => `${v}%`" />
+      <NSlider v-model:value="profitPercentage" :max="200" :step="1" :show-tooltip="false" :format-tooltip="(v) => `${v}%`" />
       <div class="text-sm text-slate-500">
-        当标记价格 ≥ USDT时，将以最优成交价平仓，数量为 BTC，预计收益为 USDT（）。
+        当标记价格 ≥ {{ profitPrice }} USDT时，将以最优成交价平仓，数量为 {{ profitModalData.available }} {{ profitModalData.symbol.replace('USDT', '') }}，预计收益为 {{ expectedProfit }} USDT ({{ profitPercentage }}%)。
       </div>
+
       <div class="flex items-center justify-between text-sm gap-x-4">
-        <div class="text-slate-500 w-24">止损(BTC)</div>
-        <NInput style="flex: 1" placeholder="止损触发价" />
+        <div class="text-slate-500 w-24">止损(USDT)</div>
+        <NInput style="flex: 1" :value="lossPrice" placeholder="止损触发价"/>
       </div>
-      <NSlider :step="1" :show-tooltip="false" :format-tooltip="(v) => `${v}%`" />
+      <NSlider v-model:value="lossPercentage" :max="100" :step="1" :show-tooltip="false" :format-tooltip="(v) => `${v}%`" />
       <div class="text-sm text-slate-500">
-        当标记价格 ≤ USDT时，将以最优成交价平仓，数量为 BTC，预计收益为 USDT（）。
+        当标记价格 ≤ {{ lossPrice }} USDT时，将以最优成交价平仓，数量为 {{ profitModalData.available }} {{ profitModalData.symbol.replace('USDT', '') }}，预计收益为 {{ expectedLoss }} USDT ({{ lossPercentage }}%)。
       </div>
-      <NButton type="primary" block>确定</NButton>
+      <NButton type="primary" block @click="confirmStopProfitLoss">确定</NButton>
     </div>
   </NModal>
 </template>

@@ -1,9 +1,50 @@
 import { ref } from 'vue'
 import { NButton } from 'naive-ui'
 
-export function useTableColumns() {
+export function useTableColumns(cancelOrder) {
   const positionModal = ref(false)
   const profitModal = ref(false)
+
+  // 存储止盈/止损和平仓模态框数据的对象
+  const profitModalData = ref({});
+  const positionModalData = ref({});
+
+  /**
+   * 打开止盈/止损模态框并填充持仓数据
+   * @param {Object} row 持仓数据对象
+   */
+  function openProfitModal(row) {
+    profitModalData.value = {
+      symbol: row.Symbol || 'N/A',
+      direction: row.HoldSide === 1 ? '多头' : '空头',
+      marginMode: row.MarginMode === 'isolated' ? '逐仓' : '全仓',
+      leverage: `${row.Leverage}X`,
+      currentPrice: row.MarkPrice || 'N/A',
+      openPrice: row.OpenPrice || 'N/A',
+      markPrice: row.MarkPrice || 'N/A',
+      estimatedLiquidationPrice: row.ClosingPrice || 'N/A',
+      available: row.Available || 0,
+    };
+    profitModal.value = true;
+  }
+
+  /**
+   * 打开平仓模态框并填充持仓数据
+   * @param {Object} row 持仓数据对象
+   */
+  function openPositionModal(row) {
+    positionModalData.value = {
+      symbol: row.Symbol || 'N/A',
+      direction: row.HoldSide === 1 ? '多头' : '空头',
+      marginMode: row.MarginMode === 'isolated' ? '逐仓' : '全仓',
+      leverage: `${row.Leverage}X`,
+      currentPrice: row.MarkPrice || 'N/A',
+      openPrice: row.OpenPrice || 'N/A',
+      available: row.Available || 0,
+      size: row.Size || 0,
+    };
+    positionModal.value = true;
+  }
 
   const positionTableColumns = [
     {
@@ -18,7 +59,7 @@ export function useTableColumns() {
       width: 100,
       align: 'center',
       render(row) {
-        const holdSideText = row.HoldSide === 1 ? '空头' : '多头'
+        const holdSideText = row.HoldSide === 1 ? '多头' : '空头'
         const color = row.HoldSide === 1 ? 'red' : 'green'
         return h('span', { style: { color } }, holdSideText)
       },
@@ -104,43 +145,38 @@ export function useTableColumns() {
       align: 'center',
       render(row) {
         return h(
-          'div',
-          {
-            style: {
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center', // 水平居中
-              gap: '8px',
+            'div',
+            {
+              style: {
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+              },
             },
-          },
-          [
-            h(
-              NButton,
-              {
-                type: 'primary',
-                size: 'small',
-                onClick: () => {
-                  // 处理止盈/止损操作
-                  profitModal.value = true
-                },
-              },
-              { default: () => '止盈/止损' },
-            ),
-            h(
-              NButton,
-              {
-                type: 'primary',
-                size: 'small',
-                onClick: () => {
-                  positionModal.value = true
-                },
-              },
-              { default: () => '平仓' },
-            ),
-          ],
-        )
+            [
+              h(
+                  NButton,
+                  {
+                    type: 'primary',
+                    size: 'small',
+                    onClick: () => openProfitModal(row), // 打开止盈/止损模态框
+                  },
+                  { default: () => '止盈/止损' },
+              ),
+              h(
+                  NButton,
+                  {
+                    type: 'primary',
+                    size: 'small',
+                    onClick: () => openPositionModal(row), // 打开平仓模态框
+                  },
+                  { default: () => '平仓' },
+              ),
+            ],
+        );
       },
-    },
+    }
   ]
   const commissionTableColumns = [
     { title: '合约', key: 'Symbol', width: 100, align: 'center' },
@@ -214,7 +250,14 @@ export function useTableColumns() {
       width: 80,
       align: 'center',
       render(row) {
-        return h(NButton, { type: 'primary' }, { default: () => '撤单' })
+        return h(
+            NButton,
+            {
+              type: 'primary',
+              onClick: () => cancelOrder(row.Id	) // 使用传入的 cancelOrder 方法
+            },
+            { default: () => '撤单' }
+        )
       },
     },
   ]
@@ -424,6 +467,10 @@ export function useTableColumns() {
   return {
     positionModal,
     profitModal,
+    profitModalData,
+    positionModalData,
+    openProfitModal,
+    openPositionModal,
     positionTableColumns,
     commissionTableColumns,
     positionRecordTableColumns,

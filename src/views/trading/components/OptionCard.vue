@@ -25,7 +25,7 @@ const factor = ref(20)
 const available = inject('available') // 接收 available 值
 const coinSymbol = inject('coinSymbol')
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTQ3NTgzNywiZXhwIjoxNzMxNTYyMjM3LCJpYXQiOjE3MzE0NzU4Mzd9.rVtOjnqmV716ssbZcYPl9FhA2H8yZkKT6qn0vHF_B68'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc'
 
 const message = useMessage()
 const dialog = useDialog()
@@ -93,6 +93,7 @@ const actualOrderPrice = ref(null)
 const orderPriceMarket = ref(null)
 const commissionNumMarket = ref('')
 const positionData = inject('positionData', [])
+const emit = defineEmits(['orderSuccess'])
 
 watch(currentPriceType, async (newPriceType) => {
   if (newPriceType === 'market') {
@@ -254,7 +255,7 @@ async function switchMarginMode() {
   const newMarginMode = positionType.value === 'crossed' ? 'isolated' : 'crossed'
   const url = 'https://test.keepbit.top/app_api/v1/KrtContract/SetMarginMode'
   const params = {
-    Symbol: coinSymbol.value,
+    Symbol: coinSymbol.value + "USDT",
     MarginMode: newMarginMode,
   }
 
@@ -357,10 +358,10 @@ function openConfirmationModal(type) {
     symbol: coinSymbol.value + 'USDT',
     type: type === 'openLong' ? '开多' : type === 'openShort' ? '开空' : type === 'closeLong' ? '平多' : '平空',
     price: currentPriceType.value === 'market' ? actualOrderPrice.value : orderPrice.value,
-    amount: '0.0008085696819885385 BTC', // 这里根据实际计算逻辑替换
-    margin: '1.45496616 USDT', // 这里根据实际计算逻辑替换
+    amount:approxBTCValue.value + coinSymbol.value, // 这里根据实际计算逻辑替换
+    margin: (parseFloat(approxUSDTValue.value)/parseFloat(factor.value)) + "USDT", // 这里根据实际计算逻辑替换
     leverage: factor.value + 'x',
-    positionType: '全仓', // 假设为全仓模式，可以根据实际值替换
+    positionType: positionType.value === 'crossed' ? '全仓' : '逐仓',
   }
   confirmationModal.value = true
 }
@@ -371,7 +372,7 @@ const handleBeforeLeave = (tab) => {
       return new Promise((resove, reject) => {
         dialog.warning({
           title: '限单价确认',
-          content: '确认切换到限价单？以可成交的最优价格快速买入或卖出。',
+          content: '确认切换到限价单？以指定或更优价格买入或卖出。',
           positiveText: '确定',
           negativeText: '取消',
           onPositiveClick: () => resove(true),
@@ -391,6 +392,52 @@ const handleBeforeLeave = (tab) => {
       })
     default:
       return false
+  }
+}
+
+async function sendOrder() {
+  if (!token) {
+    message.error('请先登录');
+    return;
+  }
+
+  // Construct the payload
+  const payload = {
+    Symbol: confirmationData.value.symbol,
+    MarginMode: positionType.value, // 'crossed' for 全仓, 'isolated' for 逐仓
+    MarginAsset: "USDT",
+    OrderSide: confirmationData.value.type.includes('开多') ? 0 : confirmationData.value.type.includes('开空') ? 1 : confirmationData.value.type.includes('平多') ? 2 : 3,
+    OrderType: currentPriceType.value === 'market' ? 1 : 0, // 市价 1, 限价 0
+    Quantity: approxBTCValue.value, // or the actual quantity value you want to send
+    Price: currentPriceType.value === 'market' ? '' : orderPrice.value, // Market orders don't need a price
+    Leverage: factor.value,
+    ReduceOnly: optionType.value === 'close', // true for closing positions
+  };
+
+  try {
+    // Send POST request to API
+    const response = await fetch('https://test.keepbit.top/app_api/v1/KrtContract/SendOrder', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const result = await response.json();
+
+    // Check response and notify user
+    if (result.Success) {
+      message.success('下单成功');
+      confirmationModal.value = false; // Close the modal
+      emit('orderSuccess') // 触发 orderSuccess 事件
+    } else {
+      message.error(result.ErrMsg || '下单失败');
+    }
+  } catch (error) {
+    console.error('下单请求出错:', error);
+    message.error('请求出错，请稍后重试');
   }
 }
 
@@ -470,13 +517,13 @@ onMounted(() => {
       <NTabPane name="market" tab="市价单">
         <div class="text-xs space-y-4">
           <div class="font-bold">委托价格(USDT)</div>
-          <NInput v-model:value="orderPrice" size="small" placeholder="输入市价" />
+          <NInput v-model:value="orderPriceMarket" size="small" placeholder="市价" disabled />
           <div class="font-bold">委托数量</div>
-          <NInput v-model:value="commissionNum" size="small" placeholder="输入委托数量" />
+          <NInput v-model:value="commissionNumMarket" size="small" placeholder="输入委托数量" />
           <div class="font-bold">≈ {{ approxBTCValue }} {{ coinSymbol }} / {{ approxUSDTValue }} USDT</div>
           <!-- 滑块 -->
           <NSlider
-            v-model:value="sliderValue"
+            v-model:value="sliderValueMarket"
             :marks="{ 0: '0%', 25: '25%', 50: '50%', 75: '75%', 100: '100%' }"
             :step="1"
             :format-tooltip="(v) => `${v}%`"
@@ -673,7 +720,7 @@ onMounted(() => {
         <div class="flex justify-end">
           <NCheckbox>不再提示</NCheckbox>
         </div>
-        <NButton type="primary" block @click="confirmationModal = false">确定</NButton>
+        <NButton type="primary" block @click="sendOrder">确定</NButton>
       </div>
     </NModal>
   </div>

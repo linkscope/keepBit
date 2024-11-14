@@ -74,7 +74,7 @@ const commissionNum = ref('')
 const chargeModal = ref(false)
 const chargeType = ref('shift')
 const availableAmount = ref('0.000 BCT') // 新增变量用于显示 "可用" 数量
-
+const confirmationModal = ref(false)
 const previousFactor = ref(factor.value)
 const selectedPrice = inject('selectedPrice');  // 接收主组件传递的价格
 const currentPriceType = ref('limit'); // 用于模拟当前价格类型（可替换为实际逻辑）
@@ -338,6 +338,31 @@ const shortPosition = computed(() =>
     positionData.value.find(position => position.Symbol === coinSymbol.value + "USDT" && position.HoldSide === 1)
 );
 
+// 用于存储确认弹窗的数据
+const confirmationData = ref({
+  symbol: '',
+  type: '',
+  price: '',
+  amount: '',
+  margin: '',
+  leverage: '',
+  positionType: ''
+});
+
+function openConfirmationModal(type) {
+  console.log("openConfirmationModal triggered with type:", type); // 检查触发
+  confirmationData.value = {
+    symbol: coinSymbol.value + "USDT",
+    type: type === 'openLong' ? '开多' : type === 'openShort' ? '开空' : type === 'closeLong' ? '平多' : '平空',
+    price: currentPriceType.value === 'market' ? actualOrderPrice.value : orderPrice.value,
+    amount: '0.0008085696819885385 BTC', // 这里根据实际计算逻辑替换
+    margin: '1.45496616 USDT', // 这里根据实际计算逻辑替换
+    leverage: factor.value + "x",
+    positionType: '全仓' // 假设为全仓模式，可以根据实际值替换
+  };
+  confirmationModal.value = true;
+}
+
 // 在组件挂载时调用 fetchSymbolAccount 函数
 onMounted(() => {
   if (coinSymbol.value) {
@@ -394,8 +419,19 @@ onMounted(() => {
               :format-tooltip="(v) => `${v}%`"
           />
           <div class="flex gap-x-2 pt-4">
-            <NButton class="flex-1" type="primary">{{ optionType === 'close' ? '平空' : '开多' }}</NButton>
-            <NButton class="flex-1 bg-rose-500 text-white">{{ optionType === 'close' ? '平多' : '开空' }}</NButton>
+            <NButton
+                class="flex-1"
+                type="primary"
+                @click="openConfirmationModal(optionType === 'close' ? 'closeShort' : 'openLong')"
+            >
+              {{ optionType === 'close' ? '平空' : '开多' }}
+            </NButton>
+            <NButton
+                class="flex-1 bg-rose-500 text-white"
+                @click="openConfirmationModal(optionType === 'close' ? 'closeLong' : 'openShort')"
+            >
+              {{ optionType === 'close' ? '平多' : '开空' }}
+            </NButton>
           </div>
         </div>
       </NTabPane>
@@ -414,8 +450,19 @@ onMounted(() => {
             :format-tooltip="(v) => `${v}%`"
         />
         <div class="flex gap-x-2 pt-4">
-          <NButton class="flex-1" type="primary">{{ optionType === 'close' ? '平空' : '开多' }}</NButton>
-          <NButton class="flex-1 bg-rose-500 text-white">{{ optionType === 'close' ? '平多' : '开空' }}</NButton>
+          <NButton
+              class="flex-1"
+              type="primary"
+              @click="openConfirmationModal(optionType === 'close' ? 'closeShort' : 'openLong')"
+          >
+            {{ optionType === 'close' ? '平空' : '开多' }}
+          </NButton>
+          <NButton
+              class="flex-1 bg-rose-500 text-white"
+              @click="openConfirmationModal(optionType === 'close' ? 'closeLong' : 'openShort')"
+          >
+            {{ optionType === 'close' ? '平多' : '开空' }}
+          </NButton>
         </div>
       </NTabPane>
     </NTabs>
@@ -503,5 +550,88 @@ onMounted(() => {
         </div>
       </div>
     </NModal>
+
+    <NModal v-model:show="confirmationModal" title="下单确认" style="text-align: center;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="symbol">{{ confirmationData.symbol }}</div>
+          <NTag type="success" size="small">{{ confirmationData.type }}</NTag>
+          <NTag size="small">{{ confirmationData.leverage }}</NTag>
+        </div>
+        <div class="modal-body">
+          <div class="modal-row">
+            <span class="label">委托价格</span>
+            <span class="value">{{ confirmationData.price }} USDT</span>
+          </div>
+          <div class="modal-row">
+            <span class="label">数量</span>
+            <span class="value">{{ confirmationData.amount }} {{ coinSymbol }}</span>
+          </div>
+          <div class="modal-row">
+            <span class="label">保证金</span>
+            <span class="value">{{ confirmationData.margin }} USDT</span>
+          </div>
+          <div class="modal-row">
+            <span class="label">类型</span>
+            <span class="value">{{ confirmationData.positionType }} - {{ currentPriceType.value === 'market' ? '市价' : '限价' }}</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <NCheckbox>不再提示</NCheckbox>
+          <NButton type="primary" block @click="confirmationModal = false">确定</NButton>
+        </div>
+      </div>
+    </NModal>
   </div>
 </template>
+<style scoped>
+.modal-content {
+  padding: 16px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.symbol {
+  font-size: 18px;
+}
+
+.modal-body {
+  margin-bottom: 20px;
+}
+
+.modal-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.label {
+  color: #6b7280; /* 灰色文本 */
+}
+
+.value {
+  font-weight: bold;
+}
+
+.modal-footer {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-footer NButton {
+  width: 100%;
+  margin-top: 16px;
+  background-color: black;
+  color: white;
+  border-radius: 24px;
+}
+</style>

@@ -672,7 +672,6 @@ const fetchFilledOrders = async () => {
 watch(
     () => coinList.value,
     (newCoinList) => {
-      console.log("Updating positionData's MarkPrice, profit, and profitRate fields...");
 
       // 遍历 positionData，更新每个持仓对象的 MarkPrice、profit 和 profitRate 字段
       positionData.value.forEach((position) => {
@@ -695,8 +694,6 @@ watch(
           position.ProfitRate = parseFloat(profitRate).toFixed(2) + "%";
         }
       });
-
-      console.log("Updated positionData with MarkPrice, Profit, and ProfitRate:", positionData.value);
     },
     { deep: true }
 );

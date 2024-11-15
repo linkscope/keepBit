@@ -24,9 +24,7 @@ const factor = ref(20)
 
 const available = inject('available') // 接收 available 值
 const coinSymbol = inject('coinSymbol')
-const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc'
-
+const token = localStorage.getItem('accessToken');
 const message = useMessage()
 const dialog = useDialog()
 
@@ -104,7 +102,8 @@ const toAccount = ref("合约账户");
 const asset = ref("USDT");
 const transferAmount = ref(null);
 const maxTransferable = ref(0); // 最大可转数量
-
+const marketData = inject('marketData'); // Or fetch it as needed
+const currentCoinDecimals = ref(0); // 用于存储当前币种的小数位数
 // 存储账户余额信息
 const accountData = ref({
   Assets: 0, // 资金账户余额
@@ -234,12 +233,20 @@ function generateQRCodeUrl(text) {
 watch(currentPriceType, async (newPriceType) => {
   if (newPriceType === 'market') {
     actualOrderPrice.value = currentOrderPrice.value // 设置市价为当前价格
+    commissionNumMarket.value = '' // 清空委托数量
+    sliderValueMarket.value = 0
   } else {
     await nextTick() // 等待 DOM 更新完成
     orderPrice.value = '' // 清空限价的委托价格
-    commissionNum.value = '' // 清空委托数量
     actualOrderPrice.value = null
+    sliderValue.value = 0
+    commissionNum.value = '' // 清空委托数量
   }
+})
+
+nextTick(() => {
+  sliderValue.value = 0
+  sliderValueMarket.value = 0
 })
 
 // 监视 currentOrderPrice 和 currentPriceType，当为市价类型时，actualOrderPrice 跟随 currentOrderPrice 变化
@@ -290,24 +297,35 @@ const margin = computed(() => {
   }
 })
 
-// 计算 BTC 近似值
 const approxBTCValue = computed(() => {
-  let actualPrice = currentPriceType.value === 'market' ? actualOrderPrice.value : orderPrice.value
-  let actualCommission = currentPriceType.value === 'market' ? commissionNumMarket.value : commissionNum.value
+  let actualPrice = currentPriceType.value === 'market' ? actualOrderPrice.value : orderPrice.value;
+  let actualCommission = currentPriceType.value === 'market' ? commissionNumMarket.value : commissionNum.value;
 
   if (actualCommission.endsWith('%')) {
     // 如果委托数量是百分比
-    const percentage = parseFloat(actualCommission) / 100
-    actualCommission = (parseFloat(available.value) * percentage) / parseFloat(actualPrice)
+    const percentage = parseFloat(actualCommission) / 100;
+    actualCommission = (parseFloat(available.value) * percentage) / parseFloat(actualPrice);
   } else {
     // 如果委托数量是具体数值
-    actualCommission = parseFloat(actualCommission)
+    actualCommission = parseFloat(actualCommission);
   }
 
-  // 返回 BTC 的实际数量
-  return actualCommission ? actualCommission.toFixed(3) : '0.000'
-})
+  // 根据 currentCoinDecimals 生成对应格式
+  const formatValue = (value, decimals) => {
+    if (decimals === 0) {
+      return Math.floor(value); // 不显示小数点
+    }
+    return value.toFixed(decimals); // 显示指定小数位数
+  };
 
+  // 返回 BTC 的实际数量或对应小数位的占位符
+  if (actualCommission) {
+    return formatValue(actualCommission, currentCoinDecimals.value || 0);
+  } else {
+    // 如果没有值，根据小数位返回对应的占位符
+    return currentCoinDecimals.value === 0 ? '0' : `0.${'0'.repeat(currentCoinDecimals.value)}`;
+  }
+});
 // 计算 USDT 近似值
 const approxUSDTValue = computed(() => {
   let actualPrice = currentPriceType.value === 'market' ? actualOrderPrice.value : orderPrice.value
@@ -321,7 +339,7 @@ const approxUSDTValue = computed(() => {
   }
 
   // 返回 USDT 的实际价值
-  return actualPrice && actualCommission ? (parseFloat(actualPrice) * actualCommission).toFixed(3) : '0.000'
+  return actualPrice && actualCommission ? (parseFloat(actualPrice) * actualCommission) : '0.000'
 })
 
 watch(orderPrice, () => {
@@ -461,12 +479,29 @@ async function fetchSymbolAccount(symbol) {
   }
 }
 
-// 监听 coinSymbol 的变化，切换币种时调用 fetchSymbolAccount 函数
+// 监听 coinSymbol 变化
 watch(coinSymbol, (newSymbol) => {
   if (newSymbol) {
-    fetchSymbolAccount(newSymbol)
+    if (marketData?.Contracts) {
+      const symbolData = marketData.Contracts.find(
+          (contract) => contract.Base_token_id === newSymbol
+      );
+
+      currentCoinDecimals.value = symbolData?.VolumePlace || 0; // 如果找不到默认为0
+    }
+
+    // 清空委托价格和数量
+    orderPrice.value = '';
+    commissionNum.value = '';
+    orderPriceMarket.value = '';
+    commissionNumMarket.value = '';
+
+    // 切换回限价单
+    currentPriceType.value = 'limit';
+    // 根据新币种获取账户信息
+    fetchSymbolAccount(newSymbol);
   }
-})
+});
 
 // 计算当前币种的多头和空头持仓数据
 const longPosition = computed(() =>
@@ -498,6 +533,7 @@ function openConfirmationModal(type) {
     margin: (parseFloat(approxUSDTValue.value)/parseFloat(factor.value)) + "USDT", // 这里根据实际计算逻辑替换
     leverage: factor.value + 'x',
     positionType: positionType.value === 'crossed' ? '全仓' : '逐仓',
+    isOpenOrder: type === 'openLong' || type === 'openShort', // 是否为开仓
   }
   confirmationModal.value = true
 }
@@ -577,6 +613,26 @@ async function sendOrder() {
   }
 }
 
+const handleCommissionInput = (type) => {
+  const inputRef = type === 'limit' ? commissionNum : commissionNumMarket;
+
+  let value = inputRef.value;
+
+  // 只允许输入数字和百分号
+  value = value.replace(/[^0-9.%]/g, '');
+
+  // 限制小数位数
+  if (value.includes('.')) {
+    const [intPart, decPart] = value.split('.');
+    if (decPart.length > currentCoinDecimals.value) {
+      value = `${intPart}.${decPart.slice(0, currentCoinDecimals.value)}`;
+    }
+  }
+
+  // 更新值
+  inputRef.value = value;
+};
+
 // 在组件挂载时调用 fetchSymbolAccount 函数
 onMounted(() => {
   if (coinSymbol.value) {
@@ -624,8 +680,13 @@ onMounted(() => {
           <div class="font-bold">委托价格(USDT)</div>
           <NInput v-model:value="orderPrice" size="small" placeholder="输入委托价格" />
           <div class="font-bold">委托数量</div>
-          <NInput v-model:value="commissionNum" size="small" placeholder="输入委托数量" />
-          <div class="font-bold">≈ {{ approxBTCValue }} {{ coinSymbol }} / {{ approxUSDTValue }} USDT</div>
+          <NInput
+              v-model:value="commissionNum"
+              size="small"
+              placeholder="输入委托数量"
+              @input="handleCommissionInput('limit')"
+          />
+          <div class="font-bold">≈ {{ approxBTCValue }} {{ coinSymbol }} / {{ parseFloat(approxUSDTValue).toFixed(4) }} USDT</div>
           <!-- 滑块 -->
           <NSlider
             v-model:value="sliderValue"
@@ -655,8 +716,13 @@ onMounted(() => {
           <div class="font-bold">委托价格(USDT)</div>
           <NInput v-model:value="orderPriceMarket" size="small" placeholder="市价" disabled />
           <div class="font-bold">委托数量</div>
-          <NInput v-model:value="commissionNumMarket" size="small" placeholder="输入委托数量" />
-          <div class="font-bold">≈ {{ approxBTCValue }} {{ coinSymbol }} / {{ approxUSDTValue }} USDT</div>
+          <NInput
+              v-model:value="commissionNumMarket"
+              size="small"
+              placeholder="输入委托数量"
+              @input="handleCommissionInput('market')"
+          />
+          <div class="font-bold">≈ {{ approxBTCValue }} {{ coinSymbol }} / {{ parseFloat(approxUSDTValue).toFixed(4) }} USDT</div>
           <!-- 滑块 -->
           <NSlider
             v-model:value="sliderValueMarket"
@@ -707,21 +773,21 @@ onMounted(() => {
       <template v-else>
         <div>
           <div class="text-slate-400">可多开</div>
-          <div>{{ maxOpenAmount.toFixed(3) }} {{ coinSymbol }}</div>
+          <div>{{ maxOpenAmount.toFixed( currentCoinDecimals ) }} {{ coinSymbol }}</div>
         </div>
         <div>
           <div class="text-slate-400">可开空</div>
           <div>
-            <div>{{ maxOpenAmount.toFixed(3) }} {{ coinSymbol }}</div>
+            <div>{{ maxOpenAmount.toFixed( currentCoinDecimals ) }} {{ coinSymbol }}</div>
           </div>
         </div>
         <div>
           <div class="text-slate-400">保证金</div>
-          <div>{{ margin.toFixed(3) }} USDT</div>
+          <div>{{ margin.toFixed(4) }} USDT</div>
         </div>
         <div>
           <div class="text-slate-400">保证金</div>
-          <div>{{ margin.toFixed(3) }} USDT</div>
+          <div>{{ margin.toFixed(4) }} USDT</div>
         </div>
         <div>
           <div class="text-slate-400">可用</div>
@@ -867,7 +933,8 @@ onMounted(() => {
           <div class="text-slate-500">数量</div>
           <div class="font-bold">{{ confirmationData.amount }}</div>
         </div>
-        <div class="flex items-center justify-between text-sm">
+        <!-- 保证金字段，仅在开仓时显示 -->
+        <div v-if="confirmationData.isOpenOrder" class="flex items-center justify-between text-sm">
           <div class="text-slate-500">保证金</div>
           <div class="font-bold">{{ confirmationData.margin }}</div>
         </div>
@@ -879,9 +946,9 @@ onMounted(() => {
             <span>{{ currentPriceType.value === 'market' ? '市价' : '限价' }}</span>
           </div>
         </div>
-        <div class="flex justify-end">
-          <NCheckbox>不再提示</NCheckbox>
-        </div>
+<!--        <div class="flex justify-end">-->
+<!--          <NCheckbox>不再提示</NCheckbox>-->
+<!--        </div>-->
         <NButton type="primary" block @click="sendOrder">确定</NButton>
       </div>
     </NModal>

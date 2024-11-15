@@ -21,6 +21,7 @@ const {
 } = useTableColumns(cancelOrder)
 
 const available = ref('0.000')
+const token = localStorage.getItem('accessToken');
 const message = useMessage()
 const { coinList, book15Data, tradeData } = useCryptoWS()
 const searchValue = ref('')
@@ -67,7 +68,7 @@ const quantityPercentage = ref(0); // 百分比
 
 // 根据百分比计算平仓数量
 const calculatedQuantity = computed(() => {
-  return (quantityPercentage.value / 100 * positionModalData.value.available).toFixed(3);
+  return (quantityPercentage.value / 100 * positionModalData.value.available).toFixed(positionOperationCoin.value.volumePrecision);
 });
 
 // 计算预计盈亏 = (平仓价格 - 开仓均价) * 平仓数量
@@ -114,9 +115,6 @@ function generateUUID() {
 }
 
 function initializeWebSocket() {
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc'
-
   if (!token) {
     message.error('请先登录')
     return
@@ -225,6 +223,8 @@ const orderType = ref('commission')
 const showBuy = ref(true)
 const showSell = ref(true)
 
+const operationCoin = ref(null); // 专用于仓位操作的币种数据
+
 watch(
   coinList,
   (val) => {
@@ -261,6 +261,7 @@ const totalAskVolume = ref(0)
 const totalBidVolume = ref(0)
 const percentageB = ref(0)
 const percentageS = ref(0)
+
 const coinBook15List = ref({
   asks: [],
   bids: [],
@@ -270,10 +271,7 @@ const commissionData = ref([])
 const positionRecordData = ref([])
 const filledOrdersData = ref([])
 const fetchLiveOrders = async () => {
-  // const token = localStorage.getItem('accessToken'); // 从本地存储获取 token
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc'
-  if (!token) {
+   if (!token) {
     message.error('请先登录')
     return
   }
@@ -303,9 +301,6 @@ const fetchLiveOrders = async () => {
 }
 // 函数: 获取历史委托数据
 const fetchFilledOrders = async () => {
-  // const token = localStorage.getItem('accessToken');
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc'
   if (!token) {
     message.error('请先登录')
     return
@@ -359,9 +354,6 @@ watch(
 // 将 positionData 提供给子组件
 provide('positionData', positionData)
 const fetchHistoryPositions = async () => {
-  // const token = localStorage.getItem('accessToken');
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc'
   if (!token) {
     message.error('请先登录')
     return
@@ -384,40 +376,76 @@ const fetchHistoryPositions = async () => {
     message.error('请求出错，请稍后重试')
   }
 }
+const marketData = JSON.parse(localStorage.getItem('marketData') || '{}');
+
+const getVolumePrecision = (symbol) => {
+  const contracts = marketData.Contracts || [];
+  const contract = contracts.find((c) => c.Symbol_name.replace('/','') === symbol);
+  return contract ? contract.VolumePlace : 0; // 默认精度为 0
+};
+
+const getPricePrecision = (symbol) => {
+  const contracts = marketData.Contracts || [];
+  const contract = contracts.find((c) => c.Symbol_name.replace('/', '') === symbol);
+  return contract ? contract.PricePlace : 2; // 默认价格精度为 2
+};
 
 const updateCoinBookList = throttle((data) => {
   const askCount = showBuy.value ? 10 : 26; // 当只显示十条时使用10，否则26
   const bidCount = showSell.value ? 10 : 26;
 
-  // 计算显示的asks和bids列表
-  const displayedAsks = data.asks.slice(0, askCount);
-  const displayedBids = data.bids.slice(0, bidCount);
+  // 对 asks 按价格从高到低排序用于展示
+  const sortedAsks = data.asks.slice().sort((a, b) => parseFloat(b[0]) - parseFloat(a[0]));
+  // 对 bids 按价格从高到低排序（买列表逻辑）
+  const sortedBids = data.bids.slice().sort((a, b) => parseFloat(b[0]) - parseFloat(a[0]));
 
-  // 计算总量
-  totalAskVolume.value = displayedAsks.reduce((acc, ask) => acc + parseFloat(ask[1]), 0);
-  totalBidVolume.value = displayedBids.reduce((acc, bid) => acc + parseFloat(bid[1]), 0);
+  // 取出指定条数的 asks 和 bids
+  const displayedAsks = data.asks
+      .slice()
+      .sort((a, b) => parseFloat(a[0]) - parseFloat(b[0])) // 先按价格从低到高排序用于累计
+      .slice(0, askCount)
+      .sort((a, b) => parseFloat(b[0]) - parseFloat(a[0])); // 然后按价格从高到低排序用于展示
 
-  const totalVolume = totalAskVolume.value + totalBidVolume.value;
+  const displayedBids = sortedBids.slice(0, bidCount); // 买列表保持默认从高到低
+
+  // 获取当前交易对的精度
+  const currentSymbol = selectedCoin.value?.symbol; // 假设当前交易对的 symbol 存储在 selectedCoin 中
+  const volumePrecision = getVolumePrecision(currentSymbol);
+
+  // 计算总量并应用精度
+  totalAskVolume.value = displayedAsks.reduce((acc, ask) => acc + parseFloat(ask[1]), 0).toFixed(volumePrecision);
+  totalBidVolume.value = displayedBids.reduce((acc, bid) => acc + parseFloat(bid[1]), 0).toFixed(volumePrecision);
+
+  const totalVolume = parseFloat(totalAskVolume.value) + parseFloat(totalBidVolume.value);
 
   // 计算百分比比例
-  percentageB.value = ((totalBidVolume.value / totalVolume) * 100).toFixed(2);
-  percentageS.value = ((totalAskVolume.value / totalVolume) * 100).toFixed(2);
+  percentageB.value = ((parseFloat(totalBidVolume.value) / totalVolume) * 100).toFixed(2);
+  percentageS.value = ((parseFloat(totalAskVolume.value) / totalVolume) * 100).toFixed(2);
 
-  // 更新 `coinBook15List` 数据，包含排序后的 `asks` 和 `bids`
+  // 卖列表累加从低价格开始累加并应用精度
   let cumulativeAskVolume = 0;
   const cumulativeAsks = displayedAsks
       .slice()
-      .reverse()
+      .reverse() // 先按价格从低到高排列，用于正确的累加顺序
       .map((ask) => {
         cumulativeAskVolume += parseFloat(ask[1]);
-        return [...ask, cumulativeAskVolume.toFixed(2), ((cumulativeAskVolume / totalAskVolume.value) * 100).toFixed(2)];
+        return [
+          ...ask,
+          cumulativeAskVolume.toFixed(volumePrecision), // 应用精度
+          ((cumulativeAskVolume / parseFloat(totalAskVolume.value)) * 100).toFixed(2),
+        ];
       })
-      .reverse();
+      .reverse(); // 再恢复到高到低的展示顺序
 
+  // 买列表累加并应用精度
   let cumulativeBidVolume = 0;
   const cumulativeBids = displayedBids.map((bid) => {
     cumulativeBidVolume += parseFloat(bid[1]);
-    return [...bid, cumulativeBidVolume.toFixed(2), ((cumulativeBidVolume / totalBidVolume.value) * 100).toFixed(2)];
+    return [
+      ...bid,
+      cumulativeBidVolume.toFixed(volumePrecision), // 应用精度
+      ((cumulativeBidVolume / parseFloat(totalBidVolume.value)) * 100).toFixed(2),
+    ];
   });
 
   coinBook15List.value = {
@@ -425,7 +453,8 @@ const updateCoinBookList = throttle((data) => {
     asks: cumulativeAsks,
     bids: cumulativeBids,
   };
-}, 500); // 每0.5秒最多执行一次
+}, 500);
+
 
 // 监听 book15Data 和 selectedCoin 的变化，使用节流函数更新
 watch(
@@ -485,8 +514,6 @@ const currentOrderPrice = computed(() => selectedCoin.value?.lastPrice)
 provide('currentOrderPrice', currentOrderPrice)
 
 async function cancelOrder(Id) {
-  const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc'
   if (!token) {
     message.error('请先登录')
     return
@@ -516,9 +543,35 @@ async function cancelOrder(Id) {
   }
 }
 
+function handleInput(value) {
+  const precision = positionOperationCoin.value.pricePrecision || 2;
+
+  // 正则匹配，允许输入小数，最多限制到 precision 位
+  const regex = new RegExp(`^\\d*(\\.\\d{0,${precision}})?$`);
+
+  if (regex.test(value)) {
+    inputPrice.value = value; // 符合规则，更新输入值
+  } else {
+    // 如果不符合规则，截断多余的小数位
+    const truncatedValue = parseFloat(value).toFixed(precision);
+    inputPrice.value = truncatedValue === 'NaN' ? '' : truncatedValue;
+  }
+}
+
+function handleQuantityInput(value) {
+  const precision = positionOperationCoin.value.volumePrecision || 3;
+  const regex = new RegExp(`^\\d*(\\.\\d{0,${precision}})?$`);
+
+  if (regex.test(value)) {
+    calculatedQuantity.value = value;
+  } else {
+    const truncatedValue = parseFloat(value).toFixed(precision);
+    calculatedQuantity.value = truncatedValue === 'NaN' ? '' : truncatedValue;
+  }
+}
+
 async function confirmStopProfitLoss() {
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc';
-  if (!token) {
+ if (!token) {
     message.error('请先登录')
     return
   }
@@ -555,7 +608,6 @@ async function confirmStopProfitLoss() {
 
 // 发送平仓请求
 async function sendCloseOrder() {
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc'; // 使用实际的token
   const closePrice = isLimitPrice.value ? parseFloat(inputPrice.value) : currentPrice.value;
   const orderSide = positionModalData.value.direction === '多头' ? 2 : 3;
 
@@ -596,7 +648,6 @@ async function sendCloseOrder() {
 // 从 API 获取收藏的币种数据
 async function fetchMyChoices() {
   try {
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc'; // 使用实际的token
     const response = await fetch('https://test.keepbit.top/app_api/v1/MyChoice/GetMyChoices', {
       method: 'GET',
       headers: {
@@ -615,8 +666,6 @@ async function fetchMyChoices() {
 }
 
 async function toggleFavorite(symbol) {
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc'; // 使用实际的token
-
   if (!token) {
     message.error('请先登录');
     return;
@@ -674,60 +723,140 @@ async function toggleFavorite(symbol) {
     console.error('请求错误:', error);
   }
 }
+provide('marketData', marketData);
+
+watch(
+    [coinList, () => profitModalData.value.symbol], // 同时监听 coinList 和 profitModalData.symbol
+    ([newCoinList, newSymbol], [oldCoinList, oldSymbol]) => {
+
+      if (newSymbol) {
+        // 在 coinList 中查找对应的币种
+        const foundCoin = newCoinList.find((coin) => coin.instId === newSymbol);
+        operationCoin.value = foundCoin || null; // 如果没找到则设置为 null
+      }
+    },
+    { immediate: true, deep: true } // 深度监听 coinList 并确保初次加载时触发
+);
+const positionOperationCoin = ref(null); // 专用于 positionModal 的操作币种
+watch(
+    [coinList, () => positionModalData.value?.symbol], // 同时监听 coinList 和 positionModalData.symbol
+    ([newCoinList, newSymbol], [oldCoinList, oldSymbol]) => {
+
+      if (newSymbol) {
+        // 在 coinList 中查找对应的币种
+        const foundCoin = newCoinList.find((coin) => coin.instId === newSymbol);
+        if (foundCoin) {
+          const symbol = foundCoin.instId;
+          positionOperationCoin.value = {
+            ...foundCoin,
+            pricePrecision: getPricePrecision(symbol), // 动态获取价格精度
+            volumePrecision: getVolumePrecision(symbol), // 动态获取数量精度
+          };
+        } else {
+          positionOperationCoin.value = null;
+        }
+        console.log(positionOperationCoin.value.volumePrecision)
+      }
+    },
+    { immediate: true, deep: true } // 深度监听 coinList 并确保初次加载时触发
+);
+
+function formatValue(value, precision) {
+  if (value == null || isNaN(value)) return 'N/A';
+  return parseFloat(value).toFixed(precision);
+}
 
 onMounted(() => {
-  if (tickerTapRef.value) {
-    tickerTapRef.value.appendChild(initTickerTape())
-  }
-  if (tradingViewRef.value) {
-    const script = document.createElement('script')
-    script.src = 'https://s3.tradingview.com/tv.js'
-    script.async = true
+  if (!document.getElementById('tradingview-js')) {
+    const script = document.createElement('script');
+    script.id = 'tradingview-js';
+    script.src = 'https://s3.tradingview.com/tv.js';
+    script.async = true;
     script.onload = () => {
-      new TradingView.widget({
-        width: '100%',
-        height: 600,
-        symbol: 'BITGET:BTCUSDTPERP',
-        interval: '1',
-        timezone: 'Asia/Shanghai',
-        theme: 'light',
-        style: '1',
-        locale: 'zh_CN',
-        toolbar_bg: '#f1f3f6',
-        enable_publishing: false,
-        withdateranges: false,
-        hide_side_toolbar: false,
-        hide_top_toolbar: false,
-        allow_symbol_change: false,
-        studies: ['Volume@tv-basicstudies'],
-        container_id: 'tradingview_12345',
-        overrides: {
-          volumePaneSize: 'medium',
-          'paneProperties.vertGridProperties.color': '#363c4e',
-          'paneProperties.horzGridProperties.color': '#363c4e',
-          'scalesProperties.textColor': '#AAA',
-          'mainSeriesProperties.candleStyle.upColor': '#26a69a',
-          'mainSeriesProperties.candleStyle.downColor': '#ef5350',
-          'mainSeriesProperties.candleStyle.borderUpColor': '#26a69a',
-          'mainSeriesProperties.candleStyle.borderDownColor': '#ef5350',
-          'mainSeriesProperties.candleStyle.wickUpColor': '#26a69a',
-          'mainSeriesProperties.candleStyle.wickDownColor': '#ef5350',
-          'mainSeriesProperties.showPriceLine': true,
-          'mainSeriesProperties.priceLineColor': '#ff0000',
-          'mainSeriesProperties.priceLineWidth': 1,
-          'priceScaleProperties.percentage': true,
-          'priceScaleProperties.autoScale': true,
-        },
-      })
+      if (selectedCoin.value) {
+        const symbol = selectedCoin.value.instId.replace('/', '');
+        updateTradingView(symbol);
+      }
+    };
+    document.body.appendChild(script);
+  } else {
+    // 如果脚本已加载且 `selectedCoin` 存在，初始化 TradingView
+    if (selectedCoin.value) {
+      const symbol = selectedCoin.value.instId.replace('/', '');
+      updateTradingView(symbol);
     }
-    tradingViewRef.value.appendChild(script)
   }
-  fetchLiveOrders()
-  fetchFilledOrders()
-  fetchHistoryPositions()
-  initializeWebSocket()
-  fetchMyChoices()
-})
+
+  fetchLiveOrders();
+  fetchFilledOrders();
+  fetchHistoryPositions();
+  initializeWebSocket();
+  fetchMyChoices();
+});
+
+// 监听 selectedCoin 的 instId 变化
+watch(
+    () => selectedCoin.value?.instId,
+    (newInstId, oldInstId) => {
+      if (newInstId && newInstId !== oldInstId) {
+        const symbol = newInstId.replace('/', ''); // 将币对格式化为符合 TradingView 的格式
+        updateTradingView(symbol);
+      }
+    },
+    { immediate: true } // 立即触发以初始化视图
+);
+
+function updateTradingView(symbol) {
+  if (typeof TradingView === 'undefined') {
+    console.error('TradingView 未定义，请确保脚本已正确加载');
+    return;
+  }
+
+  const containerId = 'tradingview_12345';
+
+  // 清除之前的 TradingView widget
+  const container = document.getElementById(containerId);
+  if (container) {
+    container.innerHTML = '';
+  }
+
+  // 初始化新的 TradingView widget
+  new TradingView.widget({
+    width: '100%',
+    height: 600,
+    symbol: `BITGET:${symbol}PERP`,
+    interval: '1',
+    timezone: 'Asia/Shanghai',
+    theme: 'light',
+    style: '1',
+    locale: 'zh_CN',
+    toolbar_bg: '#f1f3f6',
+    enable_publishing: false,
+    withdateranges: false,
+    hide_side_toolbar: false,
+    hide_top_toolbar: false,
+    allow_symbol_change: false,
+    studies: ['Volume@tv-basicstudies'],
+    container_id: containerId,
+    overrides: {
+      volumePaneSize: 'medium',
+      'paneProperties.vertGridProperties.color': '#363c4e',
+      'paneProperties.horzGridProperties.color': '#363c4e',
+      'scalesProperties.textColor': '#AAA',
+      'mainSeriesProperties.candleStyle.upColor': '#26a69a',
+      'mainSeriesProperties.candleStyle.downColor': '#ef5350',
+      'mainSeriesProperties.candleStyle.borderUpColor': '#26a69a',
+      'mainSeriesProperties.candleStyle.borderDownColor': '#ef5350',
+      'mainSeriesProperties.candleStyle.wickUpColor': '#26a69a',
+      'mainSeriesProperties.candleStyle.wickDownColor': '#ef5350',
+      'mainSeriesProperties.showPriceLine': true,
+      'mainSeriesProperties.priceLineColor': '#ff0000',
+      'mainSeriesProperties.priceLineWidth': 1,
+      'priceScaleProperties.percentage': true,
+      'priceScaleProperties.autoScale': true,
+    },
+  });
+}
 </script>
 
 <template>
@@ -748,7 +877,7 @@ onMounted(() => {
                   <img class="size-[40px]" :src="selectedCoin?.image" />
                   <div class="flex-1">
                     <div class="text-lg font-bold">{{ selectedCoin?.instId }}</div>
-                    <div class="text-xs text-slate-400">{{ selectedCoin?.symbol }}</div>
+                    <div class="text-xs text-slate-400">永续</div>
                   </div>
                   <NIcon>
                     <CaretDown16Filled />
@@ -811,7 +940,7 @@ onMounted(() => {
                 <div class="text-xs font-bold" :style="{ color: selectedCoin?.change24h > 0 ? '#5ac820' : 'red' }">
                   {{
                     selectedCoin?.change24h
-                      ? (selectedCoin.change24h > 0 ? '+' : '') + selectedCoin.change24h + '%'
+                      ? (selectedCoin.change24h > 0 ? '+' : '') + selectedCoin.priceChangePercent + '%'
                       : 'N/A'
                   }}
                 </div>
@@ -820,13 +949,13 @@ onMounted(() => {
               <!-- 24h 最高价 -->
               <div class="flex-1 text-center">
                 <div class="text-xs text-slate-400">24h最高价</div>
-                <div class="text-xs">{{ selectedCoin?.high24h ? selectedCoin.high24h.toFixed(2) : 'N/A' }}</div>
+                <div class="text-xs">{{ selectedCoin?.high24h ? selectedCoin.high24h : 'N/A' }}</div>
               </div>
 
               <!-- 24h 最低价 -->
               <div class="flex-1 text-center">
                 <div class="text-xs text-slate-400">24h最低价</div>
-                <div class="text-xs">{{ selectedCoin?.low24h ? selectedCoin.low24h.toFixed(2) : 'N/A' }}</div>
+                <div class="text-xs">{{ selectedCoin?.low24h ? selectedCoin.low24h : 'N/A' }}</div>
               </div>
 
               <!-- 24h 成交量 -->
@@ -910,8 +1039,8 @@ onMounted(() => {
                   class="flex text-xs text-red-500 relative"
                   @click="handlePriceClick(parseFloat(ask[0]))"
                 >
-                  <div class="flex-1 z-10">{{ parseFloat(ask[0]).toFixed(2) }}</div>
-                  <div class="flex-1 z-10">{{ parseFloat(ask[1]).toFixed(2) }}</div>
+                  <div class="flex-1 z-10">{{ parseFloat(ask[0]) }}</div>
+                  <div class="flex-1 z-10">{{ parseFloat(ask[1]) }}</div>
                   <div class="hidden lg:block flex-1 z-10 text-right">{{ ask[2] }}</div>
                   <!-- 显示累加总数 -->
                   <div class="absolute -top-0.5 -bottom-0.5 right-0 bg-red-200" :style="{ width: `${ask[3]}%` }"></div>
@@ -943,8 +1072,8 @@ onMounted(() => {
                   class="flex text-xs text-green-500 relative"
                   @click="handlePriceClick(parseFloat(bid[0]))"
                 >
-                  <div class="flex-1 z-10">{{ parseFloat(bid[0]).toFixed(2) }}</div>
-                  <div class="flex-1 z-10">{{ parseFloat(bid[1]).toFixed(2) }}</div>
+                  <div class="flex-1 z-10">{{ parseFloat(bid[0]) }}</div>
+                  <div class="flex-1 z-10">{{ parseFloat(bid[1]) }}</div>
                   <div class="hidden lg:block flex-1 z-10 text-right">{{ bid[2] }}</div>
                   <!-- 显示累加总数 -->
                   <div
@@ -1070,7 +1199,7 @@ onMounted(() => {
       </div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">当前价格</div>
-        <div class="font-bold">{{ selectedCoin?.lastPrice }}</div>
+        <div class="font-bold">{{ positionOperationCoin?.lastPrice || 'N/A' }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">开仓价格</div>
@@ -1083,6 +1212,8 @@ onMounted(() => {
             style="flex: 1"
             v-model:value="inputPrice"
             placeholder="请输入价格"
+            @input="handleInput"
+            :maxlength="20"
         />
         <NInput
             v-else
@@ -1093,7 +1224,12 @@ onMounted(() => {
       </div>
       <div class="flex items-center justify-between text-sm gap-x-4">
         <div class="text-slate-500 w-24">数量({{ positionModalData.symbol.replace('USDT', '') }})</div>
-        <NInput style="flex: 1" :value="calculatedQuantity" placeholder="0.000" />
+        <NInput
+            style="flex: 1"
+            v-model:value="calculatedQuantity"
+            placeholder=""
+            @input="handleQuantityInput"
+        />
       </div>
       <NSlider v-model:value="quantityPercentage" :step="1" :show-tooltip="false" :format-tooltip="(v) => `${v}%`" />
       <div class="flex items-center justify-between text-sm">
@@ -1137,7 +1273,7 @@ onMounted(() => {
       </div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">当前价格</div>
-        <div class="font-bold">{{ selectedCoin?.lastPrice }}</div>
+        <div class="font-bold">{{ operationCoin?.lastPrice || 'N/A' }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">开仓均价</div>
@@ -1145,7 +1281,7 @@ onMounted(() => {
       </div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">标记价格</div>
-        <div class="font-bold">${{ selectedCoin?.markPrice }}</div>
+        <div class="font-bold">{{ operationCoin?.markPrice || 'N/A' }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">预估强平价</div>

@@ -19,14 +19,19 @@ const currentTab = ref('run')
 
 const searchValue = ref('')
 const missionsData = computed(() => {
-  const start = (pagination.value.current - 1) * pagination.value.pageSize
-  const end = start + pagination.value.pageSize
-  const filteredTactics = (currentTab.value === 'run' ? executingMissions : stoppedMissions).value.filter((i) =>
-    i.TacticsName.toLowerCase().includes(searchValue.value.toLowerCase()),
-  )
-  pagination.value.count = Math.ceil(filteredTactics.length / pagination.value.pageSize)
-  return filteredTactics.slice(start, end)
-})
+  const sourceMissions = currentTab.value === 'run' ? executingMissions.value : stoppedMissions.value;
+  const filteredMissions = sourceMissions.filter((mission) =>
+      mission.TacticsName.toLowerCase().includes(searchValue.value.toLowerCase()),
+  );
+
+  const start = (pagination.value.current - 1) * pagination.value.pageSize;
+  const end = start + pagination.value.pageSize;
+
+  // 更新分页总数
+  pagination.value.count = Math.ceil(filteredMissions.length / pagination.value.pageSize);
+
+  return filteredMissions.slice(start, end);
+});
 
 // 停止任务的函数
 async function endMission(appsId) {
@@ -106,40 +111,40 @@ async function getOrderDetails(missionId) {
 // 组件挂载时获取数据
 onMounted(async () => {
   try {
-    const token = localStorage.getItem('accessToken')
+    const token = localStorage.getItem('accessToken');
     if (!token) {
-      message.warning('请先登录')
-      await router.push('/login')
-      return
+      message.warning('请先登录');
+      await router.push('/login');
+      return;
     }
+
     const response = await axios.get('https://test.keepbit.top/app_api/v1/Trade/GetMyMissions', {
       headers: { Authorization: `Bearer ${token}` },
-    })
+    });
 
     if (response.data.Success) {
-      const missions = response.data.ResData
-      missions.forEach((mission) => {
-        const createTime = dayjs(mission.CreateTime)
-        if (mission.State === 1) {
-          // 执行中
-          const currentTime = dayjs()
-          mission.runDuration = currentTime.subtract(8, 'hour').diff(createTime)
-        } else if (mission.State === 2) {
-          // 已停止
-          const stopTime = dayjs(mission.StopTime)
-          mission.runDuration = stopTime.diff(createTime)
-        }
-      })
+      const missions = response.data.ResData;
 
-      executingMissions.value = missions.filter((mission) => mission.State === 1)
-      stoppedMissions.value = missions.filter((mission) => mission.State === 2)
+      missions.forEach((mission) => {
+        const createTime = dayjs(mission.CreateTime);
+        const currentTime = dayjs();
+        if (mission.State === 1) {
+          mission.runDuration = currentTime.subtract(8, 'hour').diff(createTime); // 执行中
+        } else if (mission.State === 2) {
+          const stopTime = dayjs(mission.StopTime);
+          mission.runDuration = stopTime.diff(createTime); // 已停止
+        }
+      });
+
+      executingMissions.value = missions.filter((mission) => mission.State === 1);
+      stoppedMissions.value = missions.filter((mission) => mission.State === 2);
     } else {
-      message.error(response.data.ErrMsg)
+      message.error(response.data.ErrMsg);
     }
   } catch (error) {
-    message.error(error)
+    message.error(error);
   }
-})
+});
 
 // 格式化运行时长
 function formatDuration(ms) {
@@ -149,6 +154,11 @@ function formatDuration(ms) {
   const minutes = duration.minutes()
   return `${days}日${hours}时${minutes}分`
 }
+
+function handleTabChange() {
+  pagination.value.current = 1; // 切换标签时重置分页
+}
+
 </script>
 
 <template>
@@ -179,7 +189,7 @@ function formatDuration(ms) {
     </div>
 
     <!-- 标签栏：执行中和已停止 -->
-    <NTabs v-model:value="currentTab" animated :on-update:value="() => (pagination.current = 1)">
+    <NTabs v-model:value="currentTab" animated @update:value="handleTabChange">
       <!-- 执行中模块 -->
       <NTabPane name="run" :tab="t('deal.tabs[0]')">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-x-12 gap-y-4 p-4">

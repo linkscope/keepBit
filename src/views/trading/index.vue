@@ -1,11 +1,11 @@
 <script setup>
-import { NIcon, NButton, NTabs, NTabPane, NDataTable, NInput, NModal, useMessage, NSlider } from 'naive-ui'
-import { Star16Regular, Star16Filled, CaretDown16Filled } from '@vicons/fluent'
-import { provide, ref, onMounted } from 'vue'
+import {NIcon, NButton, NTabs, NTabPane, NDataTable, NInput, NModal, useMessage, NSlider} from 'naive-ui'
+import {Star16Regular, Star16Filled, CaretDown16Filled} from '@vicons/fluent'
+import {provide, ref, onMounted} from 'vue'
 import initTickerTape from '@/utils/initTickerTape.js'
 import useCryptoWS from '@/hooks/useCryptoWS.js'
 import OptionCard from './components/OptionCard.vue'
-import { useTableColumns } from './model'
+import {useTableColumns} from './model'
 
 const {
   positionModal,
@@ -23,7 +23,7 @@ const {
 const available = ref('0.000')
 const token = localStorage.getItem('accessToken');
 const message = useMessage()
-const { coinList, book15Data, tradeData } = useCryptoWS()
+const {coinList, book15Data, tradeData} = useCryptoWS()
 const searchValue = ref('')
 const searchedCoinList = computed(() => {
   return coinList.value
@@ -57,6 +57,7 @@ const isLimitPrice = ref(true);
 // 用户输入的限价价格
 const inputPrice = ref('');
 const currentPrice = computed(() => selectedCoin.value.lastPrice);
+
 // 切换价格模式
 function togglePriceMode() {
   isLimitPrice.value = !isLimitPrice.value;
@@ -64,6 +65,7 @@ function togglePriceMode() {
     inputPrice.value = currentPrice.value; // 在切换为市价时，将价格设置为当前价格
   }
 }
+
 const quantityPercentage = ref(0); // 百分比
 
 // 根据百分比计算平仓数量
@@ -109,7 +111,7 @@ const coinSymbol = computed(() => {
 function generateUUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0,
-      v = c === 'x' ? r : (r & 0x3) | 0x8
+        v = c === 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)
   })
 }
@@ -151,9 +153,9 @@ function initializeWebSocket() {
         MsgId: generateUUID(),
         PackageType: 4,
         args: [
-          { instType: 'USDT-FUTURES', channel: 'orders' },
-          { instType: 'USDT-FUTURES', channel: 'positions' },
-          { instType: 'USDT-FUTURES', channel: 'accounts' },
+          {instType: 'USDT-FUTURES', channel: 'orders'},
+          {instType: 'USDT-FUTURES', channel: 'positions'},
+          {instType: 'USDT-FUTURES', channel: 'accounts'},
         ],
       }
       websocket.value.send(JSON.stringify(subscribeMessage))
@@ -186,7 +188,6 @@ function initializeWebSocket() {
 
   websocket.value.onerror = (error) => {
     console.error('WebSocket 连接错误:', error)
-    message.error('WebSocket 连接失败')
   }
 
   websocket.value.onclose = () => {
@@ -226,22 +227,22 @@ const showSell = ref(true)
 const operationCoin = ref(null); // 专用于仓位操作的币种数据
 
 watch(
-  coinList,
-  (val) => {
-    if (val.length) {
-      // 如果selectedCoin已选择，则更新为coinList中的对应数据
-      if (selectedCoin.value) {
-        const updatedCoin = val.find((coin) => coin.instId === selectedCoin.value.instId)
-        if (updatedCoin) {
-          selectedCoin.value = updatedCoin
+    coinList,
+    (val) => {
+      if (val.length) {
+        // 如果selectedCoin已选择，则更新为coinList中的对应数据
+        if (selectedCoin.value) {
+          const updatedCoin = val.find((coin) => coin.instId === selectedCoin.value.instId)
+          if (updatedCoin) {
+            selectedCoin.value = updatedCoin
+          }
+        } else {
+          // 如果selectedCoin还没有选择，则设置默认的初始值
+          selectedCoin.value = val.find((coin) => coin.instId === 'BTCUSDT')
         }
-      } else {
-        // 如果selectedCoin还没有选择，则设置默认的初始值
-        selectedCoin.value = val.find((coin) => coin.instId === 'BTCUSDT')
       }
-    }
-  },
-  { deep: true },
+    },
+    {deep: true},
 )
 
 // 自定义节流函数，每隔 delay 毫秒执行一次
@@ -271,7 +272,7 @@ const commissionData = ref([])
 const positionRecordData = ref([])
 const filledOrdersData = ref([])
 const fetchLiveOrders = async () => {
-   if (!token) {
+  if (!token) {
     message.error('请先登录')
     return
   }
@@ -308,7 +309,7 @@ const fetchFilledOrders = async () => {
 
   try {
     const response = await fetch('https://test.keepbit.top/app_api/v1/KrtContract/GetMyFilledOrders', {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {Authorization: `Bearer ${token}`},
     })
     if (!response.ok) throw new Error('网络响应失败')
 
@@ -324,32 +325,32 @@ const fetchFilledOrders = async () => {
 }
 
 watch(
-  () => coinList.value,
-  (newCoinList) => {
-    // 遍历 positionData，更新每个持仓对象的 MarkPrice、profit 和 profitRate 字段
-    positionData.value.forEach((position) => {
-      const matchedCoin = newCoinList.find((coin) => coin.instId === position.Symbol)
-      if (matchedCoin) {
-        const lastPrice = matchedCoin.lastPrice // 获取最新的标记价格
+    () => coinList.value,
+    (newCoinList) => {
+      // 遍历 positionData，更新每个持仓对象的 MarkPrice、profit 和 profitRate 字段
+      positionData.value.forEach((position) => {
+        const matchedCoin = newCoinList.find((coin) => coin.instId === position.Symbol)
+        if (matchedCoin) {
+          const lastPrice = matchedCoin.lastPrice // 获取最新的标记价格
 
-        // 更新 MarkPrice
-        position.MarkPrice = lastPrice
+          // 更新 MarkPrice
+          position.MarkPrice = lastPrice
 
-        // 根据新的 MarkPrice 计算 profit 和 profitRate
-        const profit =
-          position.HoldSide === 0
-            ? (position.OpenPrice - lastPrice) * position.Available
-            : (lastPrice - position.OpenPrice) * position.Available
+          // 根据新的 MarkPrice 计算 profit 和 profitRate
+          const profit =
+              position.HoldSide === 0
+                  ? (position.OpenPrice - lastPrice) * position.Available
+                  : (lastPrice - position.OpenPrice) * position.Available
 
-        const profitRate = parseFloat(((profit + position.ProfitAndLoss) / position.Margin) * 100).toFixed(2)
+          const profitRate = parseFloat(((profit + position.ProfitAndLoss) / position.Margin) * 100).toFixed(2)
 
-        // 更新 position 的 profit 和 profitRate 字段
-        position.Profit = parseFloat(profit).toFixed(2)
-        position.ProfitRate = parseFloat(profitRate).toFixed(2) + '%'
-      }
-    })
-  },
-  { deep: true },
+          // 更新 position 的 profit 和 profitRate 字段
+          position.Profit = parseFloat(profit).toFixed(2)
+          position.ProfitRate = parseFloat(profitRate).toFixed(2) + '%'
+        }
+      })
+    },
+    {deep: true},
 )
 // 将 positionData 提供给子组件
 provide('positionData', positionData)
@@ -361,7 +362,7 @@ const fetchHistoryPositions = async () => {
 
   try {
     const response = await fetch('https://test.keepbit.top/app_api/v1/KrtContract/GetMyHistoryPositions', {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {Authorization: `Bearer ${token}`},
     })
 
     if (!response.ok) throw new Error('网络响应失败')
@@ -380,7 +381,7 @@ const marketData = JSON.parse(localStorage.getItem('marketData') || '{}');
 
 const getVolumePrecision = (symbol) => {
   const contracts = marketData.Contracts || [];
-  const contract = contracts.find((c) => c.Symbol_name.replace('/','') === symbol);
+  const contract = contracts.find((c) => c.Symbol_name.replace('/', '') === symbol);
   return contract ? contract.VolumePlace : 0; // 默认精度为 0
 };
 
@@ -458,20 +459,20 @@ const updateCoinBookList = throttle((data) => {
 
 // 监听 book15Data 和 selectedCoin 的变化，使用节流函数更新
 watch(
-  [book15Data, selectedCoin],
-  () => {
-    if (
-      book15Data.value &&
-      selectedCoin.value &&
-      book15Data.value.arg?.instId === selectedCoin.value.instId &&
-      book15Data.value.data &&
-      book15Data.value.data[0]
-    ) {
-      const data = book15Data.value.data[0]
-      updateCoinBookList(data) // 使用节流后的更新函数
-    }
-  },
-  { immediate: true, deep: true },
+    [book15Data, selectedCoin],
+    () => {
+      if (
+          book15Data.value &&
+          selectedCoin.value &&
+          book15Data.value.arg?.instId === selectedCoin.value.instId &&
+          book15Data.value.data &&
+          book15Data.value.data[0]
+      ) {
+        const data = book15Data.value.data[0]
+        updateCoinBookList(data) // 使用节流后的更新函数
+      }
+    },
+    {immediate: true, deep: true},
 )
 
 // 初始化 tradeList，存储最近的交易记录
@@ -479,24 +480,24 @@ watch(
 const tradeList = ref([])
 
 watch(
-  [tradeData, selectedCoin],
-  () => {
-    if (
-      tradeData.value &&
-      selectedCoin.value &&
-      tradeData.value.arg?.instId === selectedCoin.value.instId &&
-      tradeData.value.data &&
-      tradeData.value.data.length > 0
-    ) {
-      // 获取最新的交易数据
-      const newTrades = tradeData.value.data
+    [tradeData, selectedCoin],
+    () => {
+      if (
+          tradeData.value &&
+          selectedCoin.value &&
+          tradeData.value.arg?.instId === selectedCoin.value.instId &&
+          tradeData.value.data &&
+          tradeData.value.data.length > 0
+      ) {
+        // 获取最新的交易数据
+        const newTrades = tradeData.value.data
 
-      // 每次更新时，创建一个新列表并只保留前 30 条数据
-      tradeList.value.unshift(...newTrades)
-      tradeList.value.length = 30
-    }
-  },
-  { immediate: true, deep: true },
+        // 每次更新时，创建一个新列表并只保留前 30 条数据
+        tradeList.value.unshift(...newTrades)
+        tradeList.value.length = 30
+      }
+    },
+    {immediate: true, deep: true},
 )
 
 const selectedPrice = ref(null) // 用于保存点击的价格
@@ -526,7 +527,7 @@ async function cancelOrder(Id) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ OrderId: Id }),
+      body: JSON.stringify({OrderId: Id}),
     })
 
     const result = await response.json()
@@ -571,7 +572,7 @@ function handleQuantityInput(value) {
 }
 
 async function confirmStopProfitLoss() {
- if (!token) {
+  if (!token) {
     message.error('请先登录')
     return
   }
@@ -645,6 +646,7 @@ async function sendCloseOrder() {
     console.error('平仓请求出错:', error);
   }
 }
+
 // 从 API 获取收藏的币种数据
 async function fetchMyChoices() {
   try {
@@ -723,6 +725,7 @@ async function toggleFavorite(symbol) {
     console.error('请求错误:', error);
   }
 }
+
 provide('marketData', marketData);
 
 watch(
@@ -735,7 +738,7 @@ watch(
         operationCoin.value = foundCoin || null; // 如果没找到则设置为 null
       }
     },
-    { immediate: true, deep: true } // 深度监听 coinList 并确保初次加载时触发
+    {immediate: true, deep: true} // 深度监听 coinList 并确保初次加载时触发
 );
 const positionOperationCoin = ref(null); // 专用于 positionModal 的操作币种
 watch(
@@ -758,15 +761,13 @@ watch(
         console.log(positionOperationCoin.value.volumePrecision)
       }
     },
-    { immediate: true, deep: true } // 深度监听 coinList 并确保初次加载时触发
+    {immediate: true, deep: true} // 深度监听 coinList 并确保初次加载时触发
 );
 
-function formatValue(value, precision) {
-  if (value == null || isNaN(value)) return 'N/A';
-  return parseFloat(value).toFixed(precision);
-}
-
 onMounted(() => {
+  if (tickerTapRef.value) {
+    tickerTapRef.value.appendChild(initTickerTape())
+  }
   if (!document.getElementById('tradingview-js')) {
     const script = document.createElement('script');
     script.id = 'tradingview-js';
@@ -787,11 +788,13 @@ onMounted(() => {
     }
   }
 
-  fetchLiveOrders();
-  fetchFilledOrders();
-  fetchHistoryPositions();
-  initializeWebSocket();
-  fetchMyChoices();
+  if (token) {
+    fetchLiveOrders();
+    fetchFilledOrders();
+    fetchHistoryPositions();
+    initializeWebSocket();
+    fetchMyChoices();
+  }
 });
 
 // 监听 selectedCoin 的 instId 变化
@@ -803,7 +806,7 @@ watch(
         updateTradingView(symbol);
       }
     },
-    { immediate: true } // 立即触发以初始化视图
+    {immediate: true} // 立即触发以初始化视图
 );
 
 function updateTradingView(symbol) {
@@ -871,49 +874,50 @@ function updateTradingView(symbol) {
             <div class="flex items-center w-full lg:w-auto px-2">
               <div class="relative">
                 <div
-                  class="h-16 w-[200px] border border-slate-200 rounded-md flex items-center gap-x-2 px-2 box-border"
-                  @click="showSelect = !showSelect"
+                    class="h-16 w-[200px] border border-slate-200 rounded-md flex items-center gap-x-2 px-2 box-border"
+                    @click="showSelect = !showSelect"
                 >
-                  <img class="size-[40px]" :src="selectedCoin?.image" />
+                  <img class="size-[40px]" :src="selectedCoin?.image"/>
                   <div class="flex-1">
                     <div class="text-lg font-bold">{{ selectedCoin?.instId }}</div>
                     <div class="text-xs text-slate-400">永续</div>
                   </div>
                   <NIcon>
-                    <CaretDown16Filled />
+                    <CaretDown16Filled/>
                   </NIcon>
                 </div>
                 <div
-                  v-show="showSelect"
-                  ref="selectOptionRef"
-                  class="bg-white absolute top-[70px] w-[250px] lg:w-[300px] z-10 shadow-md"
+                    v-show="showSelect"
+                    ref="selectOptionRef"
+                    class="bg-white absolute top-[70px] w-[250px] lg:w-[300px] z-10 shadow-md"
                 >
                   <div class="p-2">
-                    <NInput v-model:value="searchValue" size="small" placeholder="搜索别名" />
+                    <NInput v-model:value="searchValue" size="small" placeholder="搜索别名"/>
                   </div>
                   <div
-                    class="px-2 py-1 flex items-center gap-x-2 hover:bg-slate-200"
-                    v-for="item of searchedCoinList"
-                    :key="item.instId"
-                    @click="
+                      class="px-2 py-1 flex items-center gap-x-2 hover:bg-slate-200"
+                      v-for="item of searchedCoinList"
+                      :key="item.instId"
+                      @click="
                       () => {
                         selectedCoin = item
                         showSelect = false
                       }
                     "
                   >
-                    <NIcon class="text-lg" :class="{ 'text-yellow-300': item.isFavorite }" @click.stop="toggleFavorite(item)">
-                      <component :is="item.isFavorite ? Star16Filled : Star16Regular" />
+                    <NIcon class="text-lg" :class="{ 'text-yellow-300': item.isFavorite }"
+                           @click.stop="toggleFavorite(item)">
+                      <component :is="item.isFavorite ? Star16Filled : Star16Regular"/>
                     </NIcon>
-                    <img class="size-[30px]" :src="item.image" />
+                    <img class="size-[30px]" :src="item.image"/>
                     <div class="flex-1">{{ item.instId }}</div>
                     <div class="text-xs">
                       ${{ item.lastPrice }}|
                       <span
-                        :style="{
+                          :style="{
                           color: item.change24h > 0 ? '#5ac820' : 'red',
                         }"
-                        >{{ `${item.change24h > 0 ? '+' : ''}${item.priceChangePercent}%` }}
+                      >{{ `${item.change24h > 0 ? '+' : ''}${item.priceChangePercent}%` }}
                       </span>
                     </div>
                   </div>
@@ -924,8 +928,8 @@ function updateTradingView(symbol) {
               <!-- 当前价格 -->
               <div class="flex-1 text-center">
                 <div
-                  class="text-2xl font-bold"
-                  :style="{
+                    class="text-2xl font-bold"
+                    :style="{
                     color: selectedCoin?.lastPrice > selectedCoin?.markPrice ? '#5ac820' : 'red',
                   }"
                 >
@@ -940,8 +944,8 @@ function updateTradingView(symbol) {
                 <div class="text-xs font-bold" :style="{ color: selectedCoin?.change24h > 0 ? '#5ac820' : 'red' }">
                   {{
                     selectedCoin?.change24h
-                      ? (selectedCoin.change24h > 0 ? '+' : '') + selectedCoin.priceChangePercent + '%'
-                      : 'N/A'
+                        ? (selectedCoin.change24h > 0 ? '+' : '') + selectedCoin.priceChangePercent + '%'
+                        : 'N/A'
                   }}
                 </div>
               </div>
@@ -980,25 +984,25 @@ function updateTradingView(symbol) {
           </div>
         </div>
         <div class="flex relative">
-          <OptionCard class="block lg:hidden" />
+          <OptionCard class="block lg:hidden"/>
           <div class="flex-1 lg:flex-auto lg:w-[300px] bg-white flex flex-col">
             <div class="flex gap-x-2">
               <NButton
-                size="tiny"
-                :type="orderType === 'commission' ? 'primary' : 'default'"
-                @click="orderType = 'commission'"
-                >委托订单
+                  size="tiny"
+                  :type="orderType === 'commission' ? 'primary' : 'default'"
+                  @click="orderType = 'commission'"
+              >委托订单
               </NButton>
               <NButton size="tiny" :type="orderType === 'newest' ? 'primary' : 'default'" @click="orderType = 'newest'"
-                >最新成交
+              >最新成交
               </NButton>
             </div>
             <template v-if="orderType === 'commission'">
               <div class="flex gap-x-2 items-center">
                 <img
-                  class="size-[22px]"
-                  src="/both_trading.png"
-                  @click="
+                    class="size-[22px]"
+                    src="/both_trading.png"
+                    @click="
                     () => {
                       showSell = true
                       showBuy = true
@@ -1006,9 +1010,9 @@ function updateTradingView(symbol) {
                   "
                 />
                 <img
-                  class="size-[22px]"
-                  src="/only_buy.png"
-                  @click="
+                    class="size-[22px]"
+                    src="/only_buy.png"
+                    @click="
                     () => {
                       showSell = true
                       showBuy = false
@@ -1016,9 +1020,9 @@ function updateTradingView(symbol) {
                   "
                 />
                 <img
-                  class="size-[22px]"
-                  src="/only_sell.png"
-                  @click="
+                    class="size-[22px]"
+                    src="/only_sell.png"
+                    @click="
                     () => {
                       showSell = false
                       showBuy = true
@@ -1034,10 +1038,10 @@ function updateTradingView(symbol) {
                   <div class="hidden lg:block flex-1 text-right">总数</div>
                 </div>
                 <div
-                  v-for="(ask, index) in showBuy ? coinBook15List.asks.slice(0, 10) : coinBook15List.asks.slice(0, 26)"
-                  :key="`ask-${index}`"
-                  class="flex text-xs text-red-500 relative"
-                  @click="handlePriceClick(parseFloat(ask[0]))"
+                    v-for="(ask, index) in showBuy ? coinBook15List.asks.slice(0, 10) : coinBook15List.asks.slice(0, 26)"
+                    :key="`ask-${index}`"
+                    class="flex text-xs text-red-500 relative"
+                    @click="handlePriceClick(parseFloat(ask[0]))"
                 >
                   <div class="flex-1 z-10">{{ parseFloat(ask[0]) }}</div>
                   <div class="flex-1 z-10">{{ parseFloat(ask[1]) }}</div>
@@ -1067,18 +1071,18 @@ function updateTradingView(symbol) {
               <!-- 买入列表（bids） -->
               <div v-if="showBuy" class="flex-1 space-y-2">
                 <div
-                  v-for="(bid, index) in showSell ? coinBook15List.bids.slice(0, 10) : coinBook15List.bids.slice(0, 26)"
-                  :key="`bid-${index}`"
-                  class="flex text-xs text-green-500 relative"
-                  @click="handlePriceClick(parseFloat(bid[0]))"
+                    v-for="(bid, index) in showSell ? coinBook15List.bids.slice(0, 10) : coinBook15List.bids.slice(0, 26)"
+                    :key="`bid-${index}`"
+                    class="flex text-xs text-green-500 relative"
+                    @click="handlePriceClick(parseFloat(bid[0]))"
                 >
                   <div class="flex-1 z-10">{{ parseFloat(bid[0]) }}</div>
                   <div class="flex-1 z-10">{{ parseFloat(bid[1]) }}</div>
                   <div class="hidden lg:block flex-1 z-10 text-right">{{ bid[2] }}</div>
                   <!-- 显示累加总数 -->
                   <div
-                    class="absolute -top-0.5 -bottom-0.5 right-0 bg-green-200"
-                    :style="{ width: `${bid[3]}%` }"
+                      class="absolute -top-0.5 -bottom-0.5 right-0 bg-green-200"
+                      :style="{ width: `${bid[3]}%` }"
                   ></div>
                 </div>
               </div>
@@ -1118,8 +1122,8 @@ function updateTradingView(symbol) {
               <div v-for="(trade, index) in tradeList" :key="index" class="flex gap-y-2 p-1 text-xs">
                 <!-- 价格，根据买卖方向动态设置颜色 -->
                 <div
-                  class="flex-1"
-                  :class="{ 'text-green-500': trade.side === 'buy', 'text-red-500': trade.side === 'sell' }"
+                    class="flex-1"
+                    :class="{ 'text-green-500': trade.side === 'buy', 'text-red-500': trade.side === 'sell' }"
                 >
                   {{ parseFloat(trade.price).toFixed(2) }}
                 </div>
@@ -1127,7 +1131,7 @@ function updateTradingView(symbol) {
                 <div class="flex-1">{{ parseFloat(trade.size).toFixed(8) }}</div>
                 <!-- 成交时间，格式化为 HH:mm:ss -->
                 <div class="flex-1 hidden lg:block">
-                  {{ new Date(parseInt(trade.ts)).toLocaleTimeString('en-US', { hour12: false }) }}
+                  {{ new Date(parseInt(trade.ts)).toLocaleTimeString('en-US', {hour12: false}) }}
                 </div>
               </div>
             </div>
@@ -1136,39 +1140,39 @@ function updateTradingView(symbol) {
       </div>
       <div class="p-4">
         <NTabs
-          default-value="position"
-          size="small"
-          animated
-          pane-wrapper-style="margin: 0 -4px"
-          pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+            default-value="position"
+            size="small"
+            animated
+            pane-wrapper-style="margin: 0 -4px"
+            pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
         >
           <NTabPane name="position" :tab="'仓位(' + (positionData?.length || 0) + ')'">
             <div style="max-height: 400px; overflow-y: auto">
-              <NDataTable size="small" :columns="positionTableColumns" :data="positionData" :bordered="false" />
+              <NDataTable size="small" :columns="positionTableColumns" :data="positionData" :bordered="false"/>
             </div>
           </NTabPane>
           <NTabPane :name="'commission'" :tab="'委托(' + (commissionData?.length || 0) + ')'">
             <div style="max-height: 400px; overflow-y: auto">
-              <NDataTable size="small" :columns="commissionTableColumns" :data="commissionData" :bordered="false" />
+              <NDataTable size="small" :columns="commissionTableColumns" :data="commissionData" :bordered="false"/>
             </div>
           </NTabPane>
           <NTabPane name="positionRecord" :tab="'历史仓位(' + (positionRecordData?.length || 0) + ')'">
             <div style="max-height: 400px; overflow-y: auto">
               <NDataTable
-                size="small"
-                :columns="positionRecordTableColumns"
-                :data="positionRecordData"
-                :bordered="false"
+                  size="small"
+                  :columns="positionRecordTableColumns"
+                  :data="positionRecordData"
+                  :bordered="false"
               />
             </div>
           </NTabPane>
           <NTabPane :name="'commissionRecord'" :tab="'历史委托(' + (filledOrdersData?.length || 0) + ')'">
             <div style="max-height: 400px; overflow-y: auto">
               <NDataTable
-                size="small"
-                :columns="commissionRecordTableColumns"
-                :data="filledOrdersData"
-                :bordered="false"
+                  size="small"
+                  :columns="commissionRecordTableColumns"
+                  :data="filledOrdersData"
+                  :bordered="false"
               />
             </div>
           </NTabPane>
@@ -1182,7 +1186,7 @@ function updateTradingView(symbol) {
     <div class="bg-white rounded-md w-full lg:w-[600px] p-4 space-y-4">
       <div class="flex items-center justify-between">
         <div class="font-bold text-xl">平仓</div>
-        <img class="size-4" src="/close.png" @click="positionModal = false" />
+        <img class="size-4" src="/close.png" @click="positionModal = false"/>
       </div>
       <div class="text-xl font-bold">{{ positionModalData.symbol }}</div>
       <div class="flex items-center justify-between text-sm">
@@ -1231,7 +1235,7 @@ function updateTradingView(symbol) {
             @input="handleQuantityInput"
         />
       </div>
-      <NSlider v-model:value="quantityPercentage" :step="1" :show-tooltip="false" :format-tooltip="(v) => `${v}%`" />
+      <NSlider v-model:value="quantityPercentage" :step="1" :show-tooltip="false" :format-tooltip="(v) => `${v}%`"/>
       <div class="flex items-center justify-between text-sm">
         <div class="text-slate-500">持仓量</div>
         <div class="font-bold">{{ positionModalData.size }}</div>
@@ -1256,7 +1260,7 @@ function updateTradingView(symbol) {
     <div class="bg-white rounded-md w-full lg:w-[600px] p-4 space-y-4">
       <div class="flex items-center justify-between">
         <div class="font-bold text-xl">止盈/止损</div>
-        <img class="size-4" src="/close.png" @click="profitModal = false" />
+        <img class="size-4" src="/close.png" @click="profitModal = false"/>
       </div>
       <div class="text-xl font-bold">{{ profitModalData.symbol }}</div>
       <div class="flex items-center justify-between text-sm">
@@ -1291,18 +1295,22 @@ function updateTradingView(symbol) {
         <div class="text-slate-500 w-24">止盈(USDT)</div>
         <NInput style="flex: 1" :value="profitPrice" placeholder="止盈触发价"/>
       </div>
-      <NSlider v-model:value="profitPercentage" :max="200" :step="1" :show-tooltip="false" :format-tooltip="(v) => `${v}%`" />
+      <NSlider v-model:value="profitPercentage" :max="200" :step="1" :show-tooltip="false"
+               :format-tooltip="(v) => `${v}%`"/>
       <div class="text-sm text-slate-500">
-        当标记价格 ≥ {{ profitPrice }} USDT时，将以最优成交价平仓，数量为 {{ profitModalData.available }} {{ profitModalData.symbol.replace('USDT', '') }}，预计收益为 {{ expectedProfit }} USDT ({{ profitPercentage }}%)。
+        当标记价格 ≥ {{ profitPrice }} USDT时，将以最优成交价平仓，数量为 {{ profitModalData.available }}
+        {{ profitModalData.symbol.replace('USDT', '') }}，预计收益为 {{ expectedProfit }} USDT ({{ profitPercentage }}%)。
       </div>
 
       <div class="flex items-center justify-between text-sm gap-x-4">
         <div class="text-slate-500 w-24">止损(USDT)</div>
         <NInput style="flex: 1" :value="lossPrice" placeholder="止损触发价"/>
       </div>
-      <NSlider v-model:value="lossPercentage" :max="100" :step="1" :show-tooltip="false" :format-tooltip="(v) => `${v}%`" />
+      <NSlider v-model:value="lossPercentage" :max="100" :step="1" :show-tooltip="false"
+               :format-tooltip="(v) => `${v}%`"/>
       <div class="text-sm text-slate-500">
-        当标记价格 ≤ {{ lossPrice }} USDT时，将以最优成交价平仓，数量为 {{ profitModalData.available }} {{ profitModalData.symbol.replace('USDT', '') }}，预计收益为 {{ expectedLoss }} USDT ({{ lossPercentage }}%)。
+        当标记价格 ≤ {{ lossPrice }} USDT时，将以最优成交价平仓，数量为 {{ profitModalData.available }}
+        {{ profitModalData.symbol.replace('USDT', '') }}，预计收益为 {{ expectedLoss }} USDT ({{ lossPercentage }}%)。
       </div>
       <NButton type="primary" block @click="confirmStopProfitLoss">确定</NButton>
     </div>

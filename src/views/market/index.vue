@@ -14,7 +14,7 @@ const checkedSelfList = ref([])
 const selfChoiceList = ref([])
 const apiSelfChoiceSymbols = ref([]) // 保存从 API 获取的自选标识符
 const message = useMessage()
-const pagination = ref({ current: 1, pageSize: 5, count: 1 })
+const pagination = ref({ current: 1, pageSize: 10, count: 1 })
 const searchValue = ref('')
 
 const coinData = computed(() => {

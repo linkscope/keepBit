@@ -17,7 +17,7 @@ import {
 } from 'naive-ui'
 import { CaretDown16Filled, ArrowSort16Regular } from '@vicons/fluent'
 import { ref, inject } from 'vue'
-
+const { t } = useI18n()
 const optionType = ref('open')
 const positionType = ref('crossed')
 const factor = ref(20)
@@ -581,7 +581,7 @@ async function sendOrder() {
     OrderSide: confirmationData.value.type.includes('开多') ? 0 : confirmationData.value.type.includes('开空') ? 1 : confirmationData.value.type.includes('平多') ? 2 : 3,
     OrderType: currentPriceType.value === 'market' ? 1 : 0, // 市价 1, 限价 0
     Quantity: approxBTCValue.value, // or the actual quantity value you want to send
-    Price: currentPriceType.value === 'market' ? '' : orderPrice.value, // Market orders don't need a price
+    Price: currentPriceType.value === 'market' ? 0.0 : orderPrice.value, // Market orders don't need a price
     Leverage: factor.value,
     ReduceOnly: optionType.value === 'close', // true for closing positions
   };
@@ -644,16 +644,20 @@ onMounted(() => {
 <template>
   <div class="lg:w-[350px] p-4 space-y-2">
     <div class="grid grid-cols-2 gap-2">
-      <NButton :type="optionType === 'open' ? 'primary' : 'default'" @click="optionType = 'open'">开仓</NButton>
-      <NButton :type="optionType === 'close' ? 'primary' : 'default'" @click="optionType = 'close'">平仓</NButton>
+      <NButton :type="optionType === 'open' ? 'primary' : 'default'" @click="optionType = 'open'">
+        {{ t('trading.openPosition') }}
+      </NButton>
+      <NButton :type="optionType === 'close' ? 'primary' : 'default'" @click="optionType = 'close'">
+        {{ t('trading.closePosition') }}
+      </NButton>
       <NPopconfirm @positive-click="switchMarginMode">
         <template #trigger>
-          <NButton>{{ positionType === 'crossed' ? '全仓' : '逐仓' }}</NButton>
+          <NButton>{{ positionType === 'crossed' ? t('trading.crossed') : t('trading.isolated') }}</NButton>
         </template>
         {{
           positionType === 'crossed'
-            ? '切换为逐仓模式：每个仓位独立计算风险，仅使用该仓位的保证金进行风险控制。'
-            : '切换为全仓模式：账户内的所有可用资金承担风险，以减少爆仓风险'
+              ? t('trading.switchToIsolated')
+              : t('trading.switchToCrossed')
         }}
       </NPopconfirm>
       <NPopselect :options="factorOptions" trigger="click" @update:value="handleFactorChange">
@@ -668,81 +672,85 @@ onMounted(() => {
       </NPopselect>
     </div>
     <NTabs
-      v-model:value="currentPriceType"
-      default-value="limit"
-      animated
-      pane-wrapper-style="margin: 0 -4px"
-      pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
-      @before-leave="handleBeforeLeave"
+        v-model:value="currentPriceType"
+        default-value="limit"
+        animated
+        pane-wrapper-style="margin: 0 -4px"
+        pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+        @before-leave="handleBeforeLeave"
     >
-      <NTabPane name="limit" tab="限价单">
+      <NTabPane name="limit" :tab="t('trading.limitOrder')">
         <div class="text-xs space-y-4">
-          <div class="font-bold">委托价格(USDT)</div>
-          <NInput v-model:value="orderPrice" size="small" placeholder="输入委托价格" />
-          <div class="font-bold">委托数量</div>
+          <div class="font-bold">{{ t('trading.entrustPrice') }} (USDT)</div>
+          <NInput v-model:value="orderPrice" size="small" :placeholder="t('trading.enterEntrustPrice')" />
+          <div class="font-bold">{{ t('trading.entrustQuantity') }}</div>
           <NInput
               v-model:value="commissionNum"
               size="small"
-              placeholder="输入委托数量"
+              :placeholder="t('trading.enterEntrustQuantity')"
               @input="handleCommissionInput('limit')"
           />
-          <div class="font-bold">≈ {{ approxBTCValue }} {{ coinSymbol }} / {{ parseFloat(approxUSDTValue).toFixed(4) }} USDT</div>
+          <div class="font-bold">
+            ≈ {{ approxBTCValue }} {{ coinSymbol }} / {{ parseFloat(approxUSDTValue).toFixed(4) }} USDT
+          </div>
           <!-- 滑块 -->
           <NSlider
-            v-model:value="sliderValue"
-            :marks="{ 0: '0%', 25: '25%', 50: '50%', 75: '75%', 100: '100%' }"
-            :step="1"
-            :format-tooltip="(v) => `${v}%`"
+              v-model:value="sliderValue"
+              :marks="{ 0: '0%', 25: '25%', 50: '50%', 75: '75%', 100: '100%' }"
+              :step="1"
+              :format-tooltip="(v) => `${v}%`"
           />
           <div class="flex gap-x-2 pt-4">
             <NButton
-              class="flex-1"
-              type="primary"
-              @click="openConfirmationModal(optionType === 'close' ? 'closeShort' : 'openLong')"
+                class="flex-1"
+                type="primary"
+                @click="openConfirmationModal(optionType === 'close' ? 'closeShort' : 'openLong')"
             >
-              {{ optionType === 'close' ? '平空' : '开多' }}
+              {{ optionType === 'close' ? t('trading.closeShort') : t('trading.openLong') }}
             </NButton>
             <NButton
-              class="flex-1 bg-rose-500 text-white"
-              @click="openConfirmationModal(optionType === 'close' ? 'closeLong' : 'openShort')"
+                class="flex-1 bg-rose-500 text-white"
+                @click="openConfirmationModal(optionType === 'close' ? 'closeLong' : 'openShort')"
             >
-              {{ optionType === 'close' ? '平多' : '开空' }}
+              {{ optionType === 'close' ? t('trading.closeLong') : t('trading.openShort') }}
             </NButton>
           </div>
         </div>
       </NTabPane>
-      <NTabPane name="market" tab="市价单">
+      <NTabPane name="market" :tab="t('trading.marketOrder') ">
         <div class="text-xs space-y-4">
-          <div class="font-bold">委托价格(USDT)</div>
-          <NInput v-model:value="orderPriceMarket" size="small" placeholder="市价" disabled />
-          <div class="font-bold">委托数量</div>
+          <div class="font-bold">{{ t('trading.entrustPrice') }} (USDT)</div>
+          <NInput v-model:value="orderPriceMarket" size="small" :placeholder="t('trading.marketPrice')" disabled />
+          <div class="font-bold">{{ t('trading.entrustQuantity') }}</div>
           <NInput
               v-model:value="commissionNumMarket"
               size="small"
-              placeholder="输入委托数量"
+              :placeholder="t('trading.enterEntrustQuantity')"
               @input="handleCommissionInput('market')"
           />
-          <div class="font-bold">≈ {{ approxBTCValue }} {{ coinSymbol }} / {{ parseFloat(approxUSDTValue).toFixed(4) }} USDT</div>
+          <div class="font-bold">
+            ≈ {{ approxBTCValue }} {{ coinSymbol }} / {{ parseFloat(approxUSDTValue).toFixed(4) }} USDT
+          </div>
           <!-- 滑块 -->
           <NSlider
-            v-model:value="sliderValueMarket"
-            :marks="{ 0: '0%', 25: '25%', 50: '50%', 75: '75%', 100: '100%' }"
-            :step="1"
-            :format-tooltip="(v) => `${v}%`"
+              v-model:value="sliderValueMarket"
+              :marks="{ 0: '0%', 25: '25%', 50: '50%', 75: '75%', 100: '100%' }"
+              :step="1"
+              :format-tooltip="(v) => `${v}%`"
           />
           <div class="flex gap-x-2 pt-4">
             <NButton
-              class="flex-1"
-              type="primary"
-              @click="openConfirmationModal(optionType === 'close' ? 'closeShort' : 'openLong')"
+                class="flex-1"
+                type="primary"
+                @click="openConfirmationModal(optionType === 'close' ? 'closeShort' : 'openLong')"
             >
-              {{ optionType === 'close' ? '平空' : '开多' }}
+              {{ optionType === 'close' ? t('trading.closeShort') : t('trading.openLong') }}
             </NButton>
             <NButton
-              class="flex-1 bg-rose-500 text-white"
-              @click="openConfirmationModal(optionType === 'close' ? 'closeLong' : 'openShort')"
+                class="flex-1 bg-rose-500 text-white"
+                @click="openConfirmationModal(optionType === 'close' ? 'closeLong' : 'openShort')"
             >
-              {{ optionType === 'close' ? '平多' : '开空' }}
+              {{ optionType === 'close' ? t('trading.closeLong') : t('trading.openShort') }}
             </NButton>
           </div>
         </div>
@@ -752,45 +760,41 @@ onMounted(() => {
       <template v-if="optionType === 'close'">
         <!-- 空仓持仓量和可平量 -->
         <div>
-          <div class="text-slate-400">空仓持仓</div>
+          <div class="text-slate-400">{{ t('trading.shortPosition') }}</div>
           <div>{{ shortPosition?.Size || '0.000' }} {{ coinSymbol }}</div>
         </div>
         <div>
-          <div class="text-slate-400">可平量</div>
-          <div>{{ shortPosition?.Available || '0.000' }} {{ coinSymbol }}</div>
-        </div>
-
-        <!-- 多仓持仓量和可平量 -->
-        <div>
-          <div class="text-slate-400">多仓持仓</div>
+          <div class="text-slate-400">{{ t('trading.longPosition') }}</div>
           <div>{{ longPosition?.Size || '0.000' }} {{ coinSymbol }}</div>
         </div>
         <div>
-          <div class="text-slate-400">可平量</div>
+          <div class="text-slate-400">{{ t('trading.availableToClose') }}</div>
+          <div>{{ shortPosition?.Available || '0.000' }} {{ coinSymbol }}</div>
+        </div>
+        <div>
+          <div class="text-slate-400">{{ t('trading.availableToClose') }}</div>
           <div>{{ longPosition?.Available || '0.000' }} {{ coinSymbol }}</div>
         </div>
       </template>
       <template v-else>
         <div>
-          <div class="text-slate-400">可多开</div>
-          <div>{{ maxOpenAmount.toFixed( currentCoinDecimals ) }} {{ coinSymbol }}</div>
+          <div class="text-slate-400">{{ t('trading.availableToOpenLong') }}</div>
+          <div>{{ maxOpenAmount.toFixed(currentCoinDecimals) }} {{ coinSymbol }}</div>
         </div>
         <div>
-          <div class="text-slate-400">可开空</div>
-          <div>
-            <div>{{ maxOpenAmount.toFixed( currentCoinDecimals ) }} {{ coinSymbol }}</div>
-          </div>
+          <div class="text-slate-400">{{ t('trading.availableToOpenShort') }}</div>
+          <div>{{ maxOpenAmount.toFixed(currentCoinDecimals) }} {{ coinSymbol }}</div>
         </div>
         <div>
-          <div class="text-slate-400">保证金</div>
+          <div class="text-slate-400">{{ t('trading.margin') }}</div>
           <div>{{ margin.toFixed(4) }} USDT</div>
         </div>
         <div>
-          <div class="text-slate-400">保证金</div>
+          <div class="text-slate-400">{{ t('trading.margin') }}</div>
           <div>{{ margin.toFixed(4) }} USDT</div>
         </div>
         <div>
-          <div class="text-slate-400">可用</div>
+          <div class="text-slate-400">{{ t('trading.availableUse') }}</div>
           <div>{{ available }} USDT</div>
         </div>
         <div class="flex items-center" @click="chargeModal = true">
@@ -802,29 +806,30 @@ onMounted(() => {
     <NModal v-model:show="chargeModal">
       <div class="bg-white rounded-md w-full lg:w-[600px] p-4 space-y-4">
         <div class="flex items-center justify-between">
-          <div class="font-bold text-xl">选择充币方式</div>
+          <div class="font-bold text-xl">{{ t('trading.selectDepositMethod') }}</div>
           <img class="size-4" src="/close.png" @click="chargeModal = false" />
         </div>
         <div
-          class="space-y-2 p-2 border border-slate-200 rounded-xl text-white bg-green-500"
-          @click="cryptoChargeModal = true"
+            class="space-y-2 p-2 border border-slate-200 rounded-xl text-white bg-green-500"
+            @click="cryptoChargeModal = true"
         >
-          <div class="text-lg font-bold">充入数字货币</div>
-          <div>从链上钱包或交易所转入数字货币</div>
+          <div class="text-lg font-bold">{{ t('trading.depositCryptoCurrency') }}</div>
+          <div>{{ t('trading.fromWalletOrExchange') }}</div>
         </div>
         <div
-          class="space-y-2 p-2 border border-slate-200 rounded-xl text-white bg-green-500"
-          @click="accountChargeModal = true"
+            class="space-y-2 p-2 border border-slate-200 rounded-xl text-white bg-green-500"
+            @click="accountChargeModal = true"
         >
-          <div class="text-lg font-bold">内部划转</div>
-          <div>在资金账户和交易账户之间转移数字货币</div>
+          <div class="text-lg font-bold">{{ t('trading.internalTransfer') }}</div>
+          <div>{{ t('trading.transferBetweenAccounts') }}</div>
         </div>
       </div>
     </NModal>
+
     <NModal v-model:show="cryptoChargeModal">
       <div class="bg-white rounded-md w-full lg:w-[600px] p-4 space-y-4">
         <div class="flex items-center justify-between">
-          <div class="font-bold text-xl">充入数字货币</div>
+          <div class="font-bold text-xl">{{ t('trading.depositCryptoCurrency') }}</div>
           <img class="size-4" src="/close.png" @click="cryptoChargeModal = false" />
         </div>
         <div class="flex items-center gap-x-4 text-sm">
@@ -832,59 +837,58 @@ onMounted(() => {
           USDT
         </div>
         <div class="flex items-center justify-between text-sm gap-x-4">
-          <div class="text-slate-500 w-16">选择网络</div>
+          <div class="text-slate-500 w-16">{{ t('trading.selectNetwork') }}</div>
           <NSelect
               style="flex: 1"
-              placeholder="选择网络"
+              placeholder="{{ t('trading.selectNetwork') }}"
               v-model:value="selectedNetwork"
               :options="networkOptions"
               @update:value="handleNetworkSelect"
           />
         </div>
 
-        <!-- 条件渲染，未选择网络时隐藏内容 -->
         <div v-if="selectedNetwork">
           <div class="flex items-center justify-between text-sm">
             <div class="text-slate-500">
-              提示：选择与提币平台一致的网络进行充值, 否则您将会遗失这笔资金。
+              {{ t('trading.networkWarning') }}
             </div>
           </div>
-          <!-- 居中的二维码 -->
           <div class="qr-code-container">
             <img :src="qrCodeUrl" alt="二维码" class="qr-code" />
           </div>
           <div class="flex items-center justify-between text-sm gap-x-4 py-4">
-            <div class="text-slate-500 w-16">充币地址</div>
+            <div class="text-slate-500 w-16">{{ t('trading.depositAddress') }}</div>
             <NInput style="flex: 1" :value="walletId" disabled />
           </div>
           <div class="flex items-center justify-between text-sm gap-x-4 py-4">
-            <div class="text-slate-500 w-16">充值至</div>
+            <div class="text-slate-500 w-16">{{ t('trading.depositTo') }}</div>
             <NInput style="flex: 1" value="资金账户" disabled />
           </div>
           <div class="flex items-center justify-between text-sm">
             <div class="text-slate-500">
-              您只能向此地址充值入{{ selectedNetwork }}, 充值入其他资产将无法退回。
+              {{ t('trading.onlyDepositToThisAddress') }}
             </div>
           </div>
         </div>
 
-        <NButton block type="primary" @click="cryptoChargeModal = false">确定</NButton>
+        <NButton block type="primary" @click="cryptoChargeModal = false">{{ t('trading.confirm') }}</NButton>
       </div>
     </NModal>
+
     <NModal v-model:show="accountChargeModal">
       <div class="bg-white rounded-md w-full lg:w-[600px] p-4 space-y-4">
         <div class="flex items-center justify-between">
-          <div class="font-bold text-xl">内部划转</div>
+          <div class="font-bold text-xl">{{ t('trading.internalTransfer') }}</div>
           <img class="size-4" src="/close.png" @click="accountChargeModal = false" />
         </div>
         <div class="flex items-center gap-x-4">
           <div class="flex-1 space-y-4">
             <div class="flex items-center justify-between text-sm gap-x-4">
-              <div class="text-slate-500 w-8">从</div>
+              <div class="text-slate-500 w-8">{{ t('trading.from') }}</div>
               <NInput style="flex: 1" :value="fromAccount" disabled />
             </div>
             <div class="flex items-center justify-between text-sm gap-x-4">
-              <div class="text-slate-500 w-8">到</div>
+              <div class="text-slate-500 w-8">{{ t('trading.to') }}</div>
               <NInput style="flex: 1" :value="toAccount" disabled />
             </div>
           </div>
@@ -893,29 +897,30 @@ onMounted(() => {
           </NIcon>
         </div>
         <div class="flex items-center justify-between text-sm">
-          <div class="text-slate-500">资产</div>
+          <div class="text-slate-500">{{ t('trading.asset') }}</div>
           <div class="font-bold">{{ asset }}</div>
         </div>
         <div class="flex items-center justify-between text-sm gap-x-4">
-          <div class="text-slate-500 w-8">数量</div>
+          <div class="text-slate-500 w-8">{{ t('trading.amount') }}</div>
           <NInputNumber
               style="flex: 1"
               v-model:value="transferAmount"
-              placeholder="数量"
+              placeholder="{{ t('trading.amount') }}"
               :max="maxTransferable"
               clearable
           />
         </div>
         <div class="text-sm text-slate-500 text-right">
-          最多可转：{{ maxTransferable }} USDT
+          {{ t('trading.maxTransfer') }}: {{ maxTransferable }} USDT
         </div>
-        <NButton block type="primary" @click="submitTransfer">确定</NButton>
+        <NButton block type="primary" @click="submitTransfer">{{ t('trading.confirm') }}</NButton>
       </div>
     </NModal>
+
     <NModal v-model:show="confirmationModal">
       <div class="bg-white rounded-xl p-4 space-y-4 w-full lg:w-[500px]">
         <div class="flex items-center justify-between">
-          <div class="font-bold text-xl">下单确认</div>
+          <div class="font-bold text-xl">{{ t('trading.orderConfirmation') }}</div>
           <img class="size-4" src="/close.png" @click="confirmationModal = false" />
         </div>
         <div class="flex items-center justify-between">
@@ -926,30 +931,26 @@ onMounted(() => {
           </div>
         </div>
         <div class="flex items-center justify-between text-sm">
-          <div class="text-slate-500">委托价格</div>
+          <div class="text-slate-500">{{ t('trading.orderPrice') }}</div>
           <div class="font-bold">{{ confirmationData.price }} USDT</div>
         </div>
         <div class="flex items-center justify-between text-sm">
-          <div class="text-slate-500">数量</div>
+          <div class="text-slate-500">{{ t('trading.amount') }}</div>
           <div class="font-bold">{{ confirmationData.amount }}</div>
         </div>
-        <!-- 保证金字段，仅在开仓时显示 -->
         <div v-if="confirmationData.isOpenOrder" class="flex items-center justify-between text-sm">
-          <div class="text-slate-500">保证金</div>
+          <div class="text-slate-500">{{ t('trading.margin') }}</div>
           <div class="font-bold">{{ confirmationData.margin }}</div>
         </div>
         <div class="flex items-center justify-between text-sm">
-          <div class="text-slate-500">类型</div>
+          <div class="text-slate-500">{{ t('trading.type') }}</div>
           <div class="space-x-2 font-bold">
             <span>{{ confirmationData.positionType }}</span>
             <span>-</span>
-            <span>{{ currentPriceType.value === 'market' ? '市价' : '限价' }}</span>
+            <span>{{ currentPriceType.value === 'market' ? t('trading.marketPrice') : t('trading.limitPrice') }}</span>
           </div>
         </div>
-<!--        <div class="flex justify-end">-->
-<!--          <NCheckbox>不再提示</NCheckbox>-->
-<!--        </div>-->
-        <NButton type="primary" block @click="sendOrder">确定</NButton>
+        <NButton type="primary" block @click="sendOrder">{{ t('trading.confirm') }}</NButton>
       </div>
     </NModal>
   </div>

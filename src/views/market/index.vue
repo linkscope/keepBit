@@ -241,7 +241,7 @@ async function addToFavorites() {
     <div v-show="currentTab === 'stock'" class="p-4 border border-slate-200 space-y-4 rounded-2xl">
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-y-2">
         <div class="text-2xl lg:text-[40px] font-bold">{{ t('market.default.tab[0].title') }}</div>
-        <NInput v-model:value="searchValue" placeholder="搜索货币简称" @input="pagination.current = 1">
+        <NInput v-model:value="searchValue" :placeholder="t('market.searchValue')" @input="pagination.current = 1">
           <template #prefix>
             <div class="flex items-center justify-center text-black">
               <NIcon class="text-2xl">
@@ -259,7 +259,7 @@ async function addToFavorites() {
     <div v-show="currentTab === 'trading'" class="p-4 border border-slate-200 space-y-4 rounded-2xl">
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-y-2">
         <div class="text-2xl lg:text-[40px] font-bold">{{ t('market.default.tab[1].title') }}</div>
-        <NInput v-model:value="searchValue" placeholder="搜索货币简称" @input="pagination.current = 1">
+        <NInput v-model:value="searchValue" :placeholder="t('market.searchValue')" @input="pagination.current = 1">
           <template #prefix>
             <div class="flex items-center justify-center text-black">
               <NIcon class="text-2xl">
@@ -279,7 +279,7 @@ async function addToFavorites() {
         <!-- 显示自选列表 -->
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-y-2">
           <div class="text-2xl lg:text-[40px] font-bold">{{ t('market.default.tab[2].title') }}</div>
-          <NInput v-model:value="searchValue" placeholder="搜索货币简称" @input="pagination.current = 1">
+          <NInput v-model:value="searchValue" :placeholder="t('market.searchValue')" @input="pagination.current = 1">
             <template #prefix>
               <div class="flex items-center justify-center text-black">
                 <NIcon class="text-2xl">

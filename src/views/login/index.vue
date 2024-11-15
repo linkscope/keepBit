@@ -14,6 +14,10 @@ const formData = reactive({
 })
 const errorMessage = ref('') // 错误消息
 
+const goToJoinPage = () => {
+  router.push('/register') // Replace '/join' with the actual route you want to navigate to
+}
+
 // 登录方法
 const handleLogin = async () => {
   try {
@@ -42,8 +46,8 @@ const handleLogin = async () => {
 <template>
   <div class="lg:flex lg:h-[calc(100%-75px)]">
     <div class="hidden lg:flex flex-1 bg-black flex-col items-center justify-center text-white font-bold text-[60px]">
-      <div>欢迎来到KeepBit</div>
-      <div>你的Web3世界从这里开始</div>
+      <div>{{ t('login.welcome[0]') }}</div>
+      <div>{{ t('login.welcome[1]') }}</div>
       <div class="relative mt-16">
         <div class="hidden lg:block absolute left-0 top-0 size-full">
           <img class="w-full" src="/home_hero_bg.png" />
@@ -72,7 +76,7 @@ const handleLogin = async () => {
                 <div v-if="errorMessage" class="text-red-500 text-sm">{{ errorMessage }}</div>
               </NForm>
               <div class="text-right text-[#5bc17f]">{{ t('login.forget') }}</div>
-              <NButton class="bg-[#76e43b] rounded-lg w-full h-12 text-lg font-bold" @click="handleLogin">登录</NButton>
+              <NButton class="bg-[#76e43b] rounded-lg w-full h-12 text-lg font-bold" @click="handleLogin">{{ t('login.title') }}</NButton>
               <NDivider class="text-sm text-slate-400">{{ t('login.other') }}</NDivider>
               <div class="flex items-center justify-center gap-x-4">
                 <div class="p-2 rounded-full bg-green-400 border border-green-200 flex items-center justify-center">
@@ -89,7 +93,7 @@ const handleLogin = async () => {
                 </div>
               </div>
               <div class="text-center">
-                {{ t('login.noAccount') }}<span class="text-[#76e43b]">{{ t('login.join') }}</span>
+                {{ t('login.noAccount') }}<span class="text-[#76e43b]" @click="goToJoinPage">{{ t('login.join') }}</span>
               </div>
             </div>
           </NTabPane>

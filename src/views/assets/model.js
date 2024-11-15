@@ -1,4 +1,5 @@
-export function pieChartOption(data, showAssets = true) {
+// pieChartOption.js
+export function pieChartOption(data, showAssets = true, t) {
   return {
     legend: {
       orient: 'vertical',
@@ -10,28 +11,28 @@ export function pieChartOption(data, showAssets = true) {
       },
       icon: 'circle',
       data: [
-        { name: '资金账户', itemStyle: { color: '#FFD700' } },
-        { name: '合约账户', itemStyle: { color: '#32CD32' } },
-        { name: '模拟账户', itemStyle: { color: '#7FFF00' } },
-        { name: '策略账户', itemStyle: { color: '#9370DB' } },
+        { name: t('assets.fundAccount'), itemStyle: { color: '#FFD700' } },
+        { name: t('assets.contractAccount'), itemStyle: { color: '#32CD32' } },
+        { name: t('assets.demoAccount'), itemStyle: { color: '#7FFF00' } },
+        { name: t('assets.strategyAccount'), itemStyle: { color: '#9370DB' } },
       ],
       formatter(name) {
-        let value = 0
+        let value = 0;
         switch (name) {
-          case '资金账户':
-            value = data.Assets
-            break
-          case '合约账户':
-            value = data.Contract
-            break
-          case '模拟账户':
-            value = data.Demo
-            break
-          case '策略账户':
-            value = data.Tactic
-            break
+          case t('assets.fundAccount'):
+            value = data.Assets;
+            break;
+          case t('assets.contractAccount'):
+            value = data.Contract;
+            break;
+          case t('assets.demoAccount'):
+            value = data.Demo;
+            break;
+          case t('assets.strategyAccount'):
+            value = data.Tactic;
+            break;
         }
-        return name + (showAssets ? `     ${((value / data.Total) * 100).toFixed(2)}%` : '     ****')
+        return name + (showAssets ? `     ${((value / data.Total) * 100).toFixed(2)}%` : '     ****');
       },
     },
     grid: {
@@ -39,9 +40,9 @@ export function pieChartOption(data, showAssets = true) {
     },
     series: [
       {
-        name: '账户分布',
+        name: t('assets.distribution'),
         type: 'pie',
-        radius: ['30%', '50%'], // 设置内外半径，创建环形图效果
+        radius: ['30%', '50%'], // 创建环形图效果，设置内外半径
         center: ['50%', '30%'],
         avoidLabelOverlap: false,
         label: {
@@ -51,12 +52,12 @@ export function pieChartOption(data, showAssets = true) {
           show: false, // 不显示标签线
         },
         data: [
-          { value: data.Assets, name: '资金账户', itemStyle: { color: '#FFD700' } },
-          { value: data.Contract, name: '合约账户', itemStyle: { color: '#32CD32' } },
-          { value: data.Demo, name: '模拟账户', itemStyle: { color: '#7FFF00' } },
-          { value: data.Tactic, name: '策略账户', itemStyle: { color: '#9370DB' } },
+          { value: data.Assets, name: t('assets.fundAccount'), itemStyle: { color: '#FFD700' } },
+          { value: data.Contract, name: t('assets.contractAccount'), itemStyle: { color: '#32CD32' } },
+          { value: data.Demo, name: t('assets.demoAccount'), itemStyle: { color: '#7FFF00' } },
+          { value: data.Tactic, name: t('assets.strategyAccount'), itemStyle: { color: '#9370DB' } },
         ],
       },
     ],
-  }
+  };
 }

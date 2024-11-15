@@ -7,8 +7,8 @@
       "quantitative": "Quantitative Trading",
       "strategy": "Strategy Square",
       "deal": "Strategy Orders",
-      "dealContracts": "Simulated Orders",
-      "explorationAndLearning": "Explore and Learn",
+      "dealContracts": "Simulation Orders",
+      "explorationAndLearning": "Exploration & Learning",
       "about": "About Us",
       "announcementCenter": "Announcement Center",
       "keepBitAcademy": "KeepBit Academy",
@@ -19,57 +19,232 @@
       "vipService": "VIP Service"
     }
   },
-  "login": "Login",
-  "register": "Register",
+  "message": {
+    "loginSuccess": "Login Successful",
+    "addSuccess": "Added Successfully",
+    "addError": "Add Failed",
+    "getTacticsError": "Failed to Retrieve Strategy List",
+    "createSuccess": "Created Successfully",
+    "createError": "Creation Failed",
+    "finishSuccess": "Strategy Ended Successfully",
+    "finishError": "Failed to End Strategy",
+    "closePositionSuccess": "Position Closed Successfully",
+    "searchSuccess": "Search Successful",
+    "searchError": "Search Failed"
+  },
+  "login": {
+    "title": "Login",
+    "welcome": ["Welcome to KeepBit", "Your Web3 journey starts here"],
+    "tabs": ["Email"],
+    "email": {
+      "label": ["Email", "Password"],
+      "placeholder": ["Enter Email", "Enter Password"]
+    },
+    "forget": "Forgot Password?",
+    "other": "Or login using the following methods",
+    "noAccount": "Don't have an account?",
+    "join": "Join Now"
+  },
+  "register": {
+    "title": "Register",
+    "welcome": ["Register for KeepBit Now"],
+    "tabs": ["Email"],
+    "email": {
+      "label": ["Email", "Invitation Code (Optional)"],
+      "placeholder": ["Enter Email", "Enter Invitation Code"],
+      "invalid": "Please enter a valid email address"
+    },
+    "verifyCode": {
+      "label": "Verification Code",
+      "placeholder": "Enter Verification Code",
+      "sent": "Verification code has been sent to your email"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter Password",
+      "rule1": "Must contain at least 1 lowercase letter (a-z)",
+      "rule2": "Must contain at least 1 number",
+      "rule3": "Must contain at least 1 special character (e.g., !@#$%^&*)",
+      "rule4": "Password length must be 8-32 characters",
+      "invalid": "Password does not meet requirements"
+    },
+    "announce": "By continuing to register, you agree to",
+    "according": ["User Agreement", "Privacy Policy"],
+    "error": "An error occurred, please try again later",
+    "success": "Registration successful, please log in"
+  },
+  "trading": {
+    "perpetual": "Perpetual",
+    "searchAlias": "Search Coin",
+    "change24h": "24h Change",
+    "high24h": "24h High",
+    "low24h": "24h Low",
+    "volume24h": "24h Volume",
+    "volumeQuote24h": "24h Volume (USDT)",
+    "entrustOrder": "Entrust Order",
+    "latestDeal": "Latest Deal",
+    "priceUSDT": "Price (USDT)",
+    "quantity": "Quantity",
+    "total": "Total",
+    "buyTag": "B",
+    "sellTag": "S",
+    "time": "Time",
+    "closePosition": "Close Position",
+    "takeProfitStopLoss": "Take Profit/Stop Loss",
+    "position": "Position",
+    "historyPosition": "History Position",
+    "historyEntrust": "History Entrust",
+    "direction": "Position Direction",
+    "marginMode": "Margin Mode",
+    "leverage": "Leverage",
+    "currentPrice": "Current Price",
+    "openPrice": "Open Price",
+    "price": "Price (USDT)",
+    "available": "Available to Close",
+    "estimatedProfitLoss": "Estimated Profit/Loss",
+    "closingFee": "Estimated Close Fee",
+    "stopProfitLoss": "Take Profit/Stop Loss",
+    "stopProfit": "Take Profit",
+    "stopLoss": "Stop Loss",
+    "triggerPrice": "Trigger Price",
+    "long": "Long",
+    "short": "Short",
+    "isolated": "Isolated",
+    "cross": "Cross",
+    "profit": "Profit",
+    "profitRate": "Profit Rate",
+    "size": "Position Size",
+    "margin": "Margin",
+    "availableUse": "Available",
+    "markPrice": "Mark Price",
+    "closingPrice": "Estimated Liquidation Price",
+    "operation": "Operation",
+    "contract": "Contract",
+    "limit": "Limit",
+    "market": "Market",
+    "openLong": "Open Long",
+    "openShort": "Open Short",
+    "closeLong": "Close Long",
+    "closeShort": "Close Short",
+    "singleBuy": "Single Position Buy",
+    "singleSell": "Single Position Sell",
+    "unknown": "Unknown",
+    "cancelOrder": "Cancel Order",
+    "createTime": "Creation Time",
+    "newOrder": "New Order",
+    "partiallyFilled": "Partially Filled",
+    "filled": "Filled",
+    "canceled": "Cancelled",
+    "avgPrice": "Average Price",
+    "quantityFilled": "Quantity Filled",
+    "marginRate": "Margin Rate",
+    "type": "Price Type",
+    "totalOpen": "Total Open Orders",
+    "filledQuantity": "Filled Quantity",
+    "realizedPnl": "Realized PnL",
+    "netProfit": "Net Profit",
+    "totalFee": "Total Fees",
+    "totalFunding": "Total Funding Fees",
+    "openTime": "Open Time",
+    "closeTime": "Close Time",
+    "orderType": "Order Type",
+    "openDirection": "Open Direction",
+    "orderStatus": "Order Status",
+    "estimatedLiquidationPrice": "Estimated Liquidation Price",
+    "stopProfitDescription": "When the mark price ≥ {profitPrice} USDT, the position will be closed at the best price, quantity: {available} {symbol}, estimated profit: {expectedProfit} USDT ({profitPercentage}%).",
+    "stopLossDescription": "When the mark price ≤ {lossPrice} USDT, the position will be closed at the best price, quantity: {available} {symbol}, estimated loss: {expectedLoss} USDT ({lossPercentage}%).",
+    "limitPrice": "Limit Price",
+    "marketPrice": "Market Price",
+    "enterPrice": "Enter Price",
+    "confirm": "Confirm",
+    "closeAtBestPrice": "When the mark price ≥ {profitPrice} USDT, the position will be closed at the best price, quantity: {available} {symbol}, estimated profit: {expectedProfit} USDT ({profitPercentage}%).",
+    "closeAtBestPriceWhenLoss": "When the mark price ≤ {lossPrice} USDT, the position will be closed at the best price, quantity: {available} {symbol}, estimated loss: {expectedLoss} USDT ({lossPercentage}%).",
+    "openPosition": "Open Position",
+    "crossed": "Cross",
+    "switchToIsolated": "Switch to Isolated",
+    "switchToCrossed": "Switch to Cross",
+    "limitOrder": "Limit Order",
+    "marketOrder": "Market Order",
+    "entrustPrice": "Entrust Price",
+    "enterEntrustPrice": "Enter Entrust Price",
+    "entrustQuantity": "Entrust Quantity",
+    "enterEntrustQuantity": "Enter Entrust Quantity",
+    "shortPosition": "Short Position",
+    "longPosition": "Long Position",
+    "availableToClose": "Available to Close",
+    "availableToOpenLong": "Available to Open Long",
+    "availableToOpenShort": "Available to Open Short",
+    "selectDepositMethod": "Select Deposit Method",
+    "depositCryptoCurrency": "Deposit Cryptocurrency",
+    "fromWalletOrExchange": "From Wallet or Exchange",
+    "depositFiatCurrency": "Deposit Fiat Currency",
+    "viaBankTransfer": "Via Bank Transfer",
+    "chargeHistory": "Deposit History",
+    "internalTransfer": "Internal Transfer",
+    "transferBetweenAccounts": "Transfer Between Fund Account and Trading Account",
+    "selectNetwork": "Select Network",
+    "networkWarning": "Warning: Select a network that matches the withdrawal platform, or you may lose the funds.",
+    "depositAddress": "Deposit Address",
+    "depositTo": "Deposit To",
+    "onlyDepositToThisAddress": "You can only deposit to this address with {selectedNetwork}. Deposits to other networks cannot be returned.",
+    "orderConfirmation": "Order Confirmation",
+    "orderPrice": "Entrust Price",
+    "amount": "Amount",
+    "maxTransfer": "Max Transfer",
+    "asset": "Asset",
+    "from": "From",
+    "to": "To"
+  },
   "home": {
-    "welcome": ["Welcome to KeepBit", "Your Web3 journey starts here", "Get started"],
-    "subWelcome": ["The easy to manage and trade", "your cryptocurrency asset"],
+    "welcome": ["Welcome to KeepBit", "Your Web3 journey starts here", "Start now"],
+    "subWelcome": ["The easy to manage and trade", "your cryptocurrency assets"],
     "hotCoinPrice": "Hot Coin Prices",
     "hotStock": "Hot Spot Market",
     "hotTreat": "Hot Contracts",
-    "riseRanking": "Rise Ranking",
-    "fallRanking": "Fall Ranking",
-    "tradingStrategy": "High-Yield Quantitative Trading Strategies",
+    "riseRanking": "Price Rise Ranking",
+    "fallRanking": "Price Fall Ranking",
+    "tradingStrategy": "High Yield Quantitative Trading Strategies",
     "tradingStrategyDesc": [
       {
-        "title": "Quantitative Trading, making your investment smarter and more accurate.",
-        "subtitle": "Manual trading too time-consuming? Let KeepBit’s quantitative trading offer you 24/7 market monitoring and automated trading services, capturing every opportunity!"
+        "title": "Quantitative trading, making your investments smarter and more precise.",
+        "subtitle": "Manual trading is too time-consuming? Let KeepBit's quantitative trading provide you with 24/7 market monitoring and automatic trading services to precisely seize every opportunity!"
       },
       {
         "title": "Easily implement quantitative strategies and control market fluctuations.",
-        "subtitle": "Let AI algorithms work for you! KeepBit’s quantitative trading combines big data and smart strategies to help you seize opportunities in a volatile market."
+        "subtitle": "Let AI algorithms work for you! KeepBit quantitative trading integrates big data and smart strategies, helping you seize opportunities in a volatile market."
       },
       {
-        "title": "KeepBit, your quantitative trading expert, creating more efficient investments.",
-        "subtitle": "Missed an opportunity? Don’t worry anymore! KeepBit’s 7x24 automated system ensures that every market fluctuation becomes a profit opportunity."
+        "title": "KeepBit, your quantitative trading expert, for more efficient investments.",
+        "subtitle": "Missed an opportunity? No need to worry! KeepBit’s quantitative system operates 24/7, turning every market fluctuation into a profit opportunity."
       }
     ],
     "guide": {
       "title": "Beginner's Guide",
       "subtitle": "Start your Web3 journey with KeepBit",
       "list": [
-        { "title": "Become a KeepBit Partner", "subtitle": "Enjoy up to 80% permanent commission from contract trading" },
-        { "title": "Top up now", "subtitle": "Simple process, quickly start your Web3 journey" },
-        { "title": "Start trading", "subtitle": "Quickly get started with trading and enjoy Web3's generous returns" },
-        { "title": "Try copy trading", "subtitle": "Catch market signals and copy expert profits" }
+        { "title": "Register Now", "subtitle": "Catch market signals and copy expert profits" },
+        { "title": "Top Up Now", "subtitle": "Simple process, quickly start your Web3 journey" },
+        { "title": "Start Trading", "subtitle": "Trade with ease, enjoy abundant Web3 rewards" },
+        { "title": "Invite Friends", "subtitle": "Earn up to 80% lifetime commission for contract trading" }
       ]
     },
     "download": {
-      "title": "Trade anytime, anywhere",
+      "title": "Trade anytime, anywhere with convenience",
       "scan": "Scan to download",
-      "tap": "Click to download"
+      "tap": "Tap to download"
     }
   },
   "market": {
+    "searchValue": "Search Currency Abbreviation",
     "marking": {
       "title": "Market Trends",
-      "ranking": ["Rise Ranking", "Fall Ranking", "Hot List"],
+      "ranking": ["Price Rise Ranking", "Price Fall Ranking", "Hot Ranking"],
       "coinType": "Coin Type",
       "price": "Price",
       "change": "24h Change"
     },
     "default": {
-      "title": "Default Custom Market",
+      "title": "Default Favorite Market",
       "tab": [
         {
           "label": "Spot",
@@ -81,34 +256,34 @@
         },
         {
           "label": "Favorites",
-          "title": "Recommended Custom Coins"
+          "title": "Recommended Favorite Coins"
         }
       ],
-      "addSelf": "Add to Favorites"
+      "addSelf": "One-click to add to favorites"
     }
   },
   "strategy": {
     "title": "Strategy Square",
     "subtitle": ["Catch market signals", "Copy expert profits"],
     "trading": {
-      "title": "Trading Strategy",
+      "title": "Trading Strategies",
       "search": "Search Trading Strategies"
     },
     "enable": "Enable",
     "signal": "Signal",
     "profit": "Profit Rate",
     "runtime": "Runtime",
-    "maxDrawDown": "7-Day Max Drawdown",
-    "manageScale": "Managed Scale",
-    "strategyBy": "Strategy Source",
+    "maxDrawDown": "7-day Maximum Drawdown",
+    "manageScale": "Management Scale",
+    "strategyBy": "Strategy from",
     "shareProfit": "Profit Sharing",
     "useCount": "Number of Users",
     "detail": {
       "title": "Detailed Parameters",
       "balance": "Copy Trading Margin Balance",
       "scale": "Asset Management Scale",
-      "profit": "Copy Trader Profit and Loss",
-      "minimum": "Minimum Copy Trading Amount",
+      "profit": "Profit and Loss of Copy Traders",
+      "minimum": "Minimum Copy Amount",
       "ratios": "Profit Sharing Ratio"
     },
     "project": {
@@ -117,93 +292,153 @@
       "profit": "Profit and Loss",
       "profitRatio": "Profit and Loss Ratio",
       "winRate": "Win Rate",
-      "maxDrawDown": "Max Drawdown",
-      "totalCount": "Total Position Count",
-      "profitCount": "Profitable Position Count"
+      "maxDrawDown": "Maximum Drawdown",
+      "totalCount": "Total Number of Positions",
+      "profitCount": "Profitable Positions"
     },
     "investment": {
       "title": "Investment Amount",
       "usage": "Available",
       "desc": [
         "When the strategy stops, 20% of your profits will be shared with the strategy provider during settlement.",
-        "During strategy operation, you will follow all actions of the strategy provider (including open/close)."
+        "While the strategy is running, you will follow all the operations of the strategy provider (open and close positions)."
       ]
     },
     "useStrategy": "Use Strategy",
-    "imitation": "Simulate",
+    "imitation": "Simulation",
     "createStrategy": "Create Strategy",
     "cancel": "Cancel"
   },
   "deal": {
     "title": "AI Quantitative Trading",
     "subtitle": ["Catch market signals", "Copy expert profits"],
-    "order": "Trade Orders",
+    "order": "Trading Orders",
     "tabs": ["In Progress", "Stopped"],
     "runtime": "Runtime",
     "endStrategy": "End Strategy",
+    "searchOrders": "Search Trading Orders",
     "endStrategyQuestion": "Are you sure you want to end this strategy?",
-    "unrealizedGain": "Unrealized Gain",
-    "totalInvest": "Total Investment",
+    "unrealizedGain": "Unrealized Profit",
+    "totalInvest": "Total Investment Amount",
     "profit": "Realized Profit",
-    "filledCount": "Trade Count",
-    "openPrice": "Open Position Price",
+    "filledCount": "Number of Transactions",
+    "openPrice": "Position Cost",
     "profitRate": "Profit Rate",
-    "filledTotalAmount": "Total Trade Amount",
+    "filledTotalAmount": "Total Trading Amount",
     "qty": "Current Position",
     "direction": "Position Direction",
     "closePosition": "Close Position",
-    "closePositionQuestion": "Are you sure you want to manually close the position? (Manual action will affect strategy profit rate)",
-    "showDetail": "View Details"
+    "closePositionQuestion": "Are you sure you want to manually close the position? (Manual closure will affect the strategy's profitability)",
+    "showDetail": "View Details",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "symbol": "Trading Pair",
+    "tradeTime": "Trading Time",
+    "orderType": "Order Type",
+    "filledAmount": "Filled Quantity",
+    "filledPrice": "Filled Price",
+    "fee": "Fee",
+    "openLong": "Open Long",
+    "closeLong": "Close Long",
+    "openShort": "Open Short",
+    "closeShort": "Close Short",
+    "market": "Market",
+    "limit": "Limit"
   },
   "dealContracts": {
     "title": "AI Quantitative Trading",
     "subtitle": ["Catch market signals", "Copy expert profits"],
-    "order": "Trade Orders",
+    "order": "Trading Orders",
     "tabs": ["In Progress", "Stopped"],
     "runtime": "Runtime",
     "endStrategy": "End Strategy",
+    "searchOrders": "Search Trading Orders",
     "endStrategyQuestion": "Are you sure you want to end this strategy?",
-    "unrealizedGain": "Unrealized Gain",
-    "totalInvest": "Total Investment",
+    "unrealizedGain": "Unrealized Profit",
+    "totalInvest": "Total Investment Amount",
     "profit": "Realized Profit",
-    "filledCount": "Trade Count",
-    "openPrice": "Open Position Price",
+    "filledCount": "Number of Transactions",
+    "openPrice": "Position Cost",
     "profitRate": "Profit Rate",
-    "filledTotalAmount": "Total Trade Amount",
+    "filledTotalAmount": "Total Trading Amount",
     "qty": "Current Position",
     "direction": "Position Direction",
     "closePosition": "Close Position",
-    "closePositionQuestion": "Are you sure you want to manually close the position? (Manual action will affect strategy profit rate)",
-    "showDetail": "View Details"
+    "closePositionQuestion": "Are you sure you want to manually close the position? (Manual closure will affect the strategy's profitability)",
+    "showDetail": "View Details",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "symbol": "Trading Pair",
+    "tradeTime": "Trading Time",
+    "orderType": "Order Type",
+    "filledAmount": "Filled Quantity",
+    "filledPrice": "Filled Price",
+    "fee": "Fee",
+    "openLong": "Open Long",
+    "closeLong": "Close Long",
+    "openShort": "Open Short",
+    "closeShort": "Close Short",
+    "market": "Market",
+    "limit": "Limit"
+  },
+  "user": {
+    "pleaseLogin": "Please log in first",
+    "getUserInfoFail": "Failed to fetch user information, please refresh and try again",
+    "basicInfo": "Basic Information",
+    "nickname": "Nickname",
+    "uid": "UID",
+    "vipLevel": "User VIP Level",
+    "email": "Email",
+    "mobile": "Mobile",
+    "identityVerification": "Identity Verification",
+    "identityDesc": "Trade as an individual, providing personal information",
+    "goVerify": "Go to verify ->",
+    "securityManagement": "Security Management",
+    "securityDesc": "Help you with account security settings",
+    "goSettings": "Go to settings ->"
   },
   "about": {
     "title": "About Us",
-    "subtitle": "KeepBit is a secure and transparent digital asset derivatives trading platform. We adhere to the values of 'User First, Simplicity, Transparency, Trust,' focusing on providing one-stop digital asset financial services for investors.",
+    "subtitle": "KeepBit is a secure and transparent digital asset derivatives trading platform. We adhere to the values of 'User First, Simplicity, Transparency, and Trust,' focusing on providing investors with one-stop digital asset financial services.",
     "advantage": {
       "title": "Our Advantages",
       "list": [
         {
-          "title": "Secure and Reliable Trading Platform",
-          "desc": "Industry-leading security technology and compliant professional operations ensure that users experience a reliable, smooth, and secure trading environment in real time!"
+          "title": "Safe and Reliable Trading Platform",
+          "desc": "Industry-leading security technology and professional compliance operations ensure users a reliable, smooth, and secure trading environment!"
         },
         {
-          "title": "Diverse Trading Options",
-          "desc": "Various trading methods and numerous partners provide users with rich trading tools and asset choices, while ensuring ample market liquidity."
+          "title": "Rich Trading Choices",
+          "desc": "A variety of trading methods and numerous partners offer users rich trading options and liquidity."
         },
         {
           "title": "Ecosystem Partners",
-          "desc": "KeepBit's ecosystem partners receive multi-type strategic support and share the ecological value and digital currency dividends from the KeepBit platform."
+          "desc": "KeepBit ecosystem partners immediately receive various types of strategic support, sharing the ecosystem value and digital currency era dividends of the KeepBit platform."
         },
-        {
-          "title": "One-Stop Trading Services",
-          "desc": "KeepBit provides multilingual, high-quality services 24/7 for users in dozens of countries and over 1 million users worldwide."
-        }
+        { "title": "One-Stop Trading Service", "desc": "KeepBit provides multilingual, high-quality services to users in over 100 countries and regions 24/7!" }
       ]
     },
     "contact": {
       "title": "Contact Us",
       "list": ["Business Cooperation", "Media Cooperation", "Operational Support"]
     }
+  },
+  "assets": {
+    "title": "Asset Overview",
+    "totalAssets": "Total Asset Valuation",
+    "digitalAssets": "Recharge Digital Assets",
+    "digitalAssetsDesc": "Deposit your own assets into your account through recharge",
+    "assetDistribution": "Asset Distribution",
+    "purse": "Wallet",
+    "assetValuation": "Asset Valuation",
+    "controls": "Actions",
+    "fundAccount": "Fund Account",
+    "contractAccount": "Contract Account",
+    "strategyAccount": "Strategy Account",
+    "demoAccount": "Demo Account",
+    "distribution": "Distribution"
   },
   "agencyPlan": {
     "title": "Agent Level Standard Description",

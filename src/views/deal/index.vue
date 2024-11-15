@@ -146,13 +146,18 @@ onMounted(async () => {
   }
 });
 
-// 格式化运行时长
-function formatDuration(ms) {
+function formatDuration(ms, t) {
   const duration = dayjs.duration(ms)
   const days = duration.days()
   const hours = duration.hours()
   const minutes = duration.minutes()
-  return `${days}日${hours}时${minutes}分`
+
+  // Use t() to get the translation for each unit
+  const dayLabel = t('deal.days')  // Translation key for 'days'
+  const hourLabel = t('deal.hours') // Translation key for 'hours'
+  const minuteLabel = t('deal.minutes') // Translation key for 'minutes'
+
+  return `${days}${dayLabel}${hours}${hourLabel}${minutes}${minuteLabel}`
 }
 
 function handleTabChange() {
@@ -177,7 +182,7 @@ function handleTabChange() {
     </div>
     <div class="flex flex-col gap-y-4 lg:flex-row lg:items-center justify-between">
       <div class="text-xl lg:text-[40px] font-bold">{{ t('deal.order') }}</div>
-      <NInput v-model:value="searchValue" placeholder="搜索交易订单" @input="pagination.current = 1">
+      <NInput v-model:value="searchValue" :placeholder="t('deal.searchOrders')" @input="pagination.current = 1">
         <template #prefix>
           <div class="flex items-center justify-center text-black">
             <NIcon class="text-2xl">
@@ -199,7 +204,7 @@ function handleTabChange() {
                 <div class="text-lg font-bold">{{ mission.TacticsName }}</div>
                 <div class="bg-[#76e43b] text-xs text-white py-1 px-2">{{ t('deal.tabs[0]') }}</div>
               </div>
-              <div class="text-sm">{{ t('deal.runtime') }}：{{ formatDuration(mission.runDuration) }}</div>
+              <div class="text-sm">{{ t('deal.runtime') }}：{{ formatDuration(mission.runDuration, t) }}</div>
             </div>
             <div class="py-4 space-y-4">
               <div class="flex items-center justify-between">
@@ -289,7 +294,7 @@ function handleTabChange() {
                 <div class="text-lg font-bold">{{ mission.TacticsName }}</div>
                 <div class="bg-rose-500 text-xs text-white py-1 px-2">{{ t('deal.tabs[1]') }}</div>
               </div>
-              <div class="text-sm">{{ t('deal.runtime') }}：{{ formatDuration(mission.runDuration) }}</div>
+              <div class="text-sm">{{ t('deal.runtime') }}：{{ formatDuration(mission.runDuration, t) }}</div>
             </div>
             <div class="py-4 space-y-4">
               <div class="flex items-center justify-between">
@@ -361,52 +366,52 @@ function handleTabChange() {
     <div class="bg-white rounded-2xl p-4 w-full overflow-x-auto lg:w-[1000px]">
       <NTable>
         <thead>
-          <tr>
-            <th>交易对</th>
-            <th>交易时间</th>
-            <th>方向</th>
-            <th>订单类型</th>
-            <th>成交数量</th>
-            <th>成交价格</th>
-            <th>手续费</th>
-            <th>利润</th>
-          </tr>
+        <tr>
+          <th>{{ t('deal.symbol') }}</th>
+          <th>{{ t('deal.tradeTime') }}</th>
+          <th>{{ t('deal.direction') }}</th>
+          <th>{{ t('deal.orderType') }}</th>
+          <th>{{ t('deal.filledAmount') }}</th>
+          <th>{{ t('deal.filledPrice') }}</th>
+          <th>{{ t('deal.fee') }}</th>
+          <th>{{ t('deal.profit') }}</th>
+        </tr>
         </thead>
         <tbody>
-          <tr v-for="(order, index) in orderDetails" :key="index">
-            <td>{{ order.Symbol }}</td>
-            <td>{{ order.Create_time }}</td>
-            <td
+        <tr v-for="(order, index) in orderDetails" :key="index">
+          <td>{{ order.Symbol }}</td>
+          <td>{{ order.Create_time }}</td>
+          <td
               :style="{
-                color: parseFloat(order.Pnl) > 0 ? 'green' : parseFloat(order.Pnl) < 0 ? 'red' : 'black',
-              }"
-            >
-              {{
-                order.Td_mode === 'open_long'
-                  ? '开多'
+              color: parseFloat(order.Pnl) > 0 ? 'green' : parseFloat(order.Pnl) < 0 ? 'red' : 'black',
+            }"
+          >
+            {{
+              order.Td_mode === 'open_long'
+                  ? t('deal.openLong')
                   : order.Td_mode === 'close_long'
-                    ? '平多'
-                    : order.Td_mode === 'open_short'
-                      ? '开空'
-                      : order.Td_mode === 'close_short'
-                        ? '平空'
-                        : order.Td_mode
-              }}
-            </td>
-            <td>
-              {{ order.Ord_type === 'Market' ? '市价' : order.Ord_type === 'Limit' ? '限价' : order.Ord_type }}
-            </td>
-            <td>{{ order.Filled }}</td>
-            <td>{{ order.Average }}</td>
-            <td>{{ order.Fee }} {{ order.Fee_ccy }}</td>
-            <td
+                      ? t('deal.closeLong')
+                      : order.Td_mode === 'open_short'
+                          ? t('deal.openShort')
+                          : order.Td_mode === 'close_short'
+                              ? t('deal.closeShort')
+                              : order.Td_mode
+            }}
+          </td>
+          <td>
+            {{ order.Ord_type === 'Market' ? t('deal.market') : order.Ord_type === 'Limit' ? t('deal.limit') : order.Ord_type }}
+          </td>
+          <td>{{ order.Filled }}</td>
+          <td>{{ order.Average }}</td>
+          <td>{{ order.Fee }} {{ order.Fee_ccy }}</td>
+          <td
               :style="{
-                color: parseFloat(order.Pnl) > 0 ? 'green' : parseFloat(order.Pnl) < 0 ? 'red' : 'black',
-              }"
-            >
-              {{ order.Pnl }}
-            </td>
-          </tr>
+              color: parseFloat(order.Pnl) > 0 ? 'green' : parseFloat(order.Pnl) < 0 ? 'red' : 'black',
+            }"
+          >
+            {{ order.Pnl }}
+          </td>
+        </tr>
         </tbody>
       </NTable>
     </div>

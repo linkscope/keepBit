@@ -6,7 +6,7 @@ import initTickerTape from '@/utils/initTickerTape.js'
 import useCryptoWS from '@/hooks/useCryptoWS.js'
 import OptionCard from './components/OptionCard.vue'
 import {useTableColumns} from './model'
-
+const { t } = useI18n()
 const {
   positionModal,
   profitModal,
@@ -860,6 +860,33 @@ function updateTradingView(symbol) {
     },
   });
 }
+
+defineProps({
+  positionData: Array,
+  commissionData: Array,
+  positionRecordData: Array,
+  filledOrdersData: Array,
+  positionTableColumns: Array,
+  commissionTableColumns: Array,
+  positionRecordTableColumns: Array,
+  commissionRecordTableColumns: Array,
+});
+
+const positionTabText = computed(() => {
+  return `${t('trading.position')} (${positionData.value?.length || 0})`; // for ref() usage
+});
+
+const commissionTabText = computed(() => {
+  return `${t('trading.entrustOrder')} (${commissionData.value?.length || 0})`;
+});
+
+const positionRecordTabText = computed(() => {
+  return `${t('trading.historyPosition')} (${positionRecordData.value?.length || 0})`;
+});
+
+const commissionRecordTabText = computed(() => {
+  return `${t('trading.historyEntrust')} (${filledOrdersData.value?.length || 0})`;
+});
 </script>
 
 <template>
@@ -880,7 +907,7 @@ function updateTradingView(symbol) {
                   <img class="size-[40px]" :src="selectedCoin?.image"/>
                   <div class="flex-1">
                     <div class="text-lg font-bold">{{ selectedCoin?.instId }}</div>
-                    <div class="text-xs text-slate-400">永续</div>
+                    <div class="text-xs text-slate-400">{{ t('trading.perpetual') }}</div>
                   </div>
                   <NIcon>
                     <CaretDown16Filled/>
@@ -892,7 +919,7 @@ function updateTradingView(symbol) {
                     class="bg-white absolute top-[70px] w-[250px] lg:w-[300px] z-10 shadow-md"
                 >
                   <div class="p-2">
-                    <NInput v-model:value="searchValue" size="small" placeholder="搜索别名"/>
+                    <NInput v-model:value="searchValue" size="small" :placeholder=" t('strategy.searchAlias') "/>
                   </div>
                   <div
                       class="px-2 py-1 flex items-center gap-x-2 hover:bg-slate-200"
@@ -930,8 +957,8 @@ function updateTradingView(symbol) {
                 <div
                     class="text-2xl font-bold"
                     :style="{
-                    color: selectedCoin?.lastPrice > selectedCoin?.markPrice ? '#5ac820' : 'red',
-                  }"
+        color: selectedCoin?.lastPrice > selectedCoin?.markPrice ? '#5ac820' : 'red',
+      }"
                 >
                   ${{ selectedCoin?.lastPrice ? selectedCoin.lastPrice : 'N/A' }}
                 </div>
@@ -940,7 +967,7 @@ function updateTradingView(symbol) {
 
               <!-- 24h 涨跌幅 -->
               <div class="flex-1 text-center">
-                <div class="text-xs text-slate-400">24h涨跌幅</div>
+                <div class="text-xs text-slate-400">{{ $t('trading.change24h') }}</div>
                 <div class="text-xs font-bold" :style="{ color: selectedCoin?.change24h > 0 ? '#5ac820' : 'red' }">
                   {{
                     selectedCoin?.change24h
@@ -952,19 +979,19 @@ function updateTradingView(symbol) {
 
               <!-- 24h 最高价 -->
               <div class="flex-1 text-center">
-                <div class="text-xs text-slate-400">24h最高价</div>
+                <div class="text-xs text-slate-400">{{ $t('trading.high24h') }}</div>
                 <div class="text-xs">{{ selectedCoin?.high24h ? selectedCoin.high24h : 'N/A' }}</div>
               </div>
 
               <!-- 24h 最低价 -->
               <div class="flex-1 text-center">
-                <div class="text-xs text-slate-400">24h最低价</div>
+                <div class="text-xs text-slate-400">{{ $t('trading.low24h') }}</div>
                 <div class="text-xs">{{ selectedCoin?.low24h ? selectedCoin.low24h : 'N/A' }}</div>
               </div>
 
               <!-- 24h 成交量 -->
               <div class="flex-1 text-center">
-                <div class="text-xs text-slate-400">24h成交量</div>
+                <div class="text-xs text-slate-400">{{ $t('trading.volume24h') }}</div>
                 <div class="text-xs">
                   {{ selectedCoin?.baseVolume ? (selectedCoin.baseVolume / 1000).toFixed(2) + 'k' : 'N/A' }}
                 </div>
@@ -972,7 +999,7 @@ function updateTradingView(symbol) {
 
               <!-- 24h 成交额 (USDT) -->
               <div class="flex-1 text-center">
-                <div class="text-xs text-slate-400">24h成交额(USDT)</div>
+                <div class="text-xs text-slate-400">{{ $t('trading.volumeQuote24h') }}</div>
                 <div class="text-xs">
                   {{ selectedCoin?.quoteVolume ? (selectedCoin.quoteVolume / 1000000).toFixed(2) + 'M' : 'N/A' }}
                 </div>
@@ -991,10 +1018,10 @@ function updateTradingView(symbol) {
                   size="tiny"
                   :type="orderType === 'commission' ? 'primary' : 'default'"
                   @click="orderType = 'commission'"
-              >委托订单
+              >{{ $t('trading.entrustOrder') }}
               </NButton>
-              <NButton size="tiny" :type="orderType === 'newest' ? 'primary' : 'default'" @click="orderType = 'newest'"
-              >最新成交
+              <NButton size="tiny" :type="orderType === 'newest' ? 'primary' : 'default'" @click="orderType = 'newest'">
+                {{ $t('trading.latestDeal') }}
               </NButton>
             </div>
             <template v-if="orderType === 'commission'">
@@ -1003,39 +1030,40 @@ function updateTradingView(symbol) {
                     class="size-[22px]"
                     src="/both_trading.png"
                     @click="
-                    () => {
-                      showSell = true
-                      showBuy = true
-                    }
-                  "
+            () => {
+              showSell = true
+              showBuy = true
+            }
+          "
                 />
                 <img
                     class="size-[22px]"
                     src="/only_buy.png"
                     @click="
-                    () => {
-                      showSell = true
-                      showBuy = false
-                    }
-                  "
+            () => {
+              showSell = true
+              showBuy = false
+            }
+          "
                 />
                 <img
                     class="size-[22px]"
                     src="/only_sell.png"
                     @click="
-                    () => {
-                      showSell = false
-                      showBuy = true
-                    }
-                  "
+            () => {
+              showSell = false
+              showBuy = true
+            }
+          "
                 />
               </div>
+
               <!-- 卖出列表（asks） -->
               <div v-if="showSell" class="flex-1 text-red-500 space-y-2">
                 <div class="flex text-xs text-slate-400 mt-2">
-                  <div class="flex-1">价格(USDT)</div>
-                  <div class="flex-1">数量</div>
-                  <div class="hidden lg:block flex-1 text-right">总数</div>
+                  <div class="flex-1">{{ $t('trading.priceUSDT') }}</div>
+                  <div class="flex-1">{{ $t('trading.quantity') }}</div>
+                  <div class="hidden lg:block flex-1 text-right">{{ $t('trading.total') }}</div>
                 </div>
                 <div
                     v-for="(ask, index) in showBuy ? coinBook15List.asks.slice(0, 10) : coinBook15List.asks.slice(0, 26)"
@@ -1090,7 +1118,7 @@ function updateTradingView(symbol) {
               <div class="h-[70px] lg:hidden"></div>
               <div class="lg:px-2 flex gap-x-2 mt-4 lg:mt-0 absolute lg:static left-2 bottom-0 right-2">
                 <!-- B 标签 -->
-                <div class="text-green-500 border border-green-500 size-6 text-center leading-6">B</div>
+                <div class="text-green-500 border border-green-500 size-6 text-center leading-6">{{ $t('trading.buyTag') }}</div>
                 <div class="flex-1">
                   <!-- 进度条容器 -->
                   <div class="flex h-[20px] w-full">
@@ -1106,16 +1134,16 @@ function updateTradingView(symbol) {
                   </div>
                 </div>
                 <!-- S 标签 -->
-                <div class="text-rose-500 border border-rose-500 size-6 text-center leading-6">S</div>
+                <div class="text-rose-500 border border-rose-500 size-6 text-center leading-6">{{ $t('trading.sellTag') }}</div>
               </div>
             </template>
 
             <div v-else class="h-[530px] lg:h-[650px] overflow-hidden">
               <!-- 表头 -->
               <div class="flex text-xs text-slate-400 mt-2">
-                <div class="flex-1">价格(USDT)</div>
-                <div class="flex-1">数量</div>
-                <div class="flex-1 hidden lg:block">时间</div>
+                <div class="flex-1">{{ $t('trading.priceUSDT') }}</div>
+                <div class="flex-1">{{ $t('trading.quantity') }}</div>
+                <div class="flex-1 hidden lg:block">{{ $t('trading.time') }}</div>
               </div>
 
               <!-- 显示时间最新的 30 条交易记录 -->
@@ -1146,17 +1174,19 @@ function updateTradingView(symbol) {
             pane-wrapper-style="margin: 0 -4px"
             pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
         >
-          <NTabPane name="position" :tab="'仓位(' + (positionData?.length || 0) + ')'">
+          <NTabPane name="position" :tab="positionTabText">
             <div style="max-height: 400px; overflow-y: auto">
               <NDataTable size="small" :columns="positionTableColumns" :data="positionData" :bordered="false"/>
             </div>
           </NTabPane>
-          <NTabPane :name="'commission'" :tab="'委托(' + (commissionData?.length || 0) + ')'">
+
+          <NTabPane :name="'commission'" :tab="commissionTabText">
             <div style="max-height: 400px; overflow-y: auto">
               <NDataTable size="small" :columns="commissionTableColumns" :data="commissionData" :bordered="false"/>
             </div>
           </NTabPane>
-          <NTabPane name="positionRecord" :tab="'历史仓位(' + (positionRecordData?.length || 0) + ')'">
+
+          <NTabPane name="positionRecord" :tab="positionRecordTabText">
             <div style="max-height: 400px; overflow-y: auto">
               <NDataTable
                   size="small"
@@ -1166,7 +1196,8 @@ function updateTradingView(symbol) {
               />
             </div>
           </NTabPane>
-          <NTabPane :name="'commissionRecord'" :tab="'历史委托(' + (filledOrdersData?.length || 0) + ')'">
+
+          <NTabPane :name="'commissionRecord'" :tab="commissionRecordTabText">
             <div style="max-height: 400px; overflow-y: auto">
               <NDataTable
                   size="small"
@@ -1185,49 +1216,49 @@ function updateTradingView(symbol) {
   <NModal v-model:show="positionModal">
     <div class="bg-white rounded-md w-full lg:w-[600px] p-4 space-y-4">
       <div class="flex items-center justify-between">
-        <div class="font-bold text-xl">平仓</div>
+        <div class="font-bold text-xl">{{ $t('trading.closePosition') }}</div>
         <img class="size-4" src="/close.png" @click="positionModal = false"/>
       </div>
       <div class="text-xl font-bold">{{ positionModalData.symbol }}</div>
       <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">持仓方向</div>
+        <div class="text-slate-500">{{ $t('trading.direction') }}</div>
         <div class="font-bold">{{ positionModalData.direction }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">持仓模式</div>
+        <div class="text-slate-500">{{ $t('trading.marginMode') }}</div>
         <div class="font-bold">{{ positionModalData.marginMode }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">杠杆</div>
+        <div class="text-slate-500">{{ $t('trading.leverage') }}</div>
         <div class="font-bold">{{ positionModalData.leverage }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">当前价格</div>
+        <div class="text-slate-500">{{ $t('trading.currentPrice') }}</div>
         <div class="font-bold">{{ positionOperationCoin?.lastPrice || 'N/A' }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">开仓价格</div>
+        <div class="text-slate-500">{{ $t('trading.openPrice') }}</div>
         <div class="font-bold">{{ positionModalData.openPrice }}</div>
       </div>
       <div class="flex items-center justify-between text-sm gap-x-4">
-        <div class="text-slate-500 w-24">价格(USDT)</div>
+        <div class="text-slate-500 w-24">{{ $t('trading.price') }}</div>
         <NInput
             v-if="isLimitPrice"
             style="flex: 1"
             v-model:value="inputPrice"
-            placeholder="请输入价格"
+            :placeholder="t('trading.enterPrice')"
             @input="handleInput"
             :maxlength="20"
         />
         <NInput
             v-else
             style="flex: 1"
-            placeholder="市价" disabled
+            placeholder="{{ $t('trading.marketPrice') }}" disabled
         />
-        <NButton @click="togglePriceMode">{{ isLimitPrice ? '限价' : '市价' }}</NButton>
+        <NButton @click="togglePriceMode">{{ isLimitPrice ? $t('trading.limitPrice') : $t('trading.marketPrice') }}</NButton>
       </div>
       <div class="flex items-center justify-between text-sm gap-x-4">
-        <div class="text-slate-500 w-24">数量({{ positionModalData.symbol.replace('USDT', '') }})</div>
+        <div class="text-slate-500 w-24">{{ $t('trading.quantity') }}({{ positionModalData.symbol.replace('USDT', '') }})</div>
         <NInput
             style="flex: 1"
             v-model:value="calculatedQuantity"
@@ -1237,84 +1268,90 @@ function updateTradingView(symbol) {
       </div>
       <NSlider v-model:value="quantityPercentage" :step="1" :show-tooltip="false" :format-tooltip="(v) => `${v}%`"/>
       <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">持仓量</div>
-        <div class="font-bold">{{ positionModalData.size }}</div>
-      </div>
-      <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">可平</div>
+        <div class="text-slate-500">{{ $t('trading.available') }}</div>
         <div class="font-bold">{{ positionModalData.available }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">预计盈亏</div>
+        <div class="text-slate-500">{{ $t('trading.estimatedProfitLoss') }}</div>
         <div class="font-bold">{{ expectedProfitLoss }} USDT</div>
       </div>
       <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">包含预计平仓手续费</div>
+        <div class="text-slate-500">{{ $t('trading.closingFee') }}</div>
         <div class="font-bold">{{ estimatedClosingFee }} USDT</div>
       </div>
-      <NButton type="primary" block @click="sendCloseOrder">确定</NButton>
+      <NButton type="primary" block @click="sendCloseOrder">{{ $t('trading.confirm') }}</NButton>
     </div>
   </NModal>
 
   <NModal v-model:show="profitModal">
     <div class="bg-white rounded-md w-full lg:w-[600px] p-4 space-y-4">
       <div class="flex items-center justify-between">
-        <div class="font-bold text-xl">止盈/止损</div>
+        <div class="font-bold text-xl">{{ $t('trading.takeProfitStopLoss') }}</div>
         <img class="size-4" src="/close.png" @click="profitModal = false"/>
       </div>
       <div class="text-xl font-bold">{{ profitModalData.symbol }}</div>
       <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">持仓方向</div>
+        <div class="text-slate-500">{{ $t('trading.direction') }}</div>
         <div class="font-bold">{{ profitModalData.direction }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">持仓模式</div>
+        <div class="text-slate-500">{{ $t('trading.marginMode') }}</div>
         <div class="font-bold">{{ profitModalData.marginMode }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">杠杆</div>
+        <div class="text-slate-500">{{ $t('trading.leverage') }}</div>
         <div class="font-bold">{{ profitModalData.leverage }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">当前价格</div>
+        <div class="text-slate-500">{{ $t('trading.currentPrice') }}</div>
         <div class="font-bold">{{ operationCoin?.lastPrice || 'N/A' }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">开仓均价</div>
+        <div class="text-slate-500">{{ $t('trading.openPrice') }}</div>
         <div class="font-bold">{{ profitModalData.openPrice }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">标记价格</div>
+        <div class="text-slate-500">{{ $t('trading.markPrice') }}</div>
         <div class="font-bold">{{ operationCoin?.markPrice || 'N/A' }}</div>
       </div>
       <div class="flex items-center justify-between text-sm">
-        <div class="text-slate-500">预估强平价</div>
+        <div class="text-slate-500">{{ $t('trading.estimatedLiquidationPrice') }}</div>
         <div class="font-bold">{{ profitModalData.estimatedLiquidationPrice }} USDT</div>
       </div>
       <div class="flex items-center justify-between text-sm gap-x-4">
-        <div class="text-slate-500 w-24">止盈(USDT)</div>
-        <NInput style="flex: 1" :value="profitPrice" placeholder="止盈触发价"/>
+        <div class="text-slate-500 w-24">{{ $t('trading.stopProfit') }}(USDT)</div>
+        <NInput style="flex: 1" :value="profitPrice" placeholder="{{ $t('trading.triggerPrice') }}"/>
       </div>
       <NSlider v-model:value="profitPercentage" :max="200" :step="1" :show-tooltip="false"
                :format-tooltip="(v) => `${v}%`"/>
       <div class="text-sm text-slate-500">
-        当标记价格 ≥ {{ profitPrice }} USDT时，将以最优成交价平仓，数量为 {{ profitModalData.available }}
-        {{ profitModalData.symbol.replace('USDT', '') }}，预计收益为 {{ expectedProfit }} USDT ({{ profitPercentage }}%)。
+        {{ t('trading.closeAtBestPrice', {
+        profitPrice,
+        available: profitModalData.available,
+        symbol: profitModalData.symbol.replace('USDT', ''),
+        expectedProfit,
+        profitPercentage
+      }) }}
       </div>
-
       <div class="flex items-center justify-between text-sm gap-x-4">
-        <div class="text-slate-500 w-24">止损(USDT)</div>
-        <NInput style="flex: 1" :value="lossPrice" placeholder="止损触发价"/>
+        <div class="text-slate-500 w-24">{{ $t('trading.stopLoss') }}(USDT)</div>
+        <NInput style="flex: 1" :value="lossPrice" placeholder="{{ $t('trading.triggerPrice') }}"/>
       </div>
       <NSlider v-model:value="lossPercentage" :max="100" :step="1" :show-tooltip="false"
                :format-tooltip="(v) => `${v}%`"/>
       <div class="text-sm text-slate-500">
-        当标记价格 ≤ {{ lossPrice }} USDT时，将以最优成交价平仓，数量为 {{ profitModalData.available }}
-        {{ profitModalData.symbol.replace('USDT', '') }}，预计收益为 {{ expectedLoss }} USDT ({{ lossPercentage }}%)。
+        {{ t('trading.closeAtBestPriceWhenLoss', {
+        lossPrice,
+        available: profitModalData?.available || 0,
+        symbol: profitModalData?.symbol?.replace('USDT', '') || '',
+        expectedLoss,
+        lossPercentage
+      }) }}
       </div>
-      <NButton type="primary" block @click="confirmStopProfitLoss">确定</NButton>
+      <NButton type="primary" block @click="confirmStopProfitLoss">{{ $t('trading.confirm') }}</NButton>
     </div>
   </NModal>
+
 </template>
 <style scoped>
 /* 自定义滚动条样式 */

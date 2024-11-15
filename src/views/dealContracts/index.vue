@@ -1,7 +1,7 @@
 <script setup>
 import { NTable, NTabs, NTabPane, NButton, NPagination, NModal, NPopconfirm, useMessage, NInput, NIcon } from 'naive-ui'
 import axios from 'axios'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import dayjs from 'dayjs' // 使用 dayjs 库处理日期
 import duration from 'dayjs/plugin/duration'
 import { Search24Regular } from '@vicons/fluent'
@@ -9,13 +9,25 @@ import { useRouter } from 'vue-router'
 
 dayjs.extend(duration)
 const { t } = useI18n()
-const pagination = ref({ current: 1, count: 1 })
+const pagination = ref({ current: 1, count: 1, pageSize: 9 })
 const showModal = ref(false)
 const orderDetails = ref([]) // 订单详情列表
 const executingMissions = ref([]) // 执行中任务列表
 const stoppedMissions = ref([]) // 已停止任务列表
 const message = useMessage()
 const router = useRouter()
+const currentTab = ref('run')
+
+const searchValue = ref('')
+const missionsData = computed(() => {
+  const start = (pagination.value.current - 1) * pagination.value.pageSize
+  const end = start + pagination.value.pageSize
+  const filteredTactics = (currentTab.value === 'run' ? executingMissions : stoppedMissions).value.filter((i) =>
+    i.TacticsName.toLowerCase().includes(searchValue.value.toLowerCase()),
+  )
+  pagination.value.count = Math.ceil(filteredTactics.length / pagination.value.pageSize)
+  return filteredTactics.slice(start, end)
+})
 
 // 停止任务的函数
 async function endMission(appsId) {
@@ -133,8 +145,8 @@ function formatDuration(ms) {
       </div>
     </div>
     <div class="flex flex-col gap-y-4 lg:flex-row lg:items-center justify-between">
-      <div class="text-[40px] font-bold">{{ t('dealContracts.order') }}</div>
-      <NInput placeholder="搜索交易订单">
+      <div class="text-xl lg:text-[40px] font-bold">{{ t('dealContracts.order') }}</div>
+      <NInput v-model:value="missionsData" placeholder="搜索交易订单" @input="pagination.current = 1">
         <template #prefix>
           <div class="flex items-center justify-center text-black">
             <NIcon class="text-2xl">
@@ -146,15 +158,11 @@ function formatDuration(ms) {
     </div>
 
     <!-- 标签栏：执行中和已停止 -->
-    <NTabs default-value="run" animated>
+    <NTabs v-model:value="currentTab" animated :on-update:value="() => (pagination.current = 1)">
       <!-- 执行中模块 -->
       <NTabPane name="run" :tab="t('dealContracts.tabs[0]')">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-x-12 gap-y-4 p-4">
-          <div
-            v-for="mission in executingMissions"
-            :key="mission.MissionId"
-            class="py-4 px-8 border shadow-md rounded-xl"
-          >
+          <div v-for="mission in missionsData" :key="mission.MissionId" class="py-4 px-8 border shadow-md rounded-xl">
             <div class="pb-4 border-b border-b-slate-200 space-y-2">
               <div class="flex items-center justify-between">
                 <div class="text-lg font-bold">{{ mission.TacticsName }}</div>
@@ -236,11 +244,7 @@ function formatDuration(ms) {
       <!-- 已停止模块 -->
       <NTabPane name="stop" :tab="t('dealContracts.tabs[1]')">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-x-12 gap-y-4 p-4">
-          <div
-            v-for="mission in stoppedMissions"
-            :key="mission.MissionId"
-            class="py-4 px-8 border shadow-md rounded-xl"
-          >
+          <div v-for="mission in missionsData" :key="mission.MissionId" class="py-4 px-8 border shadow-md rounded-xl">
             <div class="pb-4 border-b border-b-slate-200 space-y-2">
               <div class="flex items-center justify-between">
                 <div class="text-lg font-bold">{{ mission.TacticsName }}</div>

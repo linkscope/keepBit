@@ -95,6 +95,142 @@ const commissionNumMarket = ref('')
 const positionData = inject('positionData', [])
 const emit = defineEmits(['orderSuccess'])
 
+const selectedNetwork = ref(null);
+const walletId = ref('');
+const qrCodeUrl = ref('/download_qrcode.png'); // 初始二维码图片路径
+const networkOptions = [{ label: 'USDT-TRC20', value: 'USDT-TRC20' }]; // 网络选项
+const fromAccount = ref("资金账户");
+const toAccount = ref("合约账户");
+const asset = ref("USDT");
+const transferAmount = ref(null);
+const maxTransferable = ref(0); // 最大可转数量
+
+// 存储账户余额信息
+const accountData = ref({
+  Assets: 0, // 资金账户余额
+  Contract: 0, // 合约账户余额
+});
+
+// 获取账户余额
+async function fetchAccountAssets() {
+  try {
+    const response = await fetch(
+        "https://test.keepbit.top/app_api/v1/User/GetMyAccountAssets",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+    );
+    const result = await response.json();
+    if (result.Success) {
+      accountData.value = result.ResData;
+      updateMaxTransferable();
+    } else {
+      message.error(result.ErrMsg || "获取账户信息失败");
+    }
+  } catch (error) {
+    message.error("请求出错，请稍后重试");
+  }
+}
+
+// 更新最大可转数量
+function updateMaxTransferable() {
+  maxTransferable.value =
+      fromAccount.value === "资金账户"
+          ? accountData.value.Assets
+          : accountData.value.Contract;
+}
+
+// 账户对调逻辑
+function swapAccounts() {
+  [fromAccount.value, toAccount.value] = [toAccount.value, fromAccount.value];
+  updateMaxTransferable();
+}
+
+// 提交划转
+async function submitTransfer() {
+  if (!transferAmount.value || transferAmount.value <= 0) {
+    message.error("请输入有效的转账金额");
+    return;
+  }
+  const transferQty = transferAmount.value;
+
+  // 判断划转方向并设置 API URL 和请求体
+  const isFromContractToAssets = fromAccount.value === "合约账户" && toAccount.value === "资金账户";
+  const apiUrl = isFromContractToAssets
+      ? "https://test.keepbit.top/app_api/v1/KrtContract/TransferSpot"
+      : "https://test.keepbit.top/app_api/v1/KrtContract/TransferContract";
+  const requestData = { Qty: transferQty };
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(requestData),
+    });
+    const result = await response.json();
+
+    if (result.Success) {
+      message.success("划转成功");
+      // 重新获取账户信息
+      fetchAccountAssets();
+      accountChargeModal.value = false;
+    } else {
+      message.error(result.ErrMsg || "划转失败");
+    }
+  } catch (error) {
+    message.error("请求出错，请稍后重试");
+  }
+}
+
+// 监听弹窗显示时触发请求
+watch(accountChargeModal, (newVal) => {
+  if (newVal) {
+    fetchAccountAssets();
+  }
+});
+
+// 处理网络选择
+function handleNetworkSelect() {
+  if (!selectedNetwork.value) return;
+
+  fetchUserInfo();
+}
+
+// 获取用户信息并更新充币地址和二维码
+async function fetchUserInfo() {
+  try {
+    const response = await fetch('https://test.keepbit.top/app_api/v1/User/GetMyInfo', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    const data = await response.json();
+
+    if (data.Success) {
+      walletId.value = data.ResData.walletid; // 填充walletid到充币地址
+      qrCodeUrl.value = generateQRCodeUrl(walletId.value); // 根据walletid生成二维码
+    } else {
+      message.error(data.ErrMsg || '获取用户信息失败');
+    }
+  } catch (error) {
+    console.error('请求出错:', error);
+    message.error('请求出错，请稍后重试');
+  }
+}
+
+// 生成二维码链接的函数
+function generateQRCodeUrl(text) {
+  const baseUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=';
+  return `${baseUrl}${encodeURIComponent(text)}`;
+}
+
 watch(currentPriceType, async (newPriceType) => {
   if (newPriceType === 'market') {
     actualOrderPrice.value = currentOrderPrice.value // 设置市价为当前价格
@@ -631,24 +767,42 @@ onMounted(() => {
         </div>
         <div class="flex items-center justify-between text-sm gap-x-4">
           <div class="text-slate-500 w-16">选择网络</div>
-          <NSelect style="flex: 1" placeholder="选择网络" :options="[{ label: 'USDT-TRC20', value: 'USDT' }]" />
+          <NSelect
+              style="flex: 1"
+              placeholder="选择网络"
+              v-model:value="selectedNetwork"
+              :options="networkOptions"
+              @update:value="handleNetworkSelect"
+          />
         </div>
-        <div class="flex items-center justify-between text-sm">
-          <div class="text-slate-500">提示：选择与提币平台一致的网络进行充值,否则您将会遗失这笔资金。</div>
+
+        <!-- 条件渲染，未选择网络时隐藏内容 -->
+        <div v-if="selectedNetwork">
+          <div class="flex items-center justify-between text-sm">
+            <div class="text-slate-500">
+              提示：选择与提币平台一致的网络进行充值, 否则您将会遗失这笔资金。
+            </div>
+          </div>
+          <!-- 居中的二维码 -->
+          <div class="qr-code-container">
+            <img :src="qrCodeUrl" alt="二维码" class="qr-code" />
+          </div>
+          <div class="flex items-center justify-between text-sm gap-x-4 py-4">
+            <div class="text-slate-500 w-16">充币地址</div>
+            <NInput style="flex: 1" :value="walletId" disabled />
+          </div>
+          <div class="flex items-center justify-between text-sm gap-x-4 py-4">
+            <div class="text-slate-500 w-16">充值至</div>
+            <NInput style="flex: 1" value="资金账户" disabled />
+          </div>
+          <div class="flex items-center justify-between text-sm">
+            <div class="text-slate-500">
+              您只能向此地址充值入{{ selectedNetwork }}, 充值入其他资产将无法退回。
+            </div>
+          </div>
         </div>
-        <img class="size-32" src="/download_qrcode.png" />
-        <div class="flex items-center justify-between text-sm gap-x-4">
-          <div class="text-slate-500 w-16">充币地址</div>
-          <NInput style="flex: 1" value="TQBwB9sa7iUzS28M82WZvDsVf5NuMaexfa" disabled />
-        </div>
-        <div class="flex items-center justify-between text-sm gap-x-4">
-          <div class="text-slate-500 w-16">充值至</div>
-          <NInput style="flex: 1" value="资金账户" disabled />
-        </div>
-        <div class="flex items-center justify-between text-sm">
-          <div class="text-slate-500">您只能向此地址充值入USDT-TRC20, 充值入其他资产将无法退回。</div>
-        </div>
-        <NButton block type="primary">确定</NButton>
+
+        <NButton block type="primary" @click="cryptoChargeModal = false">确定</NButton>
       </div>
     </NModal>
     <NModal v-model:show="accountChargeModal">
@@ -661,27 +815,35 @@ onMounted(() => {
           <div class="flex-1 space-y-4">
             <div class="flex items-center justify-between text-sm gap-x-4">
               <div class="text-slate-500 w-8">从</div>
-              <NInput style="flex: 1" value="资金账户" disabled />
+              <NInput style="flex: 1" :value="fromAccount" disabled />
             </div>
             <div class="flex items-center justify-between text-sm gap-x-4">
               <div class="text-slate-500 w-8">到</div>
-              <NInput style="flex: 1" value="合约账户" disabled />
+              <NInput style="flex: 1" :value="toAccount" disabled />
             </div>
           </div>
-          <NIcon class="text-xl">
+          <NIcon class="text-xl" @click="swapAccounts">
             <ArrowSort16Regular />
           </NIcon>
         </div>
         <div class="flex items-center justify-between text-sm">
           <div class="text-slate-500">资产</div>
-          <div class="font-bold">USDT</div>
+          <div class="font-bold">{{ asset }}</div>
         </div>
         <div class="flex items-center justify-between text-sm gap-x-4">
           <div class="text-slate-500 w-8">数量</div>
-          <NInputNumber style="flex: 1" placeholder="数量" clearable />
+          <NInputNumber
+              style="flex: 1"
+              v-model:value="transferAmount"
+              placeholder="数量"
+              :max="maxTransferable"
+              clearable
+          />
         </div>
-        <div class="text-sm text-slate-500 text-right">可操作数量：123</div>
-        <NButton block type="primary">确定</NButton>
+        <div class="text-sm text-slate-500 text-right">
+          最多可转：{{ maxTransferable }} USDT
+        </div>
+        <NButton block type="primary" @click="submitTransfer">确定</NButton>
       </div>
     </NModal>
     <NModal v-model:show="confirmationModal">
@@ -725,3 +887,14 @@ onMounted(() => {
     </NModal>
   </div>
 </template>
+<style scoped>
+.qr-code-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0; /* 上下边距 */
+}
+.qr-code {
+  width: 150px;
+  height: 150px;
+}
+</style>

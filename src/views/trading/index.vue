@@ -24,15 +24,26 @@ const available = ref('0.000')
 const message = useMessage()
 const { coinList, book15Data, tradeData } = useCryptoWS()
 const searchValue = ref('')
-const searchedCoinList = computed(() =>
-  coinList.value.filter((i) => i.instId.includes(searchValue.value.toUpperCase())),
-)
+const searchedCoinList = computed(() => {
+  return coinList.value
+      .map((item) => {
+        // 判断是否在收藏列表中
+        const isFavorite = myChoices.value.some((choice) => choice.symbol_name.replace('/', '') === item.instId);
+
+        return {
+          ...item,
+          isFavorite,
+        };
+      })
+      .filter((i) => i.instId.includes(searchValue.value.toUpperCase()))
+      .sort((a, b) => b.lastPrice - a.lastPrice); // 按当前价格降序排列
+});
 const tickerTapRef = ref(null)
 const tradingViewRef = ref(null)
 const selectedCoin = ref(null)
 const showSelect = ref(false)
 const selectOptionRef = useTemplateRef('selectOptionRef')
-
+const myChoices = ref([])
 const websocket = ref(null)
 let heartbeatInterval = null // 用于存储心跳包的定时器
 
@@ -582,6 +593,87 @@ async function sendCloseOrder() {
     console.error('平仓请求出错:', error);
   }
 }
+// 从 API 获取收藏的币种数据
+async function fetchMyChoices() {
+  try {
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc'; // 使用实际的token
+    const response = await fetch('https://test.keepbit.top/app_api/v1/MyChoice/GetMyChoices', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    const data = await response.json()
+    if (data.Success) {
+      myChoices.value = data.ResData
+    } else {
+      console.error('获取数据失败:', data.ErrMsg)
+    }
+  } catch (error) {
+    console.error('请求出错:', error)
+  }
+}
+
+async function toggleFavorite(symbol) {
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzeXN0ZW0iLCJpc3MiOiJLZWVwQml0VGVhY2giLCJVc2VyTmFtZSI6IjM3OTY5NjY3IiwiVXNlcklkIjoiMTg0MzIyNzc1OTcxMjY3MjYiLCJUZW5hbnRJZCI6IjkyNDI3NzIxMjk1NzkwNzciLCJzdWIiOiJwYXNzd29yZCIsIm5iZiI6MTczMTU3OTcwMCwiZXhwIjoxNzMxNjY2MTAwLCJpYXQiOjE3MzE1Nzk3MDB9.s9qigsPHlF8jvTDnfYq8J7_eTRCu8qahbt9jCSxJJqc'; // 使用实际的token
+
+  if (!token) {
+    message.error('请先登录');
+    return;
+  }
+
+  // 确定符号名称和相关参数
+  const symbolName = `${symbol.instId.slice(0, -4)}/${symbol.instId.slice(-4)}`; // 拼接成 BTC/USDT 格式
+  const encodedSymbolName = encodeURIComponent(symbolName); // 对符号名称进行编码
+  const baseTokenId = symbol.instId.slice(0, -4); // 基础币种，如 BTC
+  const quoteTokenId = symbol.instId.slice(-4); // 报价币种，如 USDT
+  const symbolType = 2; // 根据需求，symbol_type 固定为 2
+
+  try {
+    if (symbol.isFavorite) {
+      // 取消收藏请求
+      const response = await fetch(
+          `https://test.keepbit.top/app_api/v1/MyChoice/DelBySymbolType?symbol=${encodedSymbolName}&type=${symbolType}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+      );
+      const result = await response.json();
+      if (result.Success) {
+        symbol.isFavorite = false; // 更新收藏状态
+        message.success('取消收藏成功');
+        fetchMyChoices()
+      } else {
+        message.error(result.ErrMsg || '取消收藏失败');
+      }
+    } else {
+      // 添加收藏请求
+      const response = await fetch(
+          `https://test.keepbit.top/app_api/v1/MyChoice/AddSymbol?symbol_type=${symbolType}&symbol_name=${encodedSymbolName}&base_token_id=${baseTokenId}&quote_token_id=${quoteTokenId}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+      );
+      const result = await response.json();
+      if (result.Success) {
+        symbol.isFavorite = true; // 更新收藏状态
+        message.success('收藏成功');
+        fetchMyChoices()
+      } else {
+        message.error(result.ErrMsg || '收藏失败');
+      }
+    }
+  } catch (error) {
+    message.error('请求出错，请稍后重试');
+    console.error('请求错误:', error);
+  }
+}
 
 onMounted(() => {
   if (tickerTapRef.value) {
@@ -634,6 +726,7 @@ onMounted(() => {
   fetchFilledOrders()
   fetchHistoryPositions()
   initializeWebSocket()
+  fetchMyChoices()
 })
 </script>
 
@@ -680,14 +773,13 @@ onMounted(() => {
                       }
                     "
                   >
-                    <NIcon class="text-lg text-yellow-300">
-                      <!--              <Star16Regular />-->
-                      <Star16Filled />
+                    <NIcon class="text-lg" :class="{ 'text-yellow-300': item.isFavorite }" @click.stop="toggleFavorite(item)">
+                      <component :is="item.isFavorite ? Star16Filled : Star16Regular" />
                     </NIcon>
                     <img class="size-[30px]" :src="item.image" />
                     <div class="flex-1">{{ item.instId }}</div>
                     <div class="text-xs">
-                      ${{ item.lastPrice.toFixed(2) }}|
+                      ${{ item.lastPrice }}|
                       <span
                         :style="{
                           color: item.change24h > 0 ? '#5ac820' : 'red',

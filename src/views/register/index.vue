@@ -51,7 +51,7 @@
                     <CheckmarkCircle16Filled v-if="rule.valid(formData.password)" />
                     <ErrorCircle16Filled v-else />
                   </NIcon>
-                  <span>{{ rule.text }}</span>
+                  <span>{{ rule.text() }}</span> <!-- 动态调用 text() 函数 -->
                 </div>
                 <NButton class="bg-[#76e43b] rounded-lg w-full h-12 text-lg font-bold" @click="register">{{
                     t('register.title')
@@ -95,19 +95,19 @@ const isLoading = ref(false)
 const passwordRules = [
   {
     valid: (password) => /^(?=.*[a-z])/.test(password),
-    text: t('register.password.rule1'),
+    text: () => t('register.password.rule1'), // 使用函数返回多语言文本
   },
   {
     valid: (password) => /.*\d.*/.test(password),
-    text: t('register.password.rule2'),
+    text: () => t('register.password.rule2'),
   },
   {
     valid: (password) => /.*[^\w\s].*/.test(password),
-    text: t('register.password.rule3'),
+    text: () => t('register.password.rule3'),
   },
   {
     valid: (password) => /^.{8,32}$/.test(password),
-    text: t('register.password.rule4'),
+    text: () => t('register.password.rule4'),
   },
 ]
 

@@ -23,6 +23,16 @@ const showToolTip = ref(true)
 const carouselRef = useTemplateRef('carouselRef')
 let scrollInterval = 0
 
+// 跳转处理函数
+const goToPage = (link) => {
+  // 跳转到目标页面
+  if (link === 'howRegister') {
+    router.push('/article/howRegister') // 替换为实际的目标路由
+  }else if (link === 'inviteFriends') {
+    router.push('/article/agencyPlan') // 替换为实际的目标路由
+  }
+}
+
 function handleCoinClick(instId) {
   // 去掉 "USDT" 后跳转
   const coin = instId.replace('USDT', '');
@@ -224,6 +234,7 @@ onUnmounted(() => {
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div
             class="bg-white rounded-md relative w-full flex flex-col items-center justify-center gap-y-4 pt-[48px] px-4 pb-8"
+            @click="goToPage('howRegister')"
           >
             <div class="absolute top-0 left-0 bg-[#76e43c] py-2 px-4 rounded-tl-md rounded-br-md text-2xl font-bold">
               1
@@ -251,6 +262,7 @@ onUnmounted(() => {
           </div>
           <div
             class="bg-white rounded-md relative w-full flex flex-col items-center justify-center gap-y-4 pt-[48px] px-4 pb-8"
+            @click="goToPage('inviteFriends')"
           >
             <div class="absolute top-0 left-0 bg-[#76e43c] py-2 px-4 rounded-tl-md rounded-br-md text-2xl font-bold">
               4

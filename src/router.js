@@ -108,6 +108,16 @@ export default createRouter({
           name: 'FindPassword',
           component: () => import('@/views/findPassword/index.vue'),
         },
+        {
+          path: 'article/howRegister',
+          name: 'HowRegister',
+          component: () => import('@/views/article/howRegister.vue'),
+        },
+        {
+          path: 'article/howRecharge',
+          name: 'HowRecharge',
+          component: () => import('@/views/article/howRecharge.vue'),
+        },
       ],
     },
   ],

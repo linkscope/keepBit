@@ -78,6 +78,7 @@ const showExplanation = ref(clientWidth > 1280)
             >
               {{ t('footer.customerSupport') }}
             </a>
+            <a href="/#/article/howRegister" class="block">{{ t('footer.howRegister') }}</a>
           </template>
         </div>
         <div class="space-y-4 text-white">

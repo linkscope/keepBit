@@ -1,46 +1,75 @@
 <template>
   <div class="container">
-    <h1 class="text-center">Word 文档预览</h1>
     <div ref="docxContainer" class="docx-container"></div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router'; // 用于获取路由参数
 import { renderAsync } from 'docx-preview';
 
-// 设置文档路径
-const wordFileUrl = 'https://008dy.com/KeepBitRecharge.docx'; // 替换为实际服务器文件路径
+const route = useRoute(); // 获取当前路由信息
 const docxContainer = ref(null);
 
 onMounted(async () => {
-  // 获取文档并渲染
-  const response = await fetch(wordFileUrl);
-  const arrayBuffer = await response.arrayBuffer();
-  await renderAsync(new Uint8Array(arrayBuffer), docxContainer.value);
+  // 从路由参数中获取文档名称
+  const fileName = route.query.fileName; // 例如：KeepBitRecharge.docx
+
+  if (!fileName) {
+    console.error('未提供文件名称参数');
+    return;
+  }
+
+  const wordFileUrl = `./file/${fileName}`; // 构建相对路径
+  try {
+    const response = await fetch(wordFileUrl);
+    if (!response.ok) {
+      throw new Error(`无法加载文件: ${response.statusText}`);
+    }
+    const arrayBuffer = await response.arrayBuffer();
+    await renderAsync(new Uint8Array(arrayBuffer), docxContainer.value);
+  } catch (error) {
+    console.error('渲染 Word 文档时出错:', error);
+  }
 });
 </script>
 
 <style scoped>
+/* 父容器样式：占满屏幕 */
 .container {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  display: flex; /* 使用 Flexbox 布局 */
+  align-items: center; /* 垂直居中 */
+  justify-content: center; /* 水平居中 */
+  width: 100vw; /* 占满视口宽度 */
+  height: 100vh; /* 占满视口高度 */
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9; /* 背景颜色 */
+  box-sizing: border-box;
+  overflow: hidden; /* 防止外部溢出 */
 }
 
+/* 文档容器样式：全屏占满 */
 .docx-container {
-  width: 100%;
-  max-width: 800px;
-  height: auto;
-  overflow: auto;
-  border: 1px solid #ddd;
-  padding: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%; /* 宽度占满父容器 */
+  height: 100%; /* 高度占满父容器 */
+  overflow: auto; /* 支持滚动 */
+  background-color: #fff; /* 文档背景白色 */
+  box-sizing: border-box; /* 包括内边距在内计算宽高 */
+  padding: 16px; /* 可选的内边距 */
 }
 
-h1 {
-  margin-bottom: 20px;
+/* 针对小屏幕的适配 */
+@media (max-width: 768px) {
+  .docx-container {
+    padding: 12px; /* 缩小内边距适配小屏幕 */
+  }
+}
+
+@media (max-width: 480px) {
+  .docx-container {
+    padding: 8px; /* 更小屏幕进一步缩小内边距 */
+  }
 }
 </style>

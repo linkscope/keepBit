@@ -23,6 +23,25 @@ const showToolTip = ref(true)
 const carouselRef = useTemplateRef('carouselRef')
 let scrollInterval = 0
 
+const navigateToArticle = (fileName) => {
+  // 如果语言不是中文，在文件格式前添加 `_en`
+  const storedLanguage = localStorage.getItem('keepBit_lang');
+  if (storedLanguage !== 'zhCN') {
+    const extensionIndex = fileName.lastIndexOf('.');
+    if (extensionIndex !== -1) {
+      // 在扩展名前插入 `_en`
+      fileName = `${fileName.slice(0, extensionIndex)}_En${fileName.slice(extensionIndex)}`;
+    }
+  }
+
+  // 跳转到 /article/howRecharge 页面并携带文件名参数
+  router.push({
+    path: '/article/howRecharge',
+    query: {
+      fileName, // 动态传递修改后的文件名
+    },
+  });
+};
 // 跳转处理函数
 const goToPage = (link) => {
   // 跳转到目标页面
@@ -243,6 +262,7 @@ onUnmounted(() => {
             <div class="text-slate-400">{{ t('home.guide.list[0].subtitle') }}</div>
           </div>
           <div
+              @click="navigateToArticle('KeepBitRecharge.docx')"
             class="bg-white rounded-md relative w-full flex flex-col items-center justify-center gap-y-4 pt-[48px] px-4 pb-8"
           >
             <div class="absolute top-0 left-0 bg-[#76e43c] py-2 px-4 rounded-tl-md rounded-br-md text-2xl font-bold">

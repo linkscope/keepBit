@@ -272,6 +272,7 @@ onUnmounted(() => {
             <div class="text-slate-400">{{ t('home.guide.list[1].subtitle') }}</div>
           </div>
           <div
+              @click="navigateToArticle('KeepBitTrading.docx')"
             class="bg-white rounded-md relative w-full flex flex-col items-center justify-center gap-y-4 pt-[48px] px-4 pb-8"
           >
             <div class="absolute top-0 left-0 bg-[#76e43c] py-2 px-4 rounded-tl-md rounded-br-md text-2xl font-bold">

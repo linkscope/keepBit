@@ -39,8 +39,8 @@ onMounted(async () => {
 /* 父容器样式：占满屏幕 */
 .container {
   display: flex; /* 使用 Flexbox 布局 */
-  align-items: center; /* 垂直居中 */
-  justify-content: center; /* 水平居中 */
+  align-items: stretch; /* 子元素拉伸以填满容器 */
+  justify-content: stretch; /* 子元素拉伸以填满容器 */
   width: 100vw; /* 占满视口宽度 */
   height: 100vh; /* 占满视口高度 */
   margin: 0;
@@ -50,26 +50,13 @@ onMounted(async () => {
   overflow: hidden; /* 防止外部溢出 */
 }
 
-/* 文档容器样式：全屏占满 */
+/* 文档容器样式：占满整个屏幕 */
 .docx-container {
-  width: 100%; /* 宽度占满父容器 */
-  height: 100%; /* 高度占满父容器 */
+  width: 100vw; /* 宽度占满视口 */
+  height: 100vh; /* 高度占满视口 */
   overflow: auto; /* 支持滚动 */
   background-color: #fff; /* 文档背景白色 */
   box-sizing: border-box; /* 包括内边距在内计算宽高 */
-  padding: 16px; /* 可选的内边距 */
-}
-
-/* 针对小屏幕的适配 */
-@media (max-width: 768px) {
-  .docx-container {
-    padding: 12px; /* 缩小内边距适配小屏幕 */
-  }
-}
-
-@media (max-width: 480px) {
-  .docx-container {
-    padding: 8px; /* 更小屏幕进一步缩小内边距 */
-  }
+  padding: 0; /* 去除内边距 */
 }
 </style>

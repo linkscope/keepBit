@@ -97,8 +97,8 @@ const selectedNetwork = ref(null);
 const walletId = ref('');
 const qrCodeUrl = ref('/download_qrcode.png'); // 初始二维码图片路径
 const networkOptions = [{ label: 'USDT-TRC20', value: 'USDT-TRC20' }]; // 网络选项
-const fromAccount = ref("资金账户");
-const toAccount = ref("合约账户");
+const fromAccount = ref(t('trading.fundAccount'));
+const toAccount = ref(t('trading.contractAccount'));
 const asset = ref("USDT");
 const transferAmount = ref(null);
 const maxTransferable = ref(0); // 最大可转数量
@@ -138,7 +138,7 @@ async function fetchAccountAssets() {
 // 更新最大可转数量
 function updateMaxTransferable() {
   maxTransferable.value =
-      fromAccount.value === "资金账户"
+      fromAccount.value === t('trading.fundAccount')
           ? accountData.value.Assets
           : accountData.value.Contract;
 }
@@ -158,7 +158,7 @@ async function submitTransfer() {
   const transferQty = transferAmount.value;
 
   // 判断划转方向并设置 API URL 和请求体
-  const isFromContractToAssets = fromAccount.value === "合约账户" && toAccount.value === "资金账户";
+  const isFromContractToAssets = fromAccount.value === t('trading.contractAccount') && toAccount.value === t('trading.fundAccount');
   const apiUrl = isFromContractToAssets
       ? "https://test.keepbit.top/app_api/v1/KrtContract/TransferSpot"
       : "https://test.keepbit.top/app_api/v1/KrtContract/TransferContract";
@@ -840,7 +840,7 @@ onMounted(() => {
           <div class="text-slate-500 w-16">{{ t('trading.selectNetwork') }}</div>
           <NSelect
               style="flex: 1"
-              placeholder="{{ t('trading.selectNetwork') }}"
+              :placeholder="t('trading.selectNetwork')"
               v-model:value="selectedNetwork"
               :options="networkOptions"
               @update:value="handleNetworkSelect"
@@ -862,11 +862,11 @@ onMounted(() => {
           </div>
           <div class="flex items-center justify-between text-sm gap-x-4 py-4">
             <div class="text-slate-500 w-16">{{ t('trading.depositTo') }}</div>
-            <NInput style="flex: 1" value="资金账户" disabled />
+            <NInput style="flex: 1" :value="t('trading.fundAccount')" disabled />
           </div>
           <div class="flex items-center justify-between text-sm">
             <div class="text-slate-500">
-              {{ t('trading.onlyDepositToThisAddress') }}
+              {{ t('trading.onlyDepositToThisAddress',{ selectedNetwork }) }}
             </div>
           </div>
         </div>
@@ -905,7 +905,7 @@ onMounted(() => {
           <NInputNumber
               style="flex: 1"
               v-model:value="transferAmount"
-              placeholder="{{ t('trading.amount') }}"
+              :placeholder="t('trading.amount')"
               :max="maxTransferable"
               clearable
           />

@@ -41,6 +41,10 @@ const handleLogin = async () => {
     errorMessage.value = '登录失败，请稍后再试'
   }
 }
+function handleForgetPassword() {
+  // 跳转到忘记密码页面
+  router.push('/findPassword');
+}
 </script>
 
 <template>
@@ -75,7 +79,12 @@ const handleLogin = async () => {
                 <!-- 错误信息 -->
                 <div v-if="errorMessage" class="text-red-500 text-sm">{{ errorMessage }}</div>
               </NForm>
-              <div class="text-right text-[#5bc17f]">{{ t('login.forget') }}</div>
+              <div
+                  class="text-right text-[#5bc17f] cursor-pointer"
+                  @click="handleForgetPassword"
+              >
+                {{ t('login.forget') }}
+              </div>
               <NButton class="bg-[#76e43b] rounded-lg w-full h-12 text-lg font-bold" @click="handleLogin">{{ t('login.title') }}</NButton>
               <NDivider class="text-sm text-slate-400">{{ t('login.other') }}</NDivider>
               <div class="flex items-center justify-center gap-x-4">

@@ -23,6 +23,12 @@ const showToolTip = ref(true)
 const carouselRef = useTemplateRef('carouselRef')
 let scrollInterval = 0
 
+function handleCoinClick(instId) {
+  // 去掉 "USDT" 后跳转
+  const coin = instId.replace('USDT', '');
+  router.push({ path: '/trading', query: { coin } });
+}
+
 // 添加跳转链接的方法
 const navigateToLink = () => {
   window.open('https://t.me/+1hz-GvUuw0FmNDM1', '_blank')
@@ -175,12 +181,12 @@ onUnmounted(() => {
         >
           <NTabPane name="stock" :tab="t('home.hotStock')">
             <div class="space-y-4">
-              <Coin v-for="item of sortedByLastPriceCoinSpotList.top" :key="item.instId" :coin="item" showStock />
+              <Coin v-for="item of sortedByLastPriceCoinSpotList.top" :key="item.instId" :coin="item" showStock @click="handleCoinClick(item.instId)"/>
             </div>
           </NTabPane>
           <NTabPane name="treat" :tab="t('home.hotTreat')">
             <div class="space-y-4">
-              <Coin v-for="item of sortedByLastPriceCoinList.top" :key="item.instId" :coin="item" showStock />
+              <Coin v-for="item of sortedByLastPriceCoinList.top" :key="item.instId" :coin="item" showStock @click="handleCoinClick(item.instId)"/>
             </div>
           </NTabPane>
         </NTabs>
@@ -194,6 +200,7 @@ onUnmounted(() => {
               : sortedCoinList.list.slice(0, 3)"
             :key="item.instId"
             :coin="item"
+            @click="handleCoinClick(item.instId)"
           />
         </div>
         <div class="text-xl font-bold lg:h-[162px] lg:leading-[162px]">{{ t('home.fallRanking') }}</div>
@@ -202,6 +209,7 @@ onUnmounted(() => {
             v-for="item of currentTab === 'stock' ? sortedCoinSpotList.list.slice(-3) : sortedCoinList.list.slice(-3)"
             :key="item.instId"
             :coin="item"
+            @click="handleCoinClick(item.instId)"
           />
         </div>
       </div>

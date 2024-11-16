@@ -73,6 +73,39 @@
     "error": "发生错误，请稍后重试",
     "success": "注册成功，请登录"
   },
+  "findPassword": {
+    "title": "找回密码",
+    "welcome": ["立即回归KeepBit"],
+    "tabs": ["邮箱"],
+    "email": {
+      "label": ["邮箱"],
+      "placeholder": ["请输入邮箱"],
+      "invalid": "请输入有效的邮箱地址"
+    },
+    "verifyCode": {
+      "label": "验证码",
+      "placeholder": "请输入验证码",
+      "sent": "验证码已发送到您的邮箱"
+    },
+    "password": {
+      "label": "新的登录密码",
+      "placeholder": "请输入密码",
+      "rule1": "至少包含1个小写字母(a-z)",
+      "rule2": "至少包含1个数字",
+      "rule3": "至少包含1个符号(如!@#$%^&*)",
+      "rule4": "密码长度为8-32个字符",
+      "invalid": "密码不符合要求",
+      "notMatch": "两次输入密码不一致!"
+    },
+    "confirmPassword": {
+      "label": "确认新密码",
+      "placeholder": "请再次输入密码"
+    },
+    "announce": "继续注册代表同意",
+    "according": ["《用户协议》", "隐私条款"],
+    "error": "发生错误，请稍后重试",
+    "success": "修改成功，请登录"
+  },
   "trading": {
     "perpetual": "永续",
     "searchAlias": "搜索币别",
@@ -186,11 +219,13 @@
     "networkWarning": "提示：选择与提币平台一致的网络进行充值, 否则您将会遗失这笔资金。",
     "depositAddress": "充币地址",
     "depositTo": "充值至",
-    "onlyDepositToThisAddress": "您只能向此地址充值入{{ selectedNetwork }}，充值入其他资产将无法退回。",
+    "onlyDepositToThisAddress": "您只能向此地址充值入{ selectedNetwork }，充值入其他资产将无法退回。",
     "orderConfirmation": "下单确认",
     "orderPrice": "委托价格",
     "amount": "数量",
     "maxTransfer": "最多可转",
+    "fundAccount": "资金账户",
+    "contractAccount": "合约账户",
     "asset": "资产",
     "from": "从",
     "to": "到"

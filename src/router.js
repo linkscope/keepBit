@@ -103,6 +103,11 @@ export default createRouter({
           name: 'AgencyPlan',
           component: () => import('@/views/article/agencyPlan.vue'),
         },
+        {
+          path: 'findPassword',
+          name: 'FindPassword',
+          component: () => import('@/views/findPassword/index.vue'),
+        },
       ],
     },
   ],

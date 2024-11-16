@@ -1,5 +1,7 @@
-// pieChartOption.js
 export function pieChartOption(data, showAssets = true, t) {
+  // 计算总和（确保 Total 正确）
+  const total = data.Assets + data.Contract + data.Demo + data.Tactic;
+
   return {
     legend: {
       orient: 'vertical',
@@ -32,7 +34,9 @@ export function pieChartOption(data, showAssets = true, t) {
             value = data.Tactic;
             break;
         }
-        return name + (showAssets ? `     ${((value / data.Total) * 100).toFixed(2)}%` : '     ****');
+        // 计算百分比
+        const percentage = total > 0 ? ((value / total) * 100).toFixed(2) : 0;
+        return name + (showAssets ? `     ${percentage}%` : '     ****');
       },
     },
     grid: {

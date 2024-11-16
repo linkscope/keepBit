@@ -2,102 +2,312 @@
   "header": {
     "menuList": {
       "home": "ホーム",
-      "market": "市場",
+      "market": "マーケット",
       "trading": "契約取引",
-      "quantitative": "量的取引",
+      "quantitative": "定量取引",
       "strategy": "戦略広場",
       "deal": "戦略注文",
       "dealContracts": "シミュレーション注文",
-      "explorationAndLearning": "探索と学習",
+      "explorationAndLearning": "探求と学習",
       "about": "私たちについて",
       "announcementCenter": "お知らせセンター",
       "keepBitAcademy": "KeepBitアカデミー",
       "kycCertificationArea": "KYC認証エリア",
-      "channelRecruitment": "チャンネル採用",
-      "brokerCooperation": "ブローカー提携",
+      "channelRecruitment": "チャネル募集",
+      "brokerCooperation": "ブローカー協力",
       "inviteFriends": "友達を招待",
       "vipService": "VIPサービス"
     }
   },
-  "login": "ログイン",
-  "register": "登録",
+  "message": {
+    "loginSuccess": "ログイン成功",
+    "addSuccess": "追加成功",
+    "addError": "追加失敗",
+    "getTacticsError": "戦略リストの取得に失敗しました",
+    "createSuccess": "作成成功",
+    "createError": "作成失敗",
+    "finishSuccess": "戦略の終了に成功",
+    "finishError": "戦略の終了に失敗",
+    "closePositionSuccess": "ポジションを閉じる成功",
+    "searchSuccess": "検索成功",
+    "searchError": "検索失敗"
+  },
+  "login": {
+    "title": "ログイン",
+    "welcome": ["KeepBitへようこそ", "Web3の世界をここから始めましょう"],
+    "tabs": ["メール"],
+    "email": {
+      "label": ["メール", "パスワード"],
+      "placeholder": ["メールを入力してください", "パスワードを入力してください"]
+    },
+    "forget": "パスワードをお忘れですか？",
+    "other": "または次の方法でログイン",
+    "noAccount": "アカウントをお持ちではありませんか？",
+    "join": "今すぐ参加"
+  },
+  "register": {
+    "title": "登録",
+    "welcome": ["KeepBitに今すぐ登録"],
+    "tabs": ["メール"],
+    "email": {
+      "label": ["メール", "招待コード（任意）"],
+      "placeholder": ["メールを入力してください", "招待コードを入力してください"],
+      "invalid": "有効なメールアドレスを入力してください"
+    },
+    "verifyCode": {
+      "label": "確認コード",
+      "placeholder": "確認コードを入力してください",
+      "sent": "確認コードがメールに送信されました"
+    },
+    "password": {
+      "label": "パスワード",
+      "placeholder": "パスワードを入力してください",
+      "rule1": "小文字（a-z）を少なくとも1つ含む必要があります",
+      "rule2": "数字を少なくとも1つ含む必要があります",
+      "rule3": "記号（例: !@#$%^&*）を少なくとも1つ含む必要があります",
+      "rule4": "パスワードの長さは8〜32文字である必要があります",
+      "invalid": "無効なパスワード"
+    },
+    "announce": "登録を続けることで同意したことになります",
+    "according": ["《ユーザー契約》", "プライバシーポリシー"],
+    "error": "エラーが発生しました。後でもう一度お試しください",
+    "success": "登録成功、ログインしてください"
+  },
+  "findPassword": {
+    "title": "パスワードをリセット",
+    "welcome": ["今すぐKeepBitに戻りましょう"],
+    "tabs": ["メール"],
+    "email": {
+      "label": ["メール"],
+      "placeholder": ["メールを入力してください"],
+      "invalid": "有効なメールアドレスを入力してください"
+    },
+    "verifyCode": {
+      "label": "確認コード",
+      "placeholder": "確認コードを入力してください",
+      "sent": "確認コードがメールに送信されました"
+    },
+    "password": {
+      "label": "新しいログインパスワード",
+      "placeholder": "パスワードを入力してください",
+      "rule1": "小文字（a-z）を少なくとも1つ含む必要があります",
+      "rule2": "数字を少なくとも1つ含む必要があります",
+      "rule3": "記号（例: !@#$%^&*）を少なくとも1つ含む必要があります",
+      "rule4": "パスワードの長さは8〜32文字である必要があります",
+      "invalid": "無効なパスワード",
+      "notMatch": "入力した2つのパスワードが一致しません！"
+    },
+    "confirmPassword": {
+      "label": "新しいパスワードを確認",
+      "placeholder": "もう一度パスワードを入力してください"
+    },
+    "announce": "登録を続けることで同意したことになります",
+    "according": ["《ユーザー契約》", "プライバシーポリシー"],
+    "error": "エラーが発生しました。後でもう一度お試しください",
+    "success": "変更成功、ログインしてください"
+  },
+  "trading": {
+    "perpetual": "永久",
+    "searchAlias": "通貨を検索",
+    "change24h": "24時間変化率",
+    "high24h": "24時間最高値",
+    "low24h": "24時間最安値",
+    "volume24h": "24時間取引量",
+    "volumeQuote24h": "24時間取引額(USDT)",
+    "entrustOrder": "委託注文",
+    "latestDeal": "最新の取引",
+    "priceUSDT": "価格(USDT)",
+    "quantity": "数量",
+    "total": "合計",
+    "buyTag": "買い",
+    "sellTag": "売り",
+    "time": "時間",
+    "closePosition": "ポジションを閉じる",
+    "takeProfitStopLoss": "利確/損切",
+    "position": "ポジション",
+    "historyPosition": "ポジション履歴",
+    "historyEntrust": "委託履歴",
+    "direction": "ポジション方向",
+    "marginMode": "マージンモード",
+    "leverage": "レバレッジ",
+    "currentPrice": "現在の価格",
+    "openPrice": "オープン価格",
+    "price": "価格(USDT)",
+    "available": "利用可能",
+    "estimatedProfitLoss": "予測損益",
+    "closingFee": "予測決済手数料",
+    "stopProfitLoss": "利確/損切",
+    "stopProfit": "利確",
+    "stopLoss": "損切",
+    "triggerPrice": "トリガー価格",
+    "long": "ロング",
+    "short": "ショート",
+    "isolated": "アイソレート",
+    "cross": "クロス",
+    "profit": "利益",
+    "profitRate": "利益率",
+    "size": "ポジションサイズ",
+    "margin": "マージン",
+    "availableUse": "利用可能",
+    "markPrice": "マーク価格",
+    "closingPrice": "予測清算価格",
+    "operation": "操作",
+    "contract": "契約",
+    "limit": "指値",
+    "market": "成行",
+    "openLong": "ロングを開く",
+    "openShort": "ショートを開く",
+    "closeLong": "ロングを閉じる",
+    "closeShort": "ショートを閉じる",
+    "singleBuy": "単一ポジション購入",
+    "singleSell": "単一ポジション販売",
+    "unknown": "不明",
+    "cancelOrder": "注文をキャンセル",
+    "createTime": "作成時間",
+    "newOrder": "新しい注文",
+    "partiallyFilled": "部分的に埋められた",
+    "filled": "すべて埋められた",
+    "canceled": "キャンセルされた",
+    "avgPrice": "平均価格",
+    "quantityFilled": "充填済み数量",
+    "marginRate": "マージン率",
+    "type": "価格タイプ",
+    "totalOpen": "委託数量",
+    "filledQuantity": "充填済み数量",
+    "realizedPnl": "実現済み損益",
+    "netProfit": "純利益",
+    "totalFee": "累計手数料",
+    "totalFunding": "累計資金費用",
+    "openTime": "オープン時間",
+    "closeTime": "クローズ時間",
+    "orderType": "注文タイプ",
+    "openDirection": "オープン方向",
+    "orderStatus": "注文ステータス",
+    "estimatedLiquidationPrice": "予測清算価格",
+    "stopProfitDescription": "マーク価格≥ USDTのとき、最良の価格で決済、数量BTC、予測利益USDT ( )。",
+    "stopLossDescription": "マーク価格≤ USDTのとき、最良の価格で決済、数量BTC、予測損失USDT ( )。",
+    "limitPrice": "指値",
+    "marketPrice": "成行",
+    "enterPrice": "価格を入力",
+    "confirm": "確認",
+    "closeAtBestPrice": "マーク価格が{profitPrice} USDT以上の場合、最良価格で決済、数量{available} {symbol}、予測利益{expectedProfit} USDT ({profitPercentage}%)。",
+    "closeAtBestPriceWhenLoss": "マーク価格が{lossPrice} USDT以下の場合、最良価格で決済、数量{available} {symbol}、予測損失{expectedLoss} USDT ({lossPercentage}%)。",
+    "openPosition": "ポジションを開く",
+    "crossed": "クロス",
+    "switchToIsolated": "アイソレートに切り替え",
+    "switchToCrossed": "クロスに切り替え",
+    "limitOrder": "指値注文",
+    "marketOrder": "成行注文",
+    "entrustPrice": "委託価格",
+    "enterEntrustPrice": "委託価格を入力",
+    "entrustQuantity": "委託数量",
+    "enterEntrustQuantity": "委託数量を入力",
+    "shortPosition": "ショートポジション",
+    "longPosition": "ロングポジション",
+    "availableToClose": "クローズ可能量",
+    "availableToOpenLong": "ロング開設可能量",
+    "availableToOpenShort": "ショート開設可能量",
+    "selectDepositMethod": "デポジット方法を選択",
+    "depositCryptoCurrency": "暗号通貨をデポジット",
+    "fromWalletOrExchange": "ウォレットまたは取引所から",
+    "depositFiatCurrency": "法定通貨をデポジット",
+    "viaBankTransfer": "銀行送金を介して",
+    "chargeHistory": "デポジット履歴",
+    "internalTransfer": "内部送金",
+    "transferBetweenAccounts": "アカウント間で送金",
+    "selectNetwork": "ネットワークを選択",
+    "networkWarning": "警告：引き出しプラットフォームと一致するネットワークを選択してください。そうしないと、資金が失われる可能性があります。",
+    "depositAddress": "デポジットアドレス",
+    "depositTo": "デポジット先",
+    "onlyDepositToThisAddress": "このアドレスには{selectedNetwork}のみをデポジットできます。他の資産は返却されません。",
+    "orderConfirmation": "注文確認",
+    "orderPrice": "委託価格",
+    "amount": "数量",
+    "maxTransfer": "最大送金",
+    "fundAccount": "資金アカウント",
+    "contractAccount": "契約アカウント",
+    "asset": "資産",
+    "from": "送信元",
+    "to": "送信先"
+  },
   "home": {
-    "welcome": ["KeepBitへようこそ", "あなたのWeb3世界はここから始まります", "始めましょう"],
-    "subWelcome": ["簡単に管理して取引できる", "あなたの暗号資産"],
-    "hotCoinPrice": "人気コイン価格",
-    "hotStock": "人気現物",
+    "welcome": ["KeepBitへようこそ", "あなたのWeb3の世界がここから", "始まります"],
+    "subWelcome": ["簡単に管理・取引ができる", "暗号資産のプラットフォーム"],
+    "hotCoinPrice": "人気暗号資産価格",
+    "hotStock": "人気スポット",
     "hotTreat": "人気契約",
-    "riseRanking": "上昇ランキング",
-    "fallRanking": "下降ランキング",
-    "tradingStrategy": "高収益量的取引戦略",
+    "riseRanking": "値上がりランキング",
+    "fallRanking": "値下がりランキング",
+    "tradingStrategy": "高収益の量的取引戦略",
     "tradingStrategyDesc": [
       {
-        "title": "量的取引、投資をより賢明かつ正確に。",
-        "subtitle": "手動取引は時間がかかりすぎますか？KeepBitの量的取引が市場を24時間監視し、自動取引を提供します。機会を逃しません！"
+        "title": "量的取引で投資をよりスマートに、より正確に。",
+        "subtitle": "手動取引が面倒？KeepBitの量的取引で、24時間365日市場を監視し、自動取引でチャンスを逃しません！"
       },
       {
-        "title": "簡単に量的戦略を実現し、市場の変動をコントロール。",
-        "subtitle": "AIアルゴリズムに働かせよう！KeepBitの量的取引は、大データとインテリジェント戦略を組み合わせ、変動する市場で有利に立ちます。"
+        "title": "量的戦略を簡単に実現し、市場の変動を制御。",
+        "subtitle": "AIアルゴリズムに任せてみませんか？KeepBitの量的取引は、ビッグデータとスマート戦略を組み合わせ、変動のある市場で先手を取ります。"
       },
       {
-        "title": "KeepBit、あなたの量的取引の専門家、高効率な投資を実現。",
-        "subtitle": "チャンスを逃しましたか？心配しないでください！KeepBitの量的システムは7x24時間自動実行し、すべての市場変動を利益機会に変えます。"
+        "title": "KeepBitで効率的な投資を実現。",
+        "subtitle": "チャンスを逃したくない？もう心配ありません！KeepBitの量的システムは24時間自動実行し、市場の変動をすべて利益に変えます。"
       }
     ],
     "guide": {
       "title": "初心者ガイド",
-      "subtitle": "KeepBitでWeb3の旅を始めましょう",
+      "subtitle": "KeepBitでWeb3の旅を始めよう",
       "list": [
-        { "title": "KeepBitパートナーになる", "subtitle": "契約取引で最大80%の永続的なリベートを享受" },
-        { "title": "今すぐ入金", "subtitle": "簡単なプロセスで、Web3の旅をすぐに始めましょう" },
-        { "title": "取引を始める", "subtitle": "すぐに取引を始め、Web3の豊かな利益を享受" },
-        { "title": "コピー取引を体験", "subtitle": "市場のシグナルをキャッチし、プロの利益をコピー" }
+        { "title": "今すぐ登録", "subtitle": "市場のシグナルをキャッチし、エキスパートの利益をコピー" },
+        { "title": "今すぐ入金", "subtitle": "簡単な手続きでWeb3の旅を迅速に開始" },
+        { "title": "取引を開始", "subtitle": "すぐに取引を開始し、Web3の豊富な利益を享受" },
+        { "title": "友達を招待", "subtitle": "契約取引で最大80％の永久リベートを獲得" }
       ]
     },
     "download": {
-      "title": "いつでもどこでも、便利な取引",
-      "scan": "QRコードでダウンロード",
+      "title": "いつでもどこでも簡単取引",
+      "scan": "QRコードをスキャンしてダウンロード",
       "tap": "クリックしてダウンロード"
     }
   },
   "market": {
+    "searchValue": "暗号資産略称を検索",
     "marking": {
-      "title": "市場の状況",
-      "ranking": ["上昇ランキング", "下降ランキング", "人気ランキング"],
-      "coinType": "コインタイプ",
+      "title": "市場動向",
+      "ranking": ["値上がりランキング", "値下がりランキング", "人気ランキング"],
+      "coinType": "暗号資産種類",
       "price": "価格",
-      "change": "24時間変動"
+      "change": "24時間変動率"
     },
     "default": {
-      "title": "デフォルトの選択市場",
+      "title": "デフォルトお気に入り市場",
       "tab": [
         {
-          "label": "現物",
-          "title": "現物"
+          "label": "スポット",
+          "title": "スポット"
         },
         {
           "label": "契約",
           "title": "契約"
         },
         {
-          "label": "自分の選択",
-          "title": "おすすめの選択コイン"
+          "label": "お気に入り",
+          "title": "おすすめ暗号資産"
         }
       ],
-      "addSelf": "一発で選択に追加"
+      "addSelf": "ワンクリックでお気に入りに追加"
     }
   },
   "strategy": {
     "title": "戦略広場",
-    "subtitle": ["市場のシグナルをキャッチ", "プロの利益をコピー"],
+    "subtitle": ["市場のシグナルをキャッチ", "エキスパートの利益をコピー"],
     "trading": {
       "title": "取引戦略",
       "search": "取引戦略を検索"
     },
-    "enable": "有効",
+    "enable": "有効化",
     "signal": "シグナル",
-    "profit": "利益率",
-    "runtime": "実行時間",
+    "profit": "収益率",
+    "runtime": "稼働時間",
     "maxDrawDown": "7日間最大ドローダウン率",
     "manageScale": "運用規模",
     "strategyBy": "戦略提供者",
@@ -105,102 +315,165 @@
     "useCount": "利用者数",
     "detail": {
       "title": "詳細パラメータ",
-      "balance": "コピー取引保証金残高",
+      "balance": "コピートレード保証金残高",
       "scale": "資産運用規模",
-      "profit": "コピー取引者の損益",
-      "minimum": "コピー取引最小額",
-      "ratios": "利益分配比率"
+      "profit": "コピートレーダーの損益",
+      "minimum": "最低コピートレード金額",
+      "ratios": "利益分配率"
     },
     "project": {
       "title": "プロジェクトパフォーマンス",
       "rewards": "報酬率",
       "profit": "損益",
-      "profitRatio": "損益比率",
+      "profitRatio": "損益率",
       "winRate": "勝率",
       "maxDrawDown": "最大ドローダウン",
       "totalCount": "総ポジション数",
-      "profitCount": "利益のあるポジション数"
+      "profitCount": "利益ポジション数"
     },
     "investment": {
-      "title": "投資額",
+      "title": "投資金額",
       "usage": "利用可能",
       "desc": [
-        "戦略が停止した場合、あなたが得た利益の20%が戦略提供者に分配されます。",
-        "戦略が実行中の場合、あなたは戦略提供者のすべての操作（開始、停止）をコピーします。"
+        "戦略停止時、利益の20％が決済時に戦略提供者へ分配されます。",
+        "戦略稼働中、提供者のすべての操作（エントリー、エグジット）に追従します。"
       ]
     },
     "useStrategy": "戦略を使用",
-    "imitation": "シミュレーション",
+    "imitation": "模擬",
     "createStrategy": "戦略を作成",
     "cancel": "キャンセル"
   },
   "deal": {
     "title": "AI量的取引",
-    "subtitle": ["市場のシグナルをキャッチ", "プロの利益をコピー"],
+    "subtitle": ["市場のシグナルをキャッチ", "エキスパートの利益をコピー"],
     "order": "取引注文",
-    "tabs": ["実行中", "停止済み"],
-    "runtime": "実行時間",
+    "tabs": ["稼働中", "停止中"],
+    "runtime": "稼働時間",
     "endStrategy": "戦略を終了",
-    "endStrategyQuestion": "本当にこの戦略を終了しますか？",
+    "searchOrders": "取引注文を検索",
+    "endStrategyQuestion": "この戦略を終了しますか？",
     "unrealizedGain": "未実現利益",
-    "totalInvest": "総投資額",
+    "totalInvest": "総投資金額",
     "profit": "実現利益",
     "filledCount": "取引回数",
-    "openPrice": "保有コスト",
-    "profitRate": "利益率",
-    "filledTotalAmount": "取引総額",
-    "qty": "現在のポジション",
-    "direction": "ポジションの方向",
-    "closePosition": "決済",
-    "closePositionQuestion": "本当に手動で決済しますか？（手動での決済は戦略の利益率に影響します）",
-    "showDetail": "詳細を見る"
+    "openPrice": "ポジションコスト",
+    "profitRate": "収益率",
+    "filledTotalAmount": "総取引額",
+    "qty": "現在のポジション数量",
+    "direction": "ポジション方向",
+    "closePosition": "ポジションをクローズ",
+    "closePositionQuestion": "ポジションを手動でクローズしますか？（収益率に影響する可能性があります）",
+    "showDetail": "詳細を見る",
+    "days": "日",
+    "hours": "時間",
+    "minutes": "分",
+    "symbol": "取引ペア",
+    "tradeTime": "取引時間",
+    "orderType": "注文タイプ",
+    "filledAmount": "約定数量",
+    "filledPrice": "約定価格",
+    "fee": "手数料",
+    "openLong": "ロングエントリー",
+    "closeLong": "ロングクローズ",
+    "openShort": "ショートエントリー",
+    "closeShort": "ショートクローズ",
+    "market": "市場価格",
+    "limit": "指値"
   },
   "dealContracts": {
     "title": "AI量的取引",
-    "subtitle": ["市場のシグナルをキャッチ", "プロの利益をコピー"],
+    "subtitle": ["市場シグナルをキャッチ", "エキスパートの利益をコピー"],
     "order": "取引注文",
     "tabs": ["実行中", "停止済み"],
-    "runtime": "実行時間",
-    "endStrategy": "戦略を終了",
-    "endStrategyQuestion": "本当にこの戦略を終了しますか？",
+    "runtime": "稼働時間",
+    "endStrategy": "戦略終了",
+    "searchOrders": "取引注文を検索",
+    "endStrategyQuestion": "この戦略を終了してよろしいですか？",
     "unrealizedGain": "未実現利益",
     "totalInvest": "総投資額",
     "profit": "実現利益",
-    "filledCount": "取引回数",
-    "openPrice": "保有コスト",
-    "profitRate": "利益率",
+    "filledCount": "取引件数",
+    "openPrice": "ポジションコスト",
+    "profitRate": "収益率",
     "filledTotalAmount": "取引総額",
-    "qty": "現在のポジション",
-    "direction": "ポジションの方向",
-    "closePosition": "決済",
-    "closePositionQuestion": "本当に手動で決済しますか？（手動での決済は戦略の利益率に影響します）",
-    "showDetail": "詳細を見る"
+    "qty": "現在のポジション数量",
+    "direction": "ポジション方向",
+    "closePosition": "ポジションを閉じる",
+    "closePositionQuestion": "手動でポジションを閉じますか？（戦略の収益率に影響します）",
+    "showDetail": "詳細を表示",
+    "days": "日",
+    "hours": "時間",
+    "minutes": "分",
+    "symbol": "取引ペア",
+    "tradeTime": "取引時間",
+    "orderType": "注文タイプ",
+    "filledAmount": "約定数量",
+    "filledPrice": "約定価格",
+    "fee": "手数料",
+    "openLong": "ロングエントリー",
+    "closeLong": "ロングクローズ",
+    "openShort": "ショートエントリー",
+    "closeShort": "ショートクローズ",
+    "market": "市場価格",
+    "limit": "指値"
+  },
+  "user": {
+    "pleaseLogin": "ログインしてください",
+    "getUserInfoFail": "ユーザー情報の取得に失敗しました。リフレッシュして再試行してください。",
+    "basicInfo": "基本情報",
+    "nickname": "ニックネーム",
+    "uid": "UID",
+    "vipLevel": "VIPレベル",
+    "email": "メールアドレス",
+    "mobile": "携帯番号",
+    "identityVerification": "本人確認",
+    "identityDesc": "個人名義で取引を行い、個人情報を提供します。",
+    "goVerify": "認証へ ->",
+    "securityManagement": "セキュリティ管理",
+    "securityDesc": "アカウントの安全性を確保するための設定を提供します。",
+    "goSettings": "設定へ ->"
   },
   "about": {
     "title": "私たちについて",
-    "subtitle": "KeepBitは、安全で透明性のあるデジタル資産派生商品取引プラットフォームで、‘ユーザー第一、シンプル、透明、信頼’を企業理念として掲げ、投資家にワンストップのデジタル資産金融サービスを提供しています。",
+    "subtitle": "KeepBitは、安全で透明性の高いデジタル資産デリバティブ取引プラットフォームです。「ユーザー第一、簡単、透明、信頼」の価値観に基づき、投資家にワンストップのデジタル資産金融サービスを提供しています。",
     "advantage": {
       "title": "私たちの強み",
       "list": [
         {
-          "title": "信頼性の高い取引プラットフォーム",
-          "desc": "業界最先端のセキュリティ技術とコンプライアンス運営により、ユーザーに安全でスムーズな取引体験を提供します。"
+          "title": "安全で信頼できる取引プラットフォーム",
+          "desc": "業界をリードするセキュリティ技術とコンプライアンス運営により、リアルタイムで信頼性の高い取引環境を提供します！"
         },
         {
-          "title": "豊富な取引選択肢",
-          "desc": "多様な取引方法と多数の提携先により、ユーザーには豊富な取引手段と商品選択肢が提供され、流動性も確保されています。"
+          "title": "多様な取引オプション",
+          "desc": "多彩な取引手段とパートナーシップにより、豊富な取引手段と取引対象を提供し、十分な流動性を保証します。"
         },
         {
           "title": "エコシステムパートナー",
-          "desc": "KeepBitのエコシステムパートナーは、複数の戦略的サポートを即座に受け、KeepBitプラットフォームのエコバリューとデジタル通貨時代の恩恵を共有できます。"
+          "desc": "KeepBitエコシステムパートナーは多様な支援を即座に受け、KeepBitプラットフォームの価値を共有できます。"
         },
-        { "title": "ワンストップ取引サービス", "desc": "KeepBitは、世界中の数十カ国、100万人以上のユーザーに対して、7x24時間の多言語、高品質なサポートを提供しています。" }
+        { "title": "ワンストップ取引サービス", "desc": "KeepBitは、世界数十カ国、100万人以上のユーザーに24時間高品質のサービスを提供します。" }
       ]
     },
     "contact": {
       "title": "お問い合わせ",
       "list": ["ビジネス提携", "メディア提携", "運営サポート"]
     }
+  },
+  "assets": {
+    "title": "資産概要",
+    "totalAssets": "資産合計評価額",
+    "digitalAssets": "デジタル資産の入金",
+    "digitalAssetsDesc": "自分のアカウントに入金してください",
+    "assetDistribution": "資産分布",
+    "purse": "ウォレット",
+    "assetValuation": "資産評価額",
+    "controls": "操作",
+    "fundAccount": "資金アカウント",
+    "contractAccount": "契約アカウント",
+    "strategyAccount": "戦略アカウント",
+    "demoAccount": "デモアカウント",
+    "distribution": "分布"
   },
   "agencyPlan": {
     "title": "代理店ランク基準の説明",

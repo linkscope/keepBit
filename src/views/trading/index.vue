@@ -6,6 +6,11 @@ import initTickerTape from '@/utils/initTickerTape.js'
 import useCryptoWS from '@/hooks/useCryptoWS.js'
 import OptionCard from './components/OptionCard.vue'
 import {useTableColumns} from './model'
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const coin = route.query.coin;
+
 const { t } = useI18n()
 const {
   positionModal,
@@ -763,7 +768,7 @@ watch(
     },
     {immediate: true, deep: true} // 深度监听 coinList 并确保初次加载时触发
 );
-
+let hasSwitchedCoin = false; // 用于标志是否已经切换过币种
 onMounted(() => {
   if (tickerTapRef.value) {
     tickerTapRef.value.appendChild(initTickerTape())
@@ -795,6 +800,22 @@ onMounted(() => {
     initializeWebSocket();
     fetchMyChoices();
   }
+
+  watch(
+      () => coinList.value,
+      (newCoinList) => {
+        // 如果 coinList 有数据且尚未切换过币种
+        if (newCoinList.length > 0 && coin && !hasSwitchedCoin) {
+          const targetCoin = newCoinList.find((item) => item.instId === (coin.toUpperCase() + "USDT"));
+          if (targetCoin) {
+            selectedCoin.value = targetCoin;
+            message.success(`已切换到币种 ${coin}`);
+            hasSwitchedCoin = true; // 标记为已切换
+          }
+        }
+      },
+      { immediate: true, deep: true } // 确保监听初始值，并深度监听 coinList
+  );
 });
 
 // 监听 selectedCoin 的 instId 变化

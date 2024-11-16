@@ -150,7 +150,12 @@ const createStrategy = async () => {
     message.error(error)
   }
 }
-
+const navigateToTrading = (coin) => {
+  router.push({
+    path: '/trading',
+    query: { coin },
+  });
+};
 onMounted(() => {
   fetchTactics() // 组件挂载时获取数据
 })
@@ -196,7 +201,12 @@ onMounted(() => {
             <NButton class="bg-[#76e43c] text-black font-bold px-8 rounded-full" @click="openModal(item)"
               >{{ t('strategy.enable') }}
             </NButton>
-            <NButton class="bg-black text-white font-bold px-8 rounded-full">{{ t('strategy.signal') }}</NButton>
+            <NButton
+                class="bg-black text-white font-bold px-8 rounded-full"
+                @click="navigateToTrading(item.Coin)"
+            >
+              {{ t('strategy.signal') }}
+            </NButton>
           </div>
         </div>
         <div class="py-4 space-y-4">

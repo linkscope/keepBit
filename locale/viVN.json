@@ -5,205 +5,408 @@
       "market": "Thị trường",
       "trading": "Giao dịch hợp đồng",
       "quantitative": "Giao dịch định lượng",
-      "strategy": "Quảng trường chiến lược",
-      "deal": "Đặt lệnh chiến lược",
-      "dealContracts": "Lệnh mô phỏng",
+      "strategy": "Chiến lược",
+      "deal": "Đơn đặt hàng chiến lược",
+      "dealContracts": "Đơn hàng mô phỏng",
       "explorationAndLearning": "Khám phá và học hỏi",
       "about": "Về chúng tôi",
       "announcementCenter": "Trung tâm thông báo",
-      "keepBitAcademy": "KeepBit Academy",
+      "keepBitAcademy": "Học viện KeepBit",
       "kycCertificationArea": "Khu vực chứng nhận KYC",
       "channelRecruitment": "Tuyển dụng kênh",
-      "brokerCooperation": "Hợp tác với môi giới",
+      "brokerCooperation": "Hợp tác môi giới",
       "inviteFriends": "Mời bạn bè",
       "vipService": "Dịch vụ VIP"
     }
   },
-  "login": "Đăng nhập",
-  "register": "Đăng ký",
+  "message": {
+    "loginSuccess": "Đăng nhập thành công",
+    "addSuccess": "Thêm thành công",
+    "addError": "Thêm thất bại",
+    "getTacticsError": "Không lấy được danh sách chiến lược",
+    "createSuccess": "Tạo thành công",
+    "createError": "Tạo thất bại",
+    "finishSuccess": "Kết thúc chiến lược thành công",
+    "finishError": "Kết thúc chiến lược thất bại",
+    "closePositionSuccess": "Đóng vị thế thành công",
+    "searchSuccess": "Tìm kiếm thành công",
+    "searchError": "Tìm kiếm thất bại"
+  },
+  "login": {
+    "title": "Đăng nhập",
+    "welcome": ["Chào mừng đến với KeepBit", "Thế giới Web3 của bạn bắt đầu từ đây"],
+    "tabs": ["Email"],
+    "email": {
+      "label": ["Email", "Mật khẩu"],
+      "placeholder": ["Nhập email", "Nhập mật khẩu"]
+    },
+    "forget": "Quên mật khẩu?",
+    "other": "Hoặc đăng nhập bằng",
+    "noAccount": "Chưa có tài khoản?",
+    "join": "Tham gia ngay"
+  },
+  "register": {
+    "title": "Đăng ký",
+    "welcome": ["Đăng ký KeepBit ngay lập tức"],
+    "tabs": ["Email"],
+    "email": {
+      "label": ["Email", "Mã mời (không bắt buộc)"],
+      "placeholder": ["Nhập email", "Nhập mã mời"],
+      "invalid": "Vui lòng nhập một địa chỉ email hợp lệ"
+    },
+    "verifyCode": {
+      "label": "Mã xác minh",
+      "placeholder": "Nhập mã xác minh",
+      "sent": "Mã xác minh đã được gửi đến email của bạn"
+    },
+    "password": {
+      "label": "Mật khẩu",
+      "placeholder": "Nhập mật khẩu",
+      "rule1": "Ít nhất 1 chữ cái thường (a-z)",
+      "rule2": "Ít nhất 1 chữ số",
+      "rule3": "Ít nhất 1 ký hiệu (như !@#$%^&*)",
+      "rule4": "Mật khẩu dài từ 8-32 ký tự",
+      "invalid": "Mật khẩu không hợp lệ"
+    },
+    "announce": "Tiếp tục đăng ký đồng nghĩa với việc bạn đồng ý",
+    "according": ["《Điều khoản sử dụng》", "Chính sách bảo mật"],
+    "error": "Đã xảy ra lỗi, vui lòng thử lại sau",
+    "success": "Đăng ký thành công, vui lòng đăng nhập"
+  },
+  "findPassword": {
+    "title": "Khôi phục mật khẩu",
+    "welcome": ["Quay lại KeepBit ngay lập tức"],
+    "tabs": ["Email"],
+    "email": {
+      "label": ["Email"],
+      "placeholder": ["Nhập email"],
+      "invalid": "Vui lòng nhập một địa chỉ email hợp lệ"
+    },
+    "verifyCode": {
+      "label": "Mã xác minh",
+      "placeholder": "Nhập mã xác minh",
+      "sent": "Mã xác minh đã được gửi đến email của bạn"
+    },
+    "password": {
+      "label": "Mật khẩu đăng nhập mới",
+      "placeholder": "Nhập mật khẩu",
+      "rule1": "Ít nhất 1 chữ cái thường (a-z)",
+      "rule2": "Ít nhất 1 chữ số",
+      "rule3": "Ít nhất 1 ký hiệu (như !@#$%^&*)",
+      "rule4": "Mật khẩu dài từ 8-32 ký tự",
+      "invalid": "Mật khẩu không hợp lệ",
+      "notMatch": "Hai lần nhập mật khẩu không khớp!"
+    },
+    "confirmPassword": {
+      "label": "Xác nhận mật khẩu mới",
+      "placeholder": "Nhập lại mật khẩu"
+    },
+    "announce": "Tiếp tục đăng ký đồng nghĩa với việc bạn đồng ý",
+    "according": ["《Điều khoản sử dụng》", "Chính sách bảo mật"],
+    "error": "Đã xảy ra lỗi, vui lòng thử lại sau",
+    "success": "Thay đổi thành công, vui lòng đăng nhập"
+  },
+  "trading": {
+    "perpetual": "Vĩnh viễn",
+    "searchAlias": "Tìm kiếm loại tiền",
+    "change24h": "Biến động 24h",
+    "high24h": "Giá cao nhất 24h",
+    "low24h": "Giá thấp nhất 24h",
+    "volume24h": "Khối lượng giao dịch 24h",
+    "volumeQuote24h": "Giá trị giao dịch 24h (USDT)",
+    "entrustOrder": "Lệnh ủy thác",
+    "latestDeal": "Giao dịch mới nhất",
+    "priceUSDT": "Giá (USDT)",
+    "quantity": "Số lượng",
+    "total": "Tổng",
+    "buyTag": "Mua",
+    "sellTag": "Bán",
+    "time": "Thời gian",
+    "closePosition": "Đóng vị thế",
+    "takeProfitStopLoss": "Chốt lời/Cắt lỗ",
+    "position": "Vị thế",
+    "historyPosition": "Lịch sử vị thế",
+    "historyEntrust": "Lịch sử ủy thác",
+    "direction": "Hướng vị thế",
+    "marginMode": "Chế độ ký quỹ",
+    "leverage": "Đòn bẩy",
+    "currentPrice": "Giá hiện tại",
+    "openPrice": "Giá mở vị thế",
+    "price": "Giá (USDT)",
+    "available": "Có thể",
+    "estimatedProfitLoss": "Ước tính lãi/lỗ",
+    "closingFee": "Phí đóng vị thế ước tính",
+    "stopProfitLoss": "Chốt lời/Cắt lỗ",
+    "stopProfit": "Chốt lời",
+    "stopLoss": "Cắt lỗ",
+    "triggerPrice": "Giá kích hoạt",
+    "long": "Mua",
+    "short": "Bán",
+    "isolated": "Riêng lẻ",
+    "cross": "Chéo",
+    "profit": "Lợi nhuận",
+    "profitRate": "Tỷ lệ lợi nhuận",
+    "size": "Số lượng vị thế",
+    "margin": "Ký quỹ",
+    "availableUse": "Có thể sử dụng",
+    "markPrice": "Giá đánh dấu",
+    "closingPrice": "Giá thanh lý ước tính",
+    "operation": "Hoạt động",
+    "contract": "Hợp đồng",
+    "limit": "Giới hạn",
+    "market": "Thị trường",
+    "openLong": "Mở mua",
+    "openShort": "Mở bán",
+    "closeLong": "Đóng mua",
+    "closeShort": "Đóng bán"
+  },
   "home": {
-    "welcome": ["Chào mừng đến với KeepBit", "Thế giới Web3 của bạn bắt đầu từ đây", "Bắt đầu"],
-    "subWelcome": ["Dễ dàng quản lý và giao dịch", "tài sản tiền điện tử của bạn"],
-    "hotCoinPrice": "Giá các đồng tiền hot",
-    "hotStock": "Cổ phiếu hot",
-    "hotTreat": "Hợp đồng hot",
-    "riseRanking": "Xếp hạng tăng giá",
-    "fallRanking": "Xếp hạng giảm giá",
+    "welcome": ["Chào mừng đến với KeepBit", "Thế giới Web3 của bạn bắt đầu từ đây"],
+    "subWelcome": ["Dễ dàng quản lý và giao dịch", "tài sản tiền mã hóa của bạn"],
+    "hotCoinPrice": "Giá tiền mã hóa nổi bật",
+    "hotStock": "Giao dịch giao ngay nổi bật",
+    "hotTreat": "Hợp đồng nổi bật",
+    "riseRanking": "Bảng xếp hạng tăng giá",
+    "fallRanking": "Bảng xếp hạng giảm giá",
     "tradingStrategy": "Chiến lược giao dịch định lượng lợi nhuận cao",
     "tradingStrategyDesc": [
       {
         "title": "Giao dịch định lượng, giúp đầu tư của bạn thông minh và chính xác hơn.",
-        "subtitle": "Giao dịch thủ công quá tốn thời gian? Hãy để giao dịch định lượng của KeepBit cung cấp dịch vụ theo dõi thị trường 24/7 và giao dịch tự động, nắm bắt mọi cơ hội!"
+        "subtitle": "Giao dịch thủ công quá mất thời gian? Hãy để giao dịch định lượng của KeepBit cung cấp giám sát thị trường và giao dịch tự động 24/7, nắm bắt mọi cơ hội!"
       },
       {
         "title": "Dễ dàng thực hiện chiến lược định lượng, kiểm soát biến động thị trường.",
-        "subtitle": "Hãy để AI làm việc cho bạn! Giao dịch định lượng KeepBit kết hợp dữ liệu lớn và chiến lược thông minh, giúp bạn chiến thắng trong thị trường biến động."
+        "subtitle": "Hãy để thuật toán AI làm việc cho bạn! Giao dịch định lượng KeepBit, tích hợp dữ liệu lớn và chiến lược thông minh, giúp bạn chiếm ưu thế trên thị trường biến động."
       },
       {
-        "title": "KeepBit, chuyên gia giao dịch định lượng của bạn, tạo ra đầu tư hiệu quả hơn.",
-        "subtitle": "Bỏ lỡ cơ hội? Đừng lo! Hệ thống định lượng của KeepBit tự động thực hiện 24/7, biến mọi biến động thị trường thành cơ hội lợi nhuận."
+        "title": "KeepBit, chuyên gia giao dịch định lượng của bạn, mang lại hiệu quả đầu tư cao hơn.",
+        "subtitle": "Bỏ lỡ cơ hội? Không cần lo lắng nữa! Hệ thống định lượng của KeepBit hoạt động tự động 24/7, biến mọi biến động thị trường thành cơ hội sinh lời."
       }
     ],
     "guide": {
       "title": "Hướng dẫn cho người mới",
       "subtitle": "Bắt đầu hành trình Web3 của bạn với KeepBit",
       "list": [
-        { "title": "Trở thành đối tác KeepBit", "subtitle": "Nhận hoa hồng vĩnh viễn lên đến 80% cho giao dịch hợp đồng" },
+        { "title": "Đăng ký ngay", "subtitle": "Nắm bắt tín hiệu thị trường, sao chép lợi nhuận từ chuyên gia" },
         { "title": "Nạp tiền ngay", "subtitle": "Quy trình đơn giản, bắt đầu hành trình Web3 ngay lập tức" },
-        { "title": "Bắt đầu giao dịch", "subtitle": "Giao dịch nhanh chóng, tận hưởng lợi nhuận Web3" },
-        { "title": "Trải nghiệm sao chép lệnh", "subtitle": "Bắt tín hiệu thị trường, sao chép lợi nhuận từ các chuyên gia" }
+        { "title": "Bắt đầu giao dịch", "subtitle": "Nhanh chóng làm quen giao dịch, tận hưởng lợi nhuận từ Web3" },
+        { "title": "Mời bạn bè tham gia", "subtitle": "Nhận hoàn phí lên đến 80% khi giao dịch hợp đồng" }
       ]
     },
     "download": {
       "title": "Giao dịch tiện lợi mọi lúc mọi nơi",
-      "scan": "Quét mã để tải",
-      "tap": "Nhấn để tải"
+      "scan": "Quét mã để tải xuống",
+      "tap": "Nhấn để tải xuống"
     }
   },
   "market": {
+    "searchValue": "Tìm kiếm mã tiền mã hóa",
     "marking": {
       "title": "Thị trường",
-      "ranking": ["Xếp hạng tăng giá", "Xếp hạng giảm giá", "Xếp hạng hot"],
-      "coinType": "Loại đồng",
+      "ranking": ["Tăng giá", "Giảm giá", "Phổ biến"],
+      "coinType": "Loại tiền",
       "price": "Giá",
       "change": "Biến động 24 giờ"
     },
     "default": {
-      "title": "Thị trường tùy chọn mặc định",
+      "title": "Thị trường yêu thích mặc định",
       "tab": [
         {
-          "label": "Tiền mặt",
-          "title": "Tiền mặt"
+          "label": "Giao ngay",
+          "title": "Giao ngay"
         },
         {
           "label": "Hợp đồng",
           "title": "Hợp đồng"
         },
         {
-          "label": "Tùy chọn",
-          "title": "Đồng tiền tự chọn"
+          "label": "Yêu thích",
+          "title": "Đề xuất tiền mã hóa yêu thích"
         }
       ],
-      "addSelf": "Thêm tự chọn một cách nhanh chóng"
+      "addSelf": "Thêm vào danh sách yêu thích chỉ với một cú nhấp"
     }
   },
   "strategy": {
     "title": "Quảng trường chiến lược",
-    "subtitle": ["Bắt tín hiệu thị trường", "Sao chép lợi nhuận từ các chuyên gia"],
+    "subtitle": ["Nắm bắt tín hiệu thị trường", "Sao chép lợi nhuận từ chuyên gia"],
     "trading": {
       "title": "Chiến lược giao dịch",
       "search": "Tìm kiếm chiến lược giao dịch"
     },
     "enable": "Kích hoạt",
     "signal": "Tín hiệu",
-    "profit": "Lợi nhuận",
+    "profit": "Tỷ lệ lợi nhuận",
     "runtime": "Thời gian chạy",
-    "maxDrawDown": "Tỉ lệ giảm mạnh 7 ngày",
+    "maxDrawDown": "Tỷ lệ rút vốn tối đa trong 7 ngày",
     "manageScale": "Quy mô quản lý",
-    "strategyBy": "Chiến lược từ",
-    "shareProfit": "Chia sẻ lợi nhuận",
-    "useCount": "Số người sử dụng",
+    "strategyBy": "Chiến lược bởi",
+    "shareProfit": "Phân chia lợi nhuận",
+    "useCount": "Số lượng người dùng",
     "detail": {
       "title": "Thông số chi tiết",
-      "balance": "Số dư ký quỹ theo dõi lệnh",
+      "balance": "Số dư ký quỹ theo chiến lược",
       "scale": "Quy mô quản lý tài sản",
-      "profit": "Lợi nhuận hoặc thua lỗ của người theo dõi",
-      "minimum": "Số tiền tối thiểu theo lệnh",
+      "profit": "Lãi/lỗ của người sao chép",
+      "minimum": "Số tiền tối thiểu sao chép",
       "ratios": "Tỷ lệ chia sẻ lợi nhuận"
     },
     "project": {
       "title": "Hiệu suất dự án",
-      "rewards": "Tỉ lệ phần thưởng",
-      "profit": "Lợi nhuận hoặc thua lỗ",
-      "profitRatio": "Tỉ lệ lợi nhuận hoặc thua lỗ",
-      "winRate": "Tỉ lệ thắng",
-      "maxDrawDown": "Giảm mạnh tối đa",
-      "totalCount": "Tổng số lệnh",
-      "profitCount": "Số lệnh có lợi nhuận"
+      "rewards": "Tỷ lệ thưởng",
+      "profit": "Lãi/lỗ",
+      "profitRatio": "Tỷ lệ lãi/lỗ",
+      "winRate": "Tỷ lệ thắng",
+      "maxDrawDown": "Tỷ lệ rút vốn tối đa",
+      "totalCount": "Tổng số vị thế",
+      "profitCount": "Số vị thế có lợi nhuận"
     },
     "investment": {
       "title": "Số tiền đầu tư",
-      "usage": "Có sẵn",
+      "usage": "Có thể sử dụng",
       "desc": [
-        "Khi chiến lược dừng lại, 20% lợi nhuận bạn có sẽ được chia cho người tạo chiến lược khi thanh toán.",
-        "Khi chiến lược đang chạy, bạn sẽ làm theo mọi hành động của người tạo chiến lược (theo mở, theo dừng)."
+        "Khi chiến lược kết thúc, 20% lợi nhuận của bạn sẽ được chia cho người tạo chiến lược trong quá trình thanh toán.",
+        "Trong quá trình chạy chiến lược, bạn sẽ theo dõi tất cả các hoạt động của người tạo chiến lược (mở/đóng vị thế)."
       ]
     },
     "useStrategy": "Sử dụng chiến lược",
     "imitation": "Mô phỏng",
     "createStrategy": "Tạo chiến lược",
-    "cancel": "Hủy"
+    "cancel": "Hủy bỏ"
   },
   "deal": {
-    "title": "Giao dịch AI định lượng",
-    "subtitle": ["Bắt tín hiệu thị trường", "Sao chép lợi nhuận từ các chuyên gia"],
-    "order": "Lệnh giao dịch",
+    "title": "Giao dịch định lượng AI",
+    "subtitle": ["Nắm bắt tín hiệu thị trường", "Sao chép lợi nhuận từ chuyên gia"],
+    "order": "Đơn đặt hàng giao dịch",
     "tabs": ["Đang thực hiện", "Đã dừng"],
     "runtime": "Thời gian chạy",
     "endStrategy": "Kết thúc chiến lược",
+    "searchOrders": "Tìm kiếm đơn đặt hàng giao dịch",
     "endStrategyQuestion": "Bạn có chắc chắn muốn kết thúc chiến lược này không?",
     "unrealizedGain": "Lợi nhuận chưa thực hiện",
     "totalInvest": "Tổng số tiền đầu tư",
-    "profit": "Lợi nhuận thực hiện",
-    "filledCount": "Số giao dịch",
+    "profit": "Lợi nhuận đã thực hiện",
+    "filledCount": "Số lượng giao dịch",
     "openPrice": "Giá mở vị thế",
     "profitRate": "Tỷ lệ lợi nhuận",
-    "filledTotalAmount": "Tổng giao dịch",
-    "qty": "Vị thế hiện tại",
+    "filledTotalAmount": "Tổng giá trị giao dịch",
+    "qty": "Số lượng hiện tại",
     "direction": "Hướng vị thế",
     "closePosition": "Đóng vị thế",
-    "closePositionQuestion": "Bạn có chắc chắn muốn đóng vị thế này không? (Đóng thủ công sẽ ảnh hưởng đến tỷ lệ lợi nhuận chiến lược)",
-    "showDetail": "Xem chi tiết"
+    "closePositionQuestion": "Bạn có chắc chắn muốn đóng vị thế thủ công không? (Việc này có thể ảnh hưởng đến tỷ lệ lợi nhuận của chiến lược)",
+    "showDetail": "Xem chi tiết",
+    "days": "Ngày",
+    "hours": "Giờ",
+    "minutes": "Phút",
+    "symbol": "Cặp giao dịch",
+    "tradeTime": "Thời gian giao dịch",
+    "orderType": "Loại đơn đặt hàng",
+    "filledAmount": "Số lượng đã giao dịch",
+    "filledPrice": "Giá đã giao dịch",
+    "fee": "Phí giao dịch",
+    "openLong": "Mở vị thế mua",
+    "closeLong": "Đóng vị thế mua",
+    "openShort": "Mở vị thế bán",
+    "closeShort": "Đóng vị thế bán",
+    "market": "Thị trường",
+    "limit": "Giới hạn"
   },
   "dealContracts": {
-    "title": "Giao dịch AI hợp đồng",
-    "subtitle": ["Bắt tín hiệu thị trường", "Sao chép lợi nhuận từ các chuyên gia"],
-    "order": "Lệnh giao dịch",
+    "title": "Giao dịch định lượng AI",
+    "subtitle": ["Nắm bắt tín hiệu thị trường", "Sao chép lợi nhuận từ chuyên gia"],
+    "order": "Đơn đặt hàng giao dịch",
     "tabs": ["Đang thực hiện", "Đã dừng"],
     "runtime": "Thời gian chạy",
     "endStrategy": "Kết thúc chiến lược",
+    "searchOrders": "Tìm kiếm đơn đặt hàng giao dịch",
     "endStrategyQuestion": "Bạn có chắc chắn muốn kết thúc chiến lược này không?",
     "unrealizedGain": "Lợi nhuận chưa thực hiện",
     "totalInvest": "Tổng số tiền đầu tư",
-    "profit": "Lợi nhuận thực hiện",
-    "filledCount": "Số giao dịch",
-    "openPrice": "Giá mở vị thế",
+    "profit": "Lợi nhuận đã thực hiện",
+    "filledCount": "Số lượng giao dịch",
+    "openPrice": "Chi phí nắm giữ",
     "profitRate": "Tỷ lệ lợi nhuận",
-    "filledTotalAmount": "Tổng giao dịch",
-    "qty": "Vị thế hiện tại",
-    "direction": "Hướng vị thế",
+    "filledTotalAmount": "Tổng giá trị giao dịch",
+    "qty": "Số lượng hiện tại",
+    "direction": "Hướng nắm giữ",
     "closePosition": "Đóng vị thế",
-    "closePositionQuestion": "Bạn có chắc chắn muốn đóng vị thế này không? (Đóng thủ công sẽ ảnh hưởng đến tỷ lệ lợi nhuận chiến lược)",
-    "showDetail": "Xem chi tiết"
+    "closePositionQuestion": "Bạn có chắc chắn muốn đóng vị thế thủ công không? (Việc này có thể ảnh hưởng đến tỷ lệ lợi nhuận của chiến lược)",
+    "showDetail": "Xem chi tiết",
+    "days": "Ngày",
+    "hours": "Giờ",
+    "minutes": "Phút",
+    "symbol": "Cặp giao dịch",
+    "tradeTime": "Thời gian giao dịch",
+    "orderType": "Loại đơn đặt hàng",
+    "filledAmount": "Số lượng đã giao dịch",
+    "filledPrice": "Giá đã giao dịch",
+    "fee": "Phí giao dịch",
+    "openLong": "Mở vị thế mua",
+    "closeLong": "Đóng vị thế mua",
+    "openShort": "Mở vị thế bán",
+    "closeShort": "Đóng vị thế bán",
+    "market": "Thị trường",
+    "limit": "Giới hạn"
+  },
+  "user": {
+    "pleaseLogin": "Vui lòng đăng nhập trước",
+    "getUserInfoFail": "Không thể lấy thông tin người dùng, vui lòng thử làm mới lại",
+    "basicInfo": "Thông tin cơ bản",
+    "nickname": "Biệt danh",
+    "uid": "UID",
+    "vipLevel": "Cấp VIP của người dùng",
+    "email": "Email",
+    "mobile": "Số điện thoại",
+    "identityVerification": "Xác minh danh tính",
+    "identityDesc": "Giao dịch với tư cách cá nhân, cung cấp thông tin cá nhân",
+    "goVerify": "Đi xác minh ->",
+    "securityManagement": "Quản lý bảo mật",
+    "securityDesc": "Cung cấp các cài đặt chức năng để bảo vệ tài khoản của bạn",
+    "goSettings": "Đi cài đặt ->"
   },
   "about": {
     "title": "Về chúng tôi",
-    "subtitle": "KeepBit là một nền tảng giao dịch tài sản kỹ thuật số minh bạch và an toàn, chúng tôi cam kết với giá trị “Người dùng là trên hết, Đơn giản, Minh bạch, Tin cậy”, tập trung vào việc cung cấp dịch vụ tài chính một cửa cho các nhà đầu tư.",
+    "subtitle": "KeepBit là nền tảng giao dịch phái sinh tài sản số an toàn và minh bạch. Chúng tôi tuân thủ giá trị 'Người dùng là trên hết, Đơn giản, Minh bạch, Tin cậy', tập trung vào việc cung cấp dịch vụ tài chính tài sản số một cửa cho các nhà đầu tư.",
     "advantage": {
       "title": "Lợi thế của chúng tôi",
       "list": [
         {
           "title": "Nền tảng giao dịch an toàn và đáng tin cậy",
-          "desc": "Công nghệ bảo mật hàng đầu ngành và vận hành chuyên nghiệp hợp quy, đảm bảo trải nghiệm giao dịch đáng tin cậy, mượt mà và an toàn cho người dùng!"
+          "desc": "Công nghệ bảo mật hàng đầu trong ngành và hoạt động chuyên nghiệp tuân thủ pháp luật, đảm bảo trải nghiệm giao dịch đáng tin cậy, trôi chảy và an toàn cho người dùng!"
         },
         {
-          "title": "Lựa chọn giao dịch đa dạng",
-          "desc": "Nhiều phương thức giao dịch và đối tác hợp tác, cung cấp cho người dùng các công cụ giao dịch phong phú và các lựa chọn tài sản giao dịch, đồng thời đảm bảo tính thanh khoản giao dịch đầy đủ."
+          "title": "Lựa chọn giao dịch phong phú",
+          "desc": "Nhiều cách thức giao dịch và đối tác, cung cấp các phương tiện giao dịch phong phú và các tài sản giao dịch đa dạng cho người dùng, đồng thời đảm bảo thanh khoản giao dịch đầy đủ."
         },
         {
-          "title": "Đối tác sinh thái",
-          "desc": "Đối tác sinh thái KeepBit ngay lập tức nhận được sự hỗ trợ chiến lược đa dạng, chia sẻ giá trị hệ sinh thái của nền tảng KeepBit và lợi nhuận từ thời kỳ tiền điện tử."
+          "title": "Đối tác hệ sinh thái",
+          "desc": "Đối tác hệ sinh thái KeepBit nhận được hỗ trợ chiến lược đa dạng ngay lập tức, cùng chia sẻ giá trị hệ sinh thái của nền tảng KeepBit và lợi ích của thời đại tiền mã hóa."
         },
         {
           "title": "Dịch vụ giao dịch một cửa",
-          "desc": "KeepBit cung cấp dịch vụ đa ngôn ngữ và chất lượng cao 24/7 cho hàng triệu người dùng trên hơn 100 quốc gia!"
+          "desc": "KeepBit cung cấp dịch vụ chất lượng cao, đa ngôn ngữ 24/7 cho hơn 1 triệu người dùng tại hơn 10 quốc gia trên toàn thế giới!"
         }
       ]
     },
     "contact": {
-      "title": "Liên hệ với chúng tôi",
-      "list": ["Hợp tác kinh doanh", "Hợp tác truyền thông", "Hỗ trợ vận hành"]
+      "title": "Liên hệ chúng tôi",
+      "list": ["Hợp tác thương mại", "Hợp tác truyền thông", "Hỗ trợ vận hành"]
     }
+  },
+  "assets": {
+    "title": "Tổng quan tài sản",
+    "totalAssets": "Ước tính tổng tài sản",
+    "digitalAssets": "Nạp tiền tài sản số",
+    "digitalAssetsDesc": "Nạp tiền vào tài khoản của riêng bạn thông qua nạp tiền",
+    "assetDistribution": "Phân phối tài sản",
+    "purse": "Ví tiền",
+    "assetValuation": "Ước tính tài sản",
+    "controls": "Thao tác",
+    "fundAccount": "Tài khoản quỹ",
+    "contractAccount": "Tài khoản hợp đồng",
+    "strategyAccount": "Tài khoản chiến lược",
+    "demoAccount": "Tài khoản mô phỏng",
+    "distribution": "Phân phối"
   },
   "agencyPlan": {
     "title": "Hướng dẫn về tiêu chuẩn cấp bậc đại lý",

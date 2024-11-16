@@ -5,7 +5,9 @@ import { AddCircle16Regular, Search24Regular } from '@vicons/fluent'
 import Coin from '@/views/home/components/Coin.vue'
 import useCryptoWS from '@/hooks/useCryptoWS'
 import axios from 'axios'
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const { t } = useI18n()
 const currentTab = ref('stock')
 const { coinList, sortedCoinList, coinSpotList, sortedByLastPriceCoinList, sortedByLastPriceCoinSpotList } =
@@ -17,6 +19,11 @@ const message = useMessage()
 const pagination = ref({ current: 1, pageSize: 10, count: 1 })
 const searchValue = ref('')
 
+function handleCoinClick(instId) {
+  // 去掉 "USDT" 后跳转
+  const coin = instId.replace('USDT', '');
+  router.push({ path: '/trading', query: { coin } });
+}
 const coinData = computed(() => {
   const start = (pagination.value.current - 1) * pagination.value.pageSize
   const end = start + pagination.value.pageSize
@@ -134,7 +141,7 @@ async function addToFavorites() {
           <div class="flex-1">{{ t('market.marking.price') }}</div>
           <div class="flex-1">{{ t('market.marking.change') }}</div>
         </div>
-        <div class="flex items-center" v-for="item of sortedCoinList.list.slice(0, 6)" :key="item.instId">
+        <div class="flex items-center" v-for="item of sortedCoinList.list.slice(0, 6)" :key="item.instId"  @click="handleCoinClick(item.instId)">
           <div class="flex-1 flex items-center gap-x-2">
             <img class="size-[50px]" :src="item.image" />
             <div class="text-xs lg:text-xl">{{ item.instId.replace('USDT', '') }}</div>
@@ -159,7 +166,7 @@ async function addToFavorites() {
           <div class="flex-1">{{ t('market.marking.price') }}</div>
           <div class="flex-1">{{ t('market.marking.change') }}</div>
         </div>
-        <div class="flex items-center" v-for="item of sortedCoinList.list.slice(-6)" :key="item.instId">
+        <div class="flex items-center" v-for="item of sortedCoinList.list.slice(-6)" :key="item.instId"  @click="handleCoinClick(item.instId)">
           <div class="flex-1 flex items-center gap-x-2">
             <img class="size-[50px]" :src="item.image" />
             <div class="text-xs lg:text-xl">{{ item.instId.replace('USDT', '') }}</div>
@@ -184,7 +191,7 @@ async function addToFavorites() {
           <div class="flex-1">{{ t('market.marking.price') }}</div>
           <div class="flex-1">{{ t('market.marking.change') }}</div>
         </div>
-        <div class="flex items-center" v-for="item of sortedCoinList.list.slice(0, 6)" :key="item.instId">
+        <div class="flex items-center" v-for="item of sortedCoinList.list.slice(0, 6)" :key="item.instId" @click="handleCoinClick(item.instId)">
           <div class="flex-1 flex items-center gap-x-2">
             <img class="size-[50px]" :src="item.image" />
             <div class="text-xs lg:text-xl">{{ item.instId.replace('USDT', '') }}</div>
@@ -251,7 +258,7 @@ async function addToFavorites() {
           </template>
         </NInput>
       </div>
-      <Coin v-for="item of coinData" :key="item.instId" :coin="item" show-stock />
+      <Coin v-for="item of coinData" :key="item.instId" :coin="item" show-stock @click="handleCoinClick(item.instId)"/>
       <div class="flex justify-end">
         <NPagination v-model:page="pagination.current" :page-count="pagination.count" />
       </div>
@@ -269,7 +276,7 @@ async function addToFavorites() {
           </template>
         </NInput>
       </div>
-      <Coin v-for="item of coinData" :key="item.instId" :coin="item" show-stock />
+      <Coin v-for="item of coinData" :key="item.instId" :coin="item" show-stock  @click="handleCoinClick(item.instId)"/>
       <div class="flex justify-end">
         <NPagination v-model:page="pagination.current" :page-count="pagination.count" />
       </div>
@@ -289,7 +296,7 @@ async function addToFavorites() {
             </template>
           </NInput>
         </div>
-        <Coin v-for="item of coinData" :key="item.instId" :coin="item" show-stock />
+        <Coin v-for="item of coinData" :key="item.instId" :coin="item" show-stock  @click="handleCoinClick(item.instId)"/>
         <div class="flex justify-end">
           <NPagination v-model:page="pagination.current" :page-count="pagination.count" />
         </div>

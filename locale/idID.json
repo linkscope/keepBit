@@ -5,71 +5,281 @@
       "market": "Pasar",
       "trading": "Perdagangan Kontrak",
       "quantitative": "Perdagangan Kuantitatif",
-      "strategy": "Pusat Strategi",
+      "strategy": "Plaza Strategi",
       "deal": "Pesanan Strategi",
       "dealContracts": "Pesanan Simulasi",
       "explorationAndLearning": "Eksplorasi & Pembelajaran",
       "about": "Tentang Kami",
       "announcementCenter": "Pusat Pengumuman",
-      "keepBitAcademy": "KeepBit Akademi",
-      "kycCertificationArea": "Area Sertifikasi KYC",
-      "channelRecruitment": "Rekrutmen Saluran",
-      "brokerCooperation": "Kerjasama Broker",
+      "keepBitAcademy": "Akademi KeepBit",
+      "kycCertificationArea": "Zona Sertifikasi KYC",
+      "channelRecruitment": "Rekrutmen Channel",
+      "brokerCooperation": "Kerja Sama Broker",
       "inviteFriends": "Undang Teman",
       "vipService": "Layanan VIP"
     }
   },
-  "login": "Masuk",
-  "register": "Daftar",
+  "message": {
+    "loginSuccess": "Login Berhasil",
+    "addSuccess": "Berhasil Ditambahkan",
+    "addError": "Gagal Menambahkan",
+    "getTacticsError": "Gagal Mendapatkan Daftar Strategi",
+    "createSuccess": "Berhasil Dibuat",
+    "createError": "Gagal Membuat",
+    "finishSuccess": "Strategi Berhasil Dihentikan",
+    "finishError": "Gagal Menghentikan Strategi",
+    "closePositionSuccess": "Posisi Berhasil Ditutup",
+    "searchSuccess": "Pencarian Berhasil",
+    "searchError": "Pencarian Gagal"
+  },
+  "login": {
+    "title": "Login",
+    "welcome": ["Selamat Datang di KeepBit", "Perjalanan Web3 Anda Dimulai Di Sini"],
+    "tabs": ["Email"],
+    "email": {
+      "label": ["Email", "Kata Sandi"],
+      "placeholder": ["Masukkan Email Anda", "Masukkan Kata Sandi Anda"]
+    },
+    "forget": "Lupa Kata Sandi?",
+    "other": "Atau Login dengan",
+    "noAccount": "Belum punya akun?",
+    "join": "Bergabung Sekarang"
+  },
+  "register": {
+    "title": "Daftar",
+    "welcome": ["Daftar Sekarang di KeepBit"],
+    "tabs": ["Email"],
+    "email": {
+      "label": ["Email", "Kode Undangan (Opsional)"],
+      "placeholder": ["Masukkan Email Anda", "Masukkan Kode Undangan"],
+      "invalid": "Harap Masukkan Alamat Email yang Valid"
+    },
+    "verifyCode": {
+      "label": "Kode Verifikasi",
+      "placeholder": "Masukkan Kode Verifikasi",
+      "sent": "Kode Verifikasi Telah Dikirim ke Email Anda"
+    },
+    "password": {
+      "label": "Kata Sandi",
+      "placeholder": "Masukkan Kata Sandi",
+      "rule1": "Harus Mengandung Setidaknya 1 Huruf Kecil (a-z)",
+      "rule2": "Harus Mengandung Setidaknya 1 Angka",
+      "rule3": "Harus Mengandung Setidaknya 1 Simbol (seperti !@#$%^&*)",
+      "rule4": "Panjang Kata Sandi 8-32 Karakter",
+      "invalid": "Kata Sandi Tidak Valid"
+    },
+    "announce": "Melanjutkan Pendaftaran Berarti Anda Menyetujui",
+    "according": ["《Perjanjian Pengguna》", "Kebijakan Privasi"],
+    "error": "Terjadi Kesalahan, Silakan Coba Lagi Nanti",
+    "success": "Pendaftaran Berhasil, Silakan Login"
+  },
+  "findPassword": {
+    "title": "Pulihkan Kata Sandi",
+    "welcome": ["Kembali ke KeepBit Sekarang"],
+    "tabs": ["Email"],
+    "email": {
+      "label": ["Email"],
+      "placeholder": ["Masukkan Email Anda"],
+      "invalid": "Harap Masukkan Alamat Email yang Valid"
+    },
+    "verifyCode": {
+      "label": "Kode Verifikasi",
+      "placeholder": "Masukkan Kode Verifikasi",
+      "sent": "Kode Verifikasi Telah Dikirim ke Email Anda"
+    },
+    "password": {
+      "label": "Kata Sandi Baru",
+      "placeholder": "Masukkan Kata Sandi Baru",
+      "rule1": "Harus Mengandung Setidaknya 1 Huruf Kecil (a-z)",
+      "rule2": "Harus Mengandung Setidaknya 1 Angka",
+      "rule3": "Harus Mengandung Setidaknya 1 Simbol (seperti !@#$%^&*)",
+      "rule4": "Panjang Kata Sandi 8-32 Karakter",
+      "invalid": "Kata Sandi Tidak Valid",
+      "notMatch": "Kata Sandi Tidak Cocok!"
+    },
+    "confirmPassword": {
+      "label": "Konfirmasi Kata Sandi Baru",
+      "placeholder": "Masukkan Kata Sandi Baru Lagi"
+    },
+    "announce": "Melanjutkan Pendaftaran Berarti Anda Menyetujui",
+    "according": ["《Perjanjian Pengguna》", "Kebijakan Privasi"],
+    "error": "Terjadi Kesalahan, Silakan Coba Lagi Nanti",
+    "success": "Berhasil Diubah, Silakan Login"
+  },
+  "trading": {
+    "perpetual": "Perpetual",
+    "searchAlias": "Cari Mata Uang",
+    "change24h": "Perubahan 24 Jam",
+    "high24h": "Harga Tertinggi 24 Jam",
+    "low24h": "Harga Terendah 24 Jam",
+    "volume24h": "Volume Perdagangan 24 Jam",
+    "volumeQuote24h": "Nilai Perdagangan 24 Jam (USDT)",
+    "entrustOrder": "Pesanan Amanah",
+    "latestDeal": "Transaksi Terbaru",
+    "priceUSDT": "Harga (USDT)",
+    "quantity": "Jumlah",
+    "total": "Total",
+    "buyTag": "Beli",
+    "sellTag": "Jual",
+    "time": "Waktu",
+    "closePosition": "Tutup Posisi",
+    "takeProfitStopLoss": "Ambil Untung/Hentikan Kerugian",
+    "position": "Posisi",
+    "historyPosition": "Riwayat Posisi",
+    "historyEntrust": "Riwayat Amanah",
+    "direction": "Arah Posisi",
+    "marginMode": "Mode Margin",
+    "leverage": "Leverage",
+    "currentPrice": "Harga Saat Ini",
+    "openPrice": "Harga Pembukaan",
+    "price": "Harga (USDT)",
+    "available": "Tersedia",
+    "estimatedProfitLoss": "Estimasi Untung/Rugi",
+    "closingFee": "Estimasi Biaya Penutupan",
+    "stopProfitLoss": "Ambil Untung/Hentikan Kerugian",
+    "stopProfit": "Ambil Untung",
+    "stopLoss": "Hentikan Kerugian",
+    "triggerPrice": "Harga Pemicu",
+    "long": "Beli",
+    "short": "Jual",
+    "isolated": "Isolated",
+    "cross": "Cross",
+    "profit": "Keuntungan",
+    "profitRate": "Tingkat Keuntungan",
+    "size": "Ukuran Posisi",
+    "margin": "Margin",
+    "availableUse": "Tersedia untuk Digunakan",
+    "markPrice": "Harga Penanda",
+    "closingPrice": "Harga Likuidasi Perkiraan",
+    "operation": "Operasi",
+    "contract": "Kontrak",
+    "limit": "Harga Batas",
+    "market": "Harga Pasar",
+    "openLong": "Buka Panjang",
+    "openShort": "Buka Pendek",
+    "closeLong": "Tutup Panjang",
+    "closeShort": "Tutup Pendek",
+    "singleBuy": "Posisi Tunggal Beli",
+    "singleSell": "Posisi Tunggal Jual",
+    "unknown": "Tidak Diketahui",
+    "cancelOrder": "Batalkan Pesanan",
+    "createTime": "Waktu Pembuatan",
+    "newOrder": "Pesanan Baru",
+    "partiallyFilled": "Sebagian Terisi",
+    "filled": "Sepenuhnya Terisi",
+    "canceled": "Dibatalkan",
+    "avgPrice": "Harga Rata-rata",
+    "quantityFilled": "Jumlah Terisi",
+    "marginRate": "Rasio Margin",
+    "type": "Jenis Harga",
+    "totalOpen": "Jumlah Amanah",
+    "filledQuantity": "Jumlah Terisi",
+    "realizedPnl": "Keuntungan/Rugi Terealisasi",
+    "netProfit": "Keuntungan Bersih",
+    "totalFee": "Total Biaya",
+    "totalFunding": "Total Pendanaan",
+    "openTime": "Waktu Pembukaan",
+    "closeTime": "Waktu Penutupan",
+    "orderType": "Jenis Pesanan",
+    "openDirection": "Arah Pembukaan",
+    "orderStatus": "Status Pesanan",
+    "estimatedLiquidationPrice": "Harga Likuidasi Perkiraan",
+    "stopProfitDescription": "Ketika harga penanda ≥ USDT, akan menutup posisi pada harga terbaik, jumlah {symbol}, estimasi keuntungan {expectedProfit} USDT ({profitPercentage}%).",
+    "stopLossDescription": "Ketika harga penanda ≤ USDT, akan menutup posisi pada harga terbaik, jumlah {symbol}, estimasi rugi {expectedLoss} USDT ({lossPercentage}%).",
+    "limitPrice": "Harga Batas",
+    "marketPrice": "Harga Pasar",
+    "enterPrice": "Masukkan Harga",
+    "confirm": "Konfirmasi",
+    "closeAtBestPrice": "Ketika harga penanda ≥ {profitPrice} USDT, akan menutup posisi pada harga terbaik, jumlah {available} {symbol}, estimasi keuntungan {expectedProfit} USDT ({profitPercentage}%).",
+    "closeAtBestPriceWhenLoss": "Ketika harga penanda ≤ {lossPrice} USDT, akan menutup posisi pada harga terbaik, jumlah {available} {symbol}, estimasi rugi {expectedLoss} USDT ({lossPercentage}%).",
+    "openPosition": "Buka Posisi",
+    "crossed": "Cross",
+    "switchToIsolated": "Beralih ke Isolated",
+    "switchToCrossed": "Beralih ke Cross",
+    "limitOrder": "Pesanan Batas",
+    "marketOrder": "Pesanan Pasar",
+    "entrustPrice": "Harga Amanah",
+    "enterEntrustPrice": "Masukkan Harga Amanah",
+    "entrustQuantity": "Jumlah Amanah",
+    "enterEntrustQuantity": "Masukkan Jumlah Amanah",
+    "shortPosition": "Posisi Jual",
+    "longPosition": "Posisi Beli",
+    "availableToClose": "Jumlah yang Bisa Ditutup",
+    "availableToOpenLong": "Jumlah yang Bisa Buka Panjang",
+    "availableToOpenShort": "Jumlah yang Bisa Buka Pendek",
+    "selectDepositMethod": "Pilih Metode Deposit",
+    "depositCryptoCurrency": "Deposit Mata Uang Kripto",
+    "fromWalletOrExchange": "Dari Dompet atau Bursa",
+    "depositFiatCurrency": "Deposit Mata Uang Fiat",
+    "viaBankTransfer": "Melalui Transfer Bank",
+    "chargeHistory": "Riwayat Deposit",
+    "internalTransfer": "Transfer Internal",
+    "transferBetweenAccounts": "Transfer Antar Akun",
+    "selectNetwork": "Pilih Jaringan",
+    "networkWarning": "Peringatan: Pilih jaringan yang sama dengan platform penarikan, jika tidak dana Anda akan hilang.",
+    "depositAddress": "Alamat Deposit",
+    "depositTo": "Deposit Ke",
+    "onlyDepositToThisAddress": "Anda hanya dapat mendepositkan {selectedNetwork} ke alamat ini, deposit aset lain tidak akan dikembalikan.",
+    "orderConfirmation": "Konfirmasi Pesanan",
+    "orderPrice": "Harga Amanah",
+    "amount": "Jumlah",
+    "maxTransfer": "Transfer Maksimal",
+    "fundAccount": "Akun Dana",
+    "contractAccount": "Akun Kontrak",
+    "asset": "Aset",
+    "from": "Dari",
+    "to": "Ke"
+  },
   "home": {
-    "welcome": ["Selamat datang di KeepBit", "Dunia Web3 Anda dimulai dari sini", "Mulai"],
-    "subWelcome": ["Mudah dikelola dan diperdagangkan", "aset kripto Anda"],
-    "hotCoinPrice": "Harga Koin Terpopuler",
-    "hotStock": "Saham Populer",
+    "welcome": ["Selamat Datang di KeepBit", "Perjalanan Web3 Anda", "dimulai di sini"],
+    "subWelcome": ["Cara mudah untuk mengelola dan memperdagangkan", "aset cryptocurrency Anda"],
+    "hotCoinPrice": "Harga Koin Populer",
+    "hotStock": "Spot Populer",
     "hotTreat": "Kontrak Populer",
     "riseRanking": "Peringkat Kenaikan",
     "fallRanking": "Peringkat Penurunan",
-    "tradingStrategy": "Strategi Perdagangan Kuantitatif dengan Keuntungan Tinggi",
+    "tradingStrategy": "Strategi Perdagangan Kuantitatif Berhasil Tinggi",
     "tradingStrategyDesc": [
       {
-        "title": "Perdagangan kuantitatif, membuat investasi Anda lebih cerdas dan lebih tepat.",
-        "subtitle": "Perdagangan manual terlalu memakan waktu? Biarkan perdagangan kuantitatif KeepBit memberi Anda pemantauan pasar 24/7 dan layanan perdagangan otomatis, menangkap setiap peluang dengan akurat!"
+        "title": "Perdagangan kuantitatif membuat investasi Anda lebih cerdas dan tepat.",
+        "subtitle": "Perdagangan manual terlalu memakan waktu? Biarkan perdagangan kuantitatif KeepBit memberikan pemantauan pasar 24/7 dan layanan perdagangan otomatis, menangkap setiap peluang!"
       },
       {
-        "title": "Mudah menerapkan strategi kuantitatif, mengendalikan fluktuasi pasar.",
-        "subtitle": "Biarkan algoritma AI bekerja untuk Anda! Perdagangan kuantitatif KeepBit, menggabungkan data besar dan strategi cerdas, membantu Anda meraih peluang di pasar yang berfluktuasi."
+        "title": "Mudah menerapkan strategi kuantitatif untuk menguasai fluktuasi pasar.",
+        "subtitle": "Biarkan algoritma AI bekerja untuk Anda! Perdagangan kuantitatif KeepBit menggabungkan data besar dan strategi cerdas untuk membantu Anda mendapatkan keuntungan di pasar yang berfluktuasi."
       },
       {
-        "title": "KeepBit, ahli perdagangan kuantitatif Anda, mewujudkan investasi yang lebih efisien.",
-        "subtitle": "Ketinggalan kesempatan? Jangan khawatir! Sistem kuantitatif KeepBit beroperasi 7x24 jam secara otomatis, menjadikan setiap fluktuasi pasar peluang untuk keuntungan."
+        "title": "KeepBit, ahli perdagangan kuantitatif Anda untuk investasi yang lebih efisien.",
+        "subtitle": "Kesempatan terlewat? Jangan khawatir lagi! Sistem kuantitatif KeepBit 24/7 memastikan setiap pergerakan pasar menjadi peluang keuntungan."
       }
     ],
     "guide": {
       "title": "Panduan Pemula",
-      "subtitle": "Mulailah perjalanan Web3 Anda dengan KeepBit",
+      "subtitle": "Mulai perjalanan Web3 Anda dengan KeepBit",
       "list": [
-        { "title": "Menjadi Mitra KeepBit", "subtitle": "Nikmati rebate 80% permanen untuk perdagangan kontrak" },
-        { "title": "Isi Deposit Sekarang", "subtitle": "Proses mudah, mulai perjalanan Web3 dengan cepat" },
-        { "title": "Mulai Perdagangan", "subtitle": "Mulai perdagangan dengan cepat, nikmati keuntungan Web3 yang melimpah" },
-        { "title": "Coba Salinan Perdagangan", "subtitle": "Tangkap sinyal pasar dan salin keuntungan trader ahli" }
+        { "title": "Daftar Sekarang", "subtitle": "Tangkap sinyal pasar dan salin keuntungan pakar" },
+        { "title": "Deposit Sekarang", "subtitle": "Proses sederhana untuk memulai perjalanan Web3 Anda dengan cepat" },
+        { "title": "Mulai Perdagangan", "subtitle": "Cepat mulai perdagangan dan nikmati keuntungan Web3 yang besar" },
+        { "title": "Ajak Teman", "subtitle": "Dapatkan hingga 80% komisi seumur hidup dari perdagangan kontrak rujukan" }
       ]
     },
     "download": {
-      "title": "Perdagangan kapan saja dan di mana saja",
-      "scan": "Pindai untuk mengunduh",
-      "tap": "Klik untuk mengunduh"
+      "title": "Perdagangkan Kapan Saja, Di Mana Saja",
+      "scan": "Pindai untuk Mengunduh",
+      "tap": "Klik untuk Mengunduh"
     }
   },
   "market": {
+    "searchValue": "Cari Simbol Mata Uang",
     "marking": {
-      "title": "Pasar dan Harga",
-      "ranking": ["Peringkat Kenaikan", "Peringkat Penurunan", "Peringkat Terpopuler"],
+      "title": "Tren Pasar",
+      "ranking": ["Peringkat Kenaikan", "Peringkat Penurunan", "Koin Populer"],
       "coinType": "Jenis Koin",
       "price": "Harga",
       "change": "Perubahan 24 Jam"
     },
     "default": {
-      "title": "Pasar Pilihan Default",
+      "title": "Daftar Pantauan Default",
       "tab": [
         {
           "label": "Spot",
@@ -80,53 +290,53 @@
           "title": "Kontrak"
         },
         {
-          "label": "Favorit",
-          "title": "Koin Favorit"
+          "label": "Pantauan",
+          "title": "Koin yang Direkomendasikan"
         }
       ],
-      "addSelf": "Tambah Favorit Sekali Klik"
+      "addSelf": "Tambahkan Semua ke Pantauan"
     }
   },
   "strategy": {
-    "title": "Pusat Strategi",
-    "subtitle": ["Tangkap sinyal pasar", "Salin keuntungan trader ahli"],
+    "title": "Plaza Strategi",
+    "subtitle": ["Tangkap sinyal pasar", "Salin keuntungan pakar"],
     "trading": {
       "title": "Strategi Perdagangan",
       "search": "Cari Strategi Perdagangan"
     },
     "enable": "Aktifkan",
     "signal": "Sinyal",
-    "profit": "Keuntungan",
-    "runtime": "Durasi Jalannya",
+    "profit": "Tingkat Keuntungan",
+    "runtime": "Waktu Berjalan",
     "maxDrawDown": "Penurunan Maksimum 7 Hari",
-    "manageScale": "Skala Pengelolaan",
-    "strategyBy": "Strategi dari",
-    "shareProfit": "Bagi Hasil",
+    "manageScale": "Skala Manajemen",
+    "strategyBy": "Strategi oleh",
+    "shareProfit": "Berbagi Keuntungan",
     "useCount": "Jumlah Pengguna",
     "detail": {
       "title": "Parameter Detail",
-      "balance": "Saldo Margin Salinan",
-      "scale": "Skala Pengelolaan Aset",
-      "profit": "Keuntungan/Kerugian Salinan",
-      "minimum": "Jumlah Minimum Salinan",
-      "ratios": "Rasio Pembagian Keuntungan"
+      "balance": "Saldo Margin Penyalinan",
+      "scale": "Skala Manajemen Aset",
+      "profit": "Keuntungan & Kerugian Pengikut",
+      "minimum": "Jumlah Salinan Minimum",
+      "ratios": "Rasio Berbagi Keuntungan"
     },
     "project": {
       "title": "Kinerja Proyek",
-      "rewards": "Tingkat Penghargaan",
-      "profit": "Keuntungan/Kerugian",
-      "profitRatio": "Rasio Keuntungan/Kerugian",
+      "rewards": "Tingkat Imbalan",
+      "profit": "Keuntungan & Kerugian",
+      "profitRatio": "Rasio Keuntungan & Kerugian",
       "winRate": "Tingkat Kemenangan",
       "maxDrawDown": "Penurunan Maksimum",
-      "totalCount": "Jumlah Posisi",
+      "totalCount": "Jumlah Posisi Total",
       "profitCount": "Jumlah Posisi Menguntungkan"
     },
     "investment": {
       "title": "Jumlah Investasi",
       "usage": "Tersedia",
       "desc": [
-        "Saat strategi dihentikan, 20% dari keuntungan Anda akan dibagikan kepada penyedia strategi saat penyelesaian.",
-        "Saat strategi berjalan, Anda akan mengikuti semua tindakan penyedia strategi (mulai atau berhenti)."
+        "Ketika strategi berakhir, 20% dari keuntungan Anda akan dibagikan kepada penyedia strategi saat penyelesaian.",
+        "Selama strategi berjalan, Anda akan mengikuti semua tindakan (pembukaan dan penghentian) penyedia strategi."
       ]
     },
     "useStrategy": "Gunakan Strategi",
@@ -136,74 +346,137 @@
   },
   "deal": {
     "title": "Perdagangan Kuantitatif AI",
-    "subtitle": ["Tangkap sinyal pasar", "Salin keuntungan trader ahli"],
+    "subtitle": ["Tangkap sinyal pasar", "Salin keuntungan pakar"],
     "order": "Pesanan Perdagangan",
-    "tabs": ["Sedang Berlangsung", "Telah Dihentikan"],
-    "runtime": "Durasi Jalannya",
+    "tabs": ["Sedang Berjalan", "Dihentikan"],
+    "runtime": "Waktu Berjalan",
     "endStrategy": "Akhiri Strategi",
+    "searchOrders": "Cari Pesanan Perdagangan",
     "endStrategyQuestion": "Apakah Anda yakin ingin mengakhiri strategi ini?",
     "unrealizedGain": "Keuntungan Belum Terealisasi",
     "totalInvest": "Total Investasi",
     "profit": "Keuntungan Terealisasi",
-    "filledCount": "Jumlah Transaksi",
-    "openPrice": "Harga Masuk",
+    "filledCount": "Jumlah Perdagangan",
+    "openPrice": "Biaya Posisi",
     "profitRate": "Tingkat Keuntungan",
-    "filledTotalAmount": "Jumlah Total Transaksi",
+    "filledTotalAmount": "Jumlah Perdagangan Total",
     "qty": "Posisi Saat Ini",
     "direction": "Arah Posisi",
     "closePosition": "Tutup Posisi",
-    "closePositionQuestion": "Apakah Anda yakin ingin menutup posisi secara manual? (Tindakan manual dapat mempengaruhi tingkat keuntungan strategi)",
-    "showDetail": "Lihat Detail"
+    "closePositionQuestion": "Apakah Anda yakin ingin menutup posisi secara manual? (Ini dapat memengaruhi keuntungan strategi)",
+    "showDetail": "Lihat Detail",
+    "days": "Hari",
+    "hours": "Jam",
+    "minutes": "Menit",
+    "symbol": "Pasangan Perdagangan",
+    "tradeTime": "Waktu Perdagangan",
+    "orderType": "Jenis Pesanan",
+    "filledAmount": "Jumlah Terisi",
+    "filledPrice": "Harga Terisi",
+    "fee": "Biaya",
+    "openLong": "Buka Panjang",
+    "closeLong": "Tutup Panjang",
+    "openShort": "Buka Pendek",
+    "closeShort": "Tutup Pendek",
+    "market": "Harga Pasar",
+    "limit": "Harga Batas"
+  },
+  "user": {
+    "pleaseLogin": "Harap login terlebih dahulu",
+    "getUserInfoFail": "Gagal mengambil informasi pengguna, harap segarkan dan coba lagi",
+    "basicInfo": "Informasi Dasar",
+    "nickname": "Nama Panggilan",
+    "uid": "UID",
+    "vipLevel": "Tingkat VIP Pengguna",
+    "email": "Email",
+    "mobile": "Ponsel",
+    "identityVerification": "Verifikasi Identitas",
+    "identityDesc": "Bertransaksi sebagai individu dan berikan informasi pribadi",
+    "goVerify": "Verifikasi Sekarang ->",
+    "securityManagement": "Manajemen Keamanan",
+    "securityDesc": "Tingkatkan keamanan akun Anda dengan pengaturan fitur",
+    "goSettings": "Pergi ke Pengaturan ->"
   },
   "dealContracts": {
-    "title": "Perdagangan Kontrak Kuantitatif AI",
-    "subtitle": ["Tangkap sinyal pasar", "Salin keuntungan trader ahli"],
+    "title": "Perdagangan AI Kuantitatif",
+    "subtitle": ["Tangkap sinyal pasar", "Salin keuntungan ahli"],
     "order": "Pesanan Perdagangan",
-    "tabs": ["Sedang Berlangsung", "Telah Dihentikan"],
-    "runtime": "Durasi Jalannya",
-    "endStrategy": "Akhiri Strategi",
-    "endStrategyQuestion": "Apakah Anda yakin ingin mengakhiri strategi ini?",
-    "unrealizedGain": "Keuntungan Belum Terealisasi",
-    "totalInvest": "Total Investasi",
-    "profit": "Keuntungan Terealisasi",
+    "tabs": ["Sedang Berjalan", "Telah Dihentikan"],
+    "runtime": "Durasi Operasi",
+    "endStrategy": "Hentikan Strategi",
+    "searchOrders": "Cari Pesanan Perdagangan",
+    "endStrategyQuestion": "Apakah Anda yakin ingin menghentikan strategi ini?",
+    "unrealizedGain": "Keuntungan Belum Direalisasikan",
+    "totalInvest": "Total Jumlah Investasi",
+    "profit": "Keuntungan yang Direalisasikan",
     "filledCount": "Jumlah Transaksi",
-    "openPrice": "Harga Masuk",
+    "openPrice": "Biaya Posisi",
     "profitRate": "Tingkat Keuntungan",
-    "filledTotalAmount": "Jumlah Total Transaksi",
-    "qty": "Posisi Saat Ini",
+    "filledTotalAmount": "Total Nilai Transaksi",
+    "qty": "Kuantitas Posisi Saat Ini",
     "direction": "Arah Posisi",
     "closePosition": "Tutup Posisi",
-    "closePositionQuestion": "Apakah Anda yakin ingin menutup posisi secara manual? (Tindakan manual dapat mempengaruhi tingkat keuntungan strategi)",
-    "showDetail": "Lihat Detail"
+    "closePositionQuestion": "Apakah Anda yakin ingin menutup posisi ini secara manual? (Hal ini dapat memengaruhi tingkat keuntungan strategi)",
+    "showDetail": "Lihat Detail",
+    "days": "Hari",
+    "hours": "Jam",
+    "minutes": "Menit",
+    "symbol": "Pasangan Perdagangan",
+    "tradeTime": "Waktu Perdagangan",
+    "orderType": "Jenis Pesanan",
+    "filledAmount": "Jumlah Terealisasi",
+    "filledPrice": "Harga Terealisasi",
+    "fee": "Biaya",
+    "openLong": "Buka Posisi Long",
+    "closeLong": "Tutup Posisi Long",
+    "openShort": "Buka Posisi Short",
+    "closeShort": "Tutup Posisi Short",
+    "market": "Harga Pasar",
+    "limit": "Harga Batas"
   },
   "about": {
     "title": "Tentang Kami",
-    "subtitle": "KeepBit adalah platform perdagangan derivatif aset digital yang aman dan transparan. Kami memegang nilai \"Pengguna di Utama, Sederhana, Transparan, Kepercayaan\" dan berfokus untuk menyediakan layanan keuangan aset digital satu atap untuk para investor.",
+    "subtitle": "KeepBit adalah platform perdagangan derivatif aset digital yang aman dan transparan. Dengan nilai 'Pengguna Utama, Kesederhanaan, Transparansi, dan Kepercayaan', kami fokus menyediakan layanan keuangan aset digital satu atap kepada investor.",
     "advantage": {
       "title": "Keunggulan Kami",
       "list": [
         {
-          "title": "Platform Perdagangan yang Aman dan Terpercaya",
-          "desc": "Teknologi keamanan terdepan di industri dan operasi profesional yang sesuai dengan regulasi, memastikan pengalaman perdagangan yang andal, lancar, dan aman!"
+          "title": "Platform Perdagangan Aman dan Andal",
+          "desc": "Teknologi keamanan terkemuka di industri dan operasi profesional yang patuh memastikan pengguna menikmati lingkungan perdagangan yang andal, lancar, dan aman secara real-time!"
         },
         {
-          "title": "Beragam Pilihan Perdagangan",
-          "desc": "Berbagai cara perdagangan dan banyak mitra kerja sama, memberi pengguna pilihan alat dan aset perdagangan yang kaya serta memastikan likuiditas perdagangan yang memadai."
+          "title": "Pilihan Perdagangan yang Beragam",
+          "desc": "Berbagai metode perdagangan dan banyak mitra menyediakan alat perdagangan dan opsi yang kaya untuk pengguna, memastikan likuiditas yang cukup."
         },
         {
           "title": "Mitra Ekosistem",
-          "desc": "Mitra ekosistem KeepBit langsung mendapatkan dukungan strategis berbagai tipe, berbagi nilai ekosistem dan keuntungan era mata uang digital."
+          "desc": "Mitra ekosistem KeepBit langsung mendapatkan akses ke dukungan strategis, berbagi nilai platform KeepBit dan manfaat era mata uang digital."
         },
         {
           "title": "Layanan Perdagangan Satu Atap",
-          "desc": "KeepBit menyediakan layanan berkualitas tinggi 24/7 dalam berbagai bahasa untuk lebih dari 100 juta pengguna di puluhan negara di dunia!"
+          "desc": "KeepBit menyediakan layanan multibahasa berkualitas tinggi 24/7 untuk jutaan pengguna di lusinan negara di seluruh dunia!"
         }
       ]
     },
     "contact": {
-      "title": "Kontak Kami",
-      "list": ["Kerjasama Bisnis", "Kerjasama Media", "Dukungan Operasional"]
+      "title": "Hubungi Kami",
+      "list": ["Kerja Sama Bisnis", "Kerja Sama Media", "Dukungan Operasional"]
     }
+  },
+  "assets": {
+    "title": "Ikhtisar Aset",
+    "totalAssets": "Estimasi Total Aset",
+    "digitalAssets": "Deposit Aset Digital",
+    "digitalAssetsDesc": "Setor ke akun pribadi Anda",
+    "assetDistribution": "Distribusi Aset",
+    "purse": "Dompet",
+    "assetValuation": "Valuasi Aset",
+    "controls": "Kontrol",
+    "fundAccount": "Akun Dana",
+    "contractAccount": "Akun Kontrak",
+    "strategyAccount": "Akun Strategi",
+    "demoAccount": "Akun Demo",
+    "distribution": "Distribusi"
   },
   "agencyPlan": {
     "title": "Penjelasan Standar Tingkat Agen",

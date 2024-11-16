@@ -158,7 +158,7 @@ onMounted(async () => {
         <router-link to="/login">
           <NButton size="large" class="bg-white rounded-md">{{ t('login.title') }}</NButton>
         </router-link>
-        <router-link to="register">
+        <router-link to="/register">
           <NButton text>{{ t('register.title') }}</NButton>
         </router-link>
       </template>

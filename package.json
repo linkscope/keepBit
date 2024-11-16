@@ -16,6 +16,7 @@
     "dayjs": "^1.11.13",
     "docx-preview": "^0.3.3",
     "echarts": "^5.5.1",
+    "pdfjs-dist": "^4.8.69",
     "vue": "^3.5.12",
     "vue-i18n": "10",
     "vue-router": "^4.4.5"

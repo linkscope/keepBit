@@ -222,8 +222,8 @@
     "onlyDepositToThisAddress": "Anda hanya boleh mendeposit ke alamat ini {selectedNetwork}. Deposit aset lain tidak akan dikembalikan."
   },
   "home": {
-    "welcome": ["Selamat datang di KeepBit", "Dunia Web3 Anda bermula di sini"],
-    "subWelcome": ["Mudah mengurus dan memperdagangkan", "aset mata wang kripto anda"],
+    "welcome": ["Selamat datang di KeepBit", "Dunia Web3 anda bermula di sini", "mula sekarang"],
+    "subWelcome": ["Mudah untuk mengurus dan berdagang", "aset mata wang kripto anda"],
     "hotCoinPrice": "Harga Mata Wang Kripto Popular",
     "hotStock": "Spot Popular",
     "hotTreat": "Kontrak Popular",

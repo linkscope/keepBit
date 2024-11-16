@@ -161,8 +161,8 @@
     "closeShort": "Đóng bán"
   },
   "home": {
-    "welcome": ["Chào mừng đến với KeepBit", "Thế giới Web3 của bạn bắt đầu từ đây"],
-    "subWelcome": ["Dễ dàng quản lý và giao dịch", "tài sản tiền mã hóa của bạn"],
+    "welcome": ["Chào mừng đến với KeepBit", "Thế giới Web3 của bạn bắt đầu từ đây", "bắt đầu ngay"],
+    "subWelcome": ["Dễ dàng quản lý và giao dịch", "tài sản tiền điện tử của bạn"],
     "hotCoinPrice": "Giá tiền mã hóa nổi bật",
     "hotStock": "Giao dịch giao ngay nổi bật",
     "hotTreat": "Hợp đồng nổi bật",

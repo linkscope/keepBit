@@ -101,8 +101,6 @@ const handleUserOption = (key) => {
 onMounted(async () => {
   const token = localStorage.getItem('accessToken')
   if (!token) {
-    message.warning('请先登录')
-    router.push('/login')
     return
   }
   const response = await fetch('https://test.keepbit.top/app_api/v1/User/GetMyInfo', {
